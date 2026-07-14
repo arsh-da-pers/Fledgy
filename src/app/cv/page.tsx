@@ -21,6 +21,10 @@ export default function CvPage() {
   const [generateError, setGenerateError] = useState<string | null>(null);
   const [generatedCv, setGeneratedCv] = useState<string | null>(null);
 
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadedName, setUploadedName] = useState<string | null>(null);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -62,6 +66,31 @@ export default function CvPage() {
       );
     } finally {
       setGenerating(false);
+    }
+  }
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setUploadError(null);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/extract-text", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Something went wrong.");
+      setCv(data.text);
+      setUploadedName(file.name);
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : "Something went wrong.");
+      setUploadedName(null);
+    } finally {
+      setUploading(false);
+      e.target.value = "";
     }
   }
 
@@ -109,6 +138,24 @@ export default function CvPage() {
               onChange={(e) => setField(e.target.value)}
             />
           </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-dashed border-[#c9b98a] bg-white px-4 py-2 text-sm font-medium text-[#6b5c45] transition hover:border-teal-600 hover:text-teal-700">
+              {uploading ? "Reading file…" : "Upload PDF or Word (.docx)"}
+              <input
+                type="file"
+                accept=".pdf,.docx"
+                className="hidden"
+                onChange={handleFileUpload}
+                disabled={uploading}
+              />
+            </label>
+            <span className="text-xs text-[#b0a186]">
+              {uploadedName ? `Loaded: ${uploadedName}` : "or paste your CV text below"}
+            </span>
+          </div>
+          {uploadError && (
+            <p className="text-xs text-red-600">{uploadError}</p>
+          )}
           <textarea
             className="h-64 w-full rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-teal-600 focus:outline-none"
             placeholder="Paste your CV text here..."

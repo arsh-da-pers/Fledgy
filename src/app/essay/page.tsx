@@ -17,6 +17,35 @@ export default function EssayPage() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<Result | null>(null);
 
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadedName, setUploadedName] = useState<string | null>(null);
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setUploadError(null);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/extract-text", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Something went wrong.");
+      setEssay(data.text);
+      setUploadedName(file.name);
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : "Something went wrong.");
+      setUploadedName(null);
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -70,6 +99,24 @@ export default function EssayPage() {
               onChange={(e) => setCourse(e.target.value)}
             />
           </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-dashed border-[#e2a68a] bg-white px-4 py-2 text-sm font-medium text-[#6b5c45] transition hover:border-[#e2653b] hover:text-[#c8532c]">
+              {uploading ? "Reading file…" : "Upload PDF or Word (.docx)"}
+              <input
+                type="file"
+                accept=".pdf,.docx"
+                className="hidden"
+                onChange={handleFileUpload}
+                disabled={uploading}
+              />
+            </label>
+            <span className="text-xs text-[#b0a186]">
+              {uploadedName ? `Loaded: ${uploadedName}` : "or paste your essay text below"}
+            </span>
+          </div>
+          {uploadError && (
+            <p className="text-xs text-red-600">{uploadError}</p>
+          )}
           <textarea
             className="h-64 w-full rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-[#e2653b] focus:outline-none"
             placeholder="Paste your personal statement or essay here..."
