@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Fledgy — Grow Your Wings",
@@ -27,7 +29,9 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-[#fdf3e7] text-[#2a2115]">
+        <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );

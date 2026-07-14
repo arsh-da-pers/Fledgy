@@ -14,7 +14,7 @@
 // script for that). Nothing else needs to change.
 
 type FeedbackEvent = {
-  tool: "essay" | "cv";
+  tool: "essay" | "cv" | "cv_generate";
   score?: number;
   verdict?: string;
   [key: string]: unknown;

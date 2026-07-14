@@ -7,7 +7,13 @@ export default function Logo({
 }) {
   return (
     <span className="inline-flex items-center gap-2.5">
-      <svg width={size} height={size} viewBox="0 0 180 180" aria-hidden="true">
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 180 180"
+        style={{ overflow: "visible" }}
+        aria-hidden="true"
+      >
         <circle cx="90" cy="90" r="52" fill="#D9603F" />
         <text
           x="90"

@@ -3,19 +3,19 @@ export default function HeroArt() {
     <svg
       viewBox="0 0 800 220"
       className="w-full"
-      style={{ display: "block" }}
+      style={{ display: "block", overflow: "visible" }}
       aria-hidden="true"
     >
-      <circle cx="620" cy="45" r="48" fill="#D9603F" />
+      <circle cx="620" cy="55" r="48" fill="#D9603F" />
       <text
         x="620"
-        y="54"
+        y="64"
         textAnchor="middle"
         fontFamily="'Dancing Script', cursive"
         fontWeight="700"
         fontSize="83"
         fill="#1C6B63"
-        transform="rotate(90 620 45)"
+        transform="rotate(90 620 55)"
       >
         f
       </text>

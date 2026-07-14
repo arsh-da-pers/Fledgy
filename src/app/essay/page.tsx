@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import Logo from "@/components/Logo";
+import Mark from "@/components/Mark";
 
 type Result = {
   score: number;
@@ -41,13 +40,13 @@ export default function EssayPage() {
 
   return (
     <main className="flex flex-1 flex-col items-center bg-[#fdf3e7]">
-      <div className="w-full max-w-2xl px-6 py-16">
-        <Link href="/" className="inline-block">
-          <Logo />
-        </Link>
-        <span className="mt-6 inline-block rounded-full bg-[#fbe3d8] px-2.5 py-1 text-xs font-bold tracking-widest text-[#b6431f]">
-          FREE · UNIVERSITY ESSAY HUB
-        </span>
+      <div className="w-full max-w-2xl px-6 py-12">
+        <div className="flex items-start justify-between">
+          <span className="inline-block rounded-full bg-[#fbe3d8] px-2.5 py-1 text-xs font-bold tracking-widest text-[#b6431f]">
+            FREE · UNIVERSITY ESSAY HUB
+          </span>
+          <Mark size={26} opacity={0.35} />
+        </div>
         <h1 className="mt-3 text-3xl font-semibold text-[#2a2115]">
           Score my essay
         </h1>
@@ -95,11 +94,14 @@ export default function EssayPage() {
 
         {result && (
           <div className="mt-8 rounded-xl border border-[#f0dfc4] bg-white p-6 shadow-sm">
-            <div className="flex items-baseline gap-3">
-              <span className="text-4xl font-semibold text-[#e2653b]">
-                {result.score}
-              </span>
-              <span className="text-[#b0a186]">/ 100</span>
+            <div className="flex items-start justify-between">
+              <div className="flex items-baseline gap-3">
+                <span className="text-4xl font-semibold text-[#e2653b]">
+                  {result.score}
+                </span>
+                <span className="text-[#b0a186]">/ 100</span>
+              </div>
+              <Mark size={28} opacity={0.4} />
             </div>
             <p className="mt-2 text-sm italic text-[#3a3629]">
               {result.one_line_verdict}
