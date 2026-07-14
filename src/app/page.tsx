@@ -19,15 +19,21 @@ export default function Home() {
           just the US or UK.
         </p>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-2">
+        <div className="mt-8 flex items-center gap-4">
+          <Mark size={40} opacity={0.9} />
+          <div className="h-px flex-1 bg-[#f0dfc4]" />
+          <Mark size={40} opacity={0.9} className="scale-x-[-1]" />
+        </div>
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
           <Link
             href="/essay"
             className="group relative overflow-hidden rounded-xl border border-[#f0dfc4] bg-white p-6 shadow-sm transition hover:border-[#e2653b] hover:shadow-md"
           >
             <Mark
-              size={30}
-              opacity={0.18}
-              className="pointer-events-none absolute -right-2 -top-3"
+              size={54}
+              opacity={0.3}
+              className="pointer-events-none absolute -right-3 -top-4"
             />
             <span className="inline-block rounded-full bg-[#fbe3d8] px-2.5 py-1 text-xs font-bold tracking-widest text-[#b6431f]">
               FREE
@@ -50,9 +56,9 @@ export default function Home() {
             className="group relative overflow-hidden rounded-xl border border-[#f0dfc4] bg-white p-6 shadow-sm transition hover:border-teal-600 hover:shadow-md"
           >
             <Mark
-              size={30}
-              opacity={0.18}
-              className="pointer-events-none absolute -right-2 -top-3"
+              size={54}
+              opacity={0.3}
+              className="pointer-events-none absolute -right-3 -top-4"
             />
             <span className="inline-block rounded-full bg-[#d7f0ec] px-2.5 py-1 text-xs font-bold tracking-widest text-teal-800">
               FREE
@@ -70,7 +76,13 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="mt-16">
+        <div className="mt-16 flex items-center gap-4">
+          <Mark size={36} opacity={0.8} className="scale-x-[-1]" />
+          <div className="h-px flex-1 bg-[#f0dfc4]" />
+          <Mark size={36} opacity={0.8} />
+        </div>
+
+        <div className="mt-8">
           <h2 className="text-xl font-semibold text-[#2a2115]">
             Free today, more depth coming.
           </h2>
@@ -132,11 +144,15 @@ export default function Home() {
         </div>
 
         <div className="mt-12 flex items-start gap-3 rounded-xl border border-[#f4d9a8] bg-[#fdf0d9] px-5 py-4">
-          <Mark size={22} opacity={0.7} className="mt-0.5 shrink-0" />
+          <Mark size={32} opacity={0.9} className="mt-0.5 shrink-0" />
           <p className="text-sm italic text-[#7a5b26]">
             &ldquo;Talent is everywhere. Opportunity isn&apos;t. Fledgy closes
             that gap.&rdquo;
           </p>
+        </div>
+
+        <div className="mt-12 flex justify-center">
+          <Mark size={44} opacity={0.9} />
         </div>
       </div>
     </main>

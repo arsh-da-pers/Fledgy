@@ -112,7 +112,7 @@ export default function CvPage() {
           <span className="inline-block rounded-full bg-[#d7f0ec] px-2.5 py-1 text-xs font-bold tracking-widest text-teal-800">
             FREE · CV CONSULTATION
           </span>
-          <Mark size={26} opacity={0.35} />
+          <Mark size={40} opacity={0.85} />
         </div>
         <h1 className="mt-3 text-3xl font-semibold text-[#2a2115]">
           Score my CV
@@ -187,7 +187,7 @@ export default function CvPage() {
                 </span>
                 <span className="text-[#b0a186]">/ 100</span>
               </div>
-              <Mark size={28} opacity={0.4} />
+              <Mark size={38} opacity={0.75} />
             </div>
             <p className="mt-2 text-sm italic text-[#3a3629]">
               {result.one_line_verdict}

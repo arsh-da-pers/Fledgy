@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="w-full border-t border-[#f0dfc4] bg-[#fdf3e7]">
       <div className="mx-auto flex w-full max-w-3xl items-start gap-4 px-6 py-6">
-        <Mark size={20} opacity={0.3} className="mt-0.5 hidden shrink-0 sm:block" />
+        <Mark size={28} opacity={0.75} className="mt-0.5 hidden shrink-0 sm:block" />
         <p className="text-xs leading-relaxed text-[#9c8b6f]">
           Fledgy&apos;s scores, tips, and generated drafts are AI-produced
           guidance to help you improve — they are not a guarantee of

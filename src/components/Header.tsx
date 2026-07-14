@@ -19,7 +19,7 @@ export default function Header() {
           <Link href="/cv" className="hover:text-teal-700">
             Score my CV
           </Link>
-          <Mark size={18} opacity={0.3} className="hidden sm:block" />
+          <Mark size={26} opacity={0.75} className="hidden sm:block" />
         </nav>
       </div>
     </header>
