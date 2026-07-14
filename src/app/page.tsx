@@ -5,7 +5,7 @@ import Mark from "@/components/Mark";
 export default function Home() {
   return (
     <main className="flex flex-1 flex-col items-center bg-[#fdf3e7]">
-      <div className="w-full max-w-3xl">
+      <div className="w-full">
         <HeroArt />
       </div>
 

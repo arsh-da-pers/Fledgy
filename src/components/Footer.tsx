@@ -3,7 +3,7 @@ import Mark from "./Mark";
 export default function Footer() {
   return (
     <footer className="w-full border-t border-[#f0dfc4] bg-[#fdf3e7]">
-      <div className="mx-auto flex w-full max-w-3xl items-start gap-4 px-6 py-6">
+      <div className="flex w-full items-start gap-4 px-6 py-6 sm:px-10">
         <Mark size={28} opacity={0.75} className="mt-0.5 hidden shrink-0 sm:block" />
         <p className="text-xs leading-relaxed text-[#9c8b6f]">
           Fledgy&apos;s scores, tips, and generated drafts are AI-produced
