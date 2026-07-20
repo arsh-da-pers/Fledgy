@@ -1,0 +1,88 @@
+// Representative (not exhaustive) subject lists per curriculum, good enough
+// to let a student pick what they're studying. There's always an "Other"
+// free-text field alongside these for anything not listed — real school
+// subject combinations vary a lot by country and institution.
+
+export type Curriculum = "IB" | "IGCSE" | "CBSE" | "ICSE" | "Other";
+
+export const CURRICULA: { value: Curriculum; label: string }[] = [
+  { value: "IB", label: "IB (International Baccalaureate)" },
+  { value: "IGCSE", label: "IGCSE (Cambridge/Edexcel)" },
+  { value: "CBSE", label: "CBSE" },
+  { value: "ICSE", label: "ICSE / ISC" },
+  { value: "Other", label: "Other / not listed" },
+];
+
+export const SUBJECTS_BY_CURRICULUM: Record<Curriculum, string[]> = {
+  IB: [
+    "English A: Language & Literature",
+    "Language Acquisition (e.g. French, Spanish)",
+    "History",
+    "Geography",
+    "Economics",
+    "Business Management",
+    "Psychology",
+    "Global Politics",
+    "Biology",
+    "Chemistry",
+    "Physics",
+    "Computer Science",
+    "Environmental Systems & Societies",
+    "Mathematics: Analysis & Approaches",
+    "Mathematics: Applications & Interpretation",
+    "Visual Arts",
+    "Music",
+    "Theatre",
+  ],
+  IGCSE: [
+    "English",
+    "Mathematics",
+    "Physics",
+    "Chemistry",
+    "Biology",
+    "Combined Science",
+    "Computer Science / ICT",
+    "Business Studies",
+    "Economics",
+    "Accounting",
+    "Geography",
+    "History",
+    "Art & Design",
+    "Global Perspectives",
+    "Additional Language (e.g. French, Spanish, Mandarin)",
+  ],
+  CBSE: [
+    "English",
+    "Physics",
+    "Chemistry",
+    "Mathematics",
+    "Biology",
+    "Computer Science",
+    "Informatics Practices",
+    "Economics",
+    "Accountancy",
+    "Business Studies",
+    "History",
+    "Political Science",
+    "Geography",
+    "Psychology",
+    "Sociology",
+    "Physical Education",
+  ],
+  ICSE: [
+    "English",
+    "Second Language (Hindi/Regional)",
+    "Mathematics",
+    "Physics",
+    "Chemistry",
+    "Biology",
+    "Computer Applications",
+    "Economics",
+    "Commercial Studies",
+    "Economic Applications",
+    "History & Civics",
+    "Geography",
+    "Environmental Science",
+  ],
+  Other: [],
+};

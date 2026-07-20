@@ -13,6 +13,9 @@ export default function Header() {
           <Link href="/" className="hover:text-[#2a2115]">
             Home
           </Link>
+          <Link href="/careers" className="hover:text-[#8a6d2f]">
+            Career Quiz
+          </Link>
           <Link href="/essay" className="hover:text-[#c8532c]">
             Score my essay
           </Link>

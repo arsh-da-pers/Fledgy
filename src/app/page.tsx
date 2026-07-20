@@ -25,7 +25,34 @@ export default function Home() {
           <Mark size={40} opacity={0.9} className="scale-x-[-1]" />
         </div>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+        <div className="mt-8">
+          <Link
+            href="/careers"
+            className="group relative block overflow-hidden rounded-xl border border-[#f0dfc4] bg-white p-6 shadow-sm transition hover:border-[#8a6d2f] hover:shadow-md"
+          >
+            <Mark
+              size={54}
+              opacity={0.3}
+              className="pointer-events-none absolute -right-3 -top-4"
+            />
+            <span className="inline-block rounded-full bg-[#f4e8cf] px-2.5 py-1 text-xs font-bold tracking-widest text-[#8a6d2f]">
+              FREE · START HERE
+            </span>
+            <h2 className="mt-3 text-xl font-semibold text-[#2a2115]">
+              Find your career direction
+            </h2>
+            <p className="mt-2 text-sm text-[#6b5c45]">
+              Not sure what to study yet? A quick personality + aptitude quiz,
+              matched to your curriculum&apos;s subjects, points you toward 5
+              careers worth exploring — before you write a single essay.
+            </p>
+            <span className="mt-4 inline-block text-sm font-medium text-[#8a6d2f] group-hover:underline">
+              Take the quiz →
+            </span>
+          </Link>
+        </div>
+
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <Link
             href="/essay"
             className="group relative overflow-hidden rounded-xl border border-[#f0dfc4] bg-white p-6 shadow-sm transition hover:border-[#e2653b] hover:shadow-md"
@@ -87,17 +114,21 @@ export default function Home() {
             Free today, more depth coming.
           </h2>
           <p className="mt-1 text-sm text-[#6b5c45]">
-            No payment collected anywhere on Fledgy yet — everything below
-            marked &ldquo;coming soon&rdquo; is a preview of what&apos;s next,
-            not something you can buy right now.
+            Every email gets 2 free scores across the career quiz, essay, CV,
+            and CV generation — no card required. After that, paid access is
+            coming soon; we&apos;ll email you the moment it&apos;s ready.
           </p>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             <div className="rounded-xl border border-[#f0dfc4] bg-white p-6">
               <span className="inline-block rounded-full bg-[#d7f0ec] px-2.5 py-1 text-xs font-bold tracking-widest text-teal-800">
-                FREE — AVAILABLE NOW
+                FREE — 2 SCORES PER EMAIL
               </span>
               <ul className="mt-4 space-y-2.5 text-sm text-[#3a3629]">
+                <li className="flex gap-2">
+                  <span className="text-teal-700">✓</span>
+                  <span>Career direction quiz (personality + aptitude)</span>
+                </li>
                 <li className="flex gap-2">
                   <span className="text-teal-700">✓</span>
                   <span>Essay score out of 100, with honest tips</span>

@@ -1,25 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Mark from "@/components/Mark";
+import { uploadAndExtractText } from "@/lib/uploadAndExtract";
 
 type Result = {
   score: number;
   tips: string[];
   one_line_verdict: string;
+  usesRemaining?: number;
 };
 
 export default function EssayPage() {
+  const [email, setEmail] = useState("");
   const [university, setUniversity] = useState("");
   const [course, setCourse] = useState("");
   const [essay, setEssay] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [paywall, setPaywall] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
 
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [uploadedName, setUploadedName] = useState<string | null>(null);
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem("fledgy_email");
+    if (saved) setEmail(saved);
+  }, []);
 
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -27,15 +36,8 @@ export default function EssayPage() {
     setUploading(true);
     setUploadError(null);
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      const res = await fetch("/api/extract-text", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Something went wrong.");
-      setEssay(data.text);
+      const text = await uploadAndExtractText(file);
+      setEssay(text);
       setUploadedName(file.name);
     } catch (err) {
       setUploadError(err instanceof Error ? err.message : "Something went wrong.");
@@ -50,15 +52,20 @@ export default function EssayPage() {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setPaywall(false);
     setResult(null);
     try {
+      window.localStorage.setItem("fledgy_email", email);
       const res = await fetch("/api/essay", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ university, course, essay }),
+        body: JSON.stringify({ university, course, essay, email }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Something went wrong.");
+      if (!res.ok) {
+        if (data.paywall) setPaywall(true);
+        throw new Error(data.error || "Something went wrong.");
+      }
       setResult(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
@@ -85,6 +92,14 @@ export default function EssayPage() {
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+          <input
+            type="email"
+            className="w-full rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-[#e2653b] focus:outline-none"
+            placeholder="Your email (so we can save your free scores)"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
           <div className="grid gap-4 sm:grid-cols-2">
             <input
               className="rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-[#e2653b] focus:outline-none"
@@ -101,10 +116,10 @@ export default function EssayPage() {
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-dashed border-[#e2a68a] bg-white px-4 py-2 text-sm font-medium text-[#6b5c45] transition hover:border-[#e2653b] hover:text-[#c8532c]">
-              {uploading ? "Reading file…" : "Upload PDF or Word (.docx)"}
+              {uploading ? "Reading file…" : "Upload PDF, Word, or photo"}
               <input
                 type="file"
-                accept=".pdf,.docx"
+                accept=".pdf,.docx,.jpg,.jpeg,.png"
                 className="hidden"
                 onChange={handleFileUpload}
                 disabled={uploading}
@@ -133,7 +148,15 @@ export default function EssayPage() {
           </button>
         </form>
 
-        {error && (
+        {error && paywall && (
+          <div className="mt-6 rounded-lg border border-[#f4d9a8] bg-[#fdf0d9] px-5 py-4">
+            <p className="text-sm font-semibold text-[#7a5b26]">
+              You&apos;re on the waitlist
+            </p>
+            <p className="mt-1 text-sm text-[#7a5b26]">{error}</p>
+          </div>
+        )}
+        {error && !paywall && (
           <p className="mt-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             {error}
           </p>
@@ -165,6 +188,13 @@ export default function EssayPage() {
               This is the free surface-level score. The full paid report
               (section breakdown, tone analysis, school-specific criteria) is
               coming in a later version.
+              {typeof result.usesRemaining === "number" && (
+                <>
+                  {" "}
+                  You have {result.usesRemaining} free score
+                  {result.usesRemaining === 1 ? "" : "s"} left.
+                </>
+              )}
             </p>
           </div>
         )}

@@ -1,12 +1,20 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { logFeedback } from "@/lib/logFeedback";
+import { checkAndRecordUsage, isValidEmail, FREE_LIMIT } from "@/lib/usage";
 
 export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   try {
-    const { country, field, cv } = await req.json();
+    const { country, field, cv, email } = await req.json();
+
+    if (!email || !isValidEmail(email)) {
+      return NextResponse.json(
+        { error: "Please enter a valid email so we can save your free scores." },
+        { status: 400 }
+      );
+    }
 
     if (!cv || cv.trim().length < 50) {
       return NextResponse.json(
@@ -18,6 +26,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { error: "Please tell us the target country you're applying in." },
         { status: 400 }
+      );
+    }
+
+    const usage = await checkAndRecordUsage(email);
+    if (!usage.allowed) {
+      logFeedback({ tool: "waitlist", email, hitTool: "cv_generate" });
+      return NextResponse.json(
+        {
+          paywall: true,
+          error: `You've used your ${FREE_LIMIT} free scores. Paid access is coming soon — we've added you to the list and will email you when it's ready.`,
+        },
+        { status: 402 }
       );
     }
 
@@ -60,11 +80,12 @@ Output ONLY the rewritten CV as clean plain text, ready to copy or download — 
 
     logFeedback({
       tool: "cv_generate",
+      email,
       country,
       field: field || null,
     });
 
-    return NextResponse.json({ cv: generatedCv });
+    return NextResponse.json({ cv: generatedCv, usesRemaining: usage.remaining });
   } catch (err) {
     console.error(err);
     return NextResponse.json(
