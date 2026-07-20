@@ -39,16 +39,38 @@ async function downscaleImage(file: File): Promise<File> {
 export async function uploadAndExtractText(file: File): Promise<string> {
   const prepared = await downscaleImage(file);
 
-  const blob = await upload(prepared.name, prepared, {
-    access: "public",
-    handleUploadUrl: "/api/upload",
-  });
+  let blob;
+  try {
+    blob = await upload(prepared.name, prepared, {
+      access: "public",
+      handleUploadUrl: "/api/upload",
+    });
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(
+      "[fledgy] blob upload() failed",
+      err,
+      err instanceof Error ? err.stack : undefined
+    );
+    throw err;
+  }
 
-  const res = await fetch("/api/extract-text", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ url: blob.url, filename: prepared.name }),
-  });
+  let res;
+  try {
+    res = await fetch("/api/extract-text", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url: blob.url, filename: prepared.name }),
+    });
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(
+      "[fledgy] extract-text fetch failed",
+      err,
+      err instanceof Error ? err.stack : undefined
+    );
+    throw err;
+  }
   const data = await res.json();
   if (!res.ok) throw new Error(data.error || "Something went wrong.");
   return data.text as string;
