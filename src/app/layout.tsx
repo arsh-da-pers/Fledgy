@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Fledgy — Grow Your Wings",
+  title: "Fledgy · Grow Your Wings",
   description:
     "AI-powered essay and CV feedback built for international students and talent. Honest scores, country-specific advice, free to try.",
 };

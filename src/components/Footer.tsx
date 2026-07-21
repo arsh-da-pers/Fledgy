@@ -7,7 +7,7 @@ export default function Footer() {
         <Mark size={28} opacity={0.75} className="mt-0.5 hidden shrink-0 sm:block" />
         <p className="text-xs leading-relaxed text-[#9c8b6f]">
           Fledgy&apos;s scores, tips, and generated drafts are AI-produced
-          guidance to help you improve — they are not a guarantee of
+          guidance to help you improve. They are not a guarantee of
           admission, a job offer, or any specific outcome, and they are not a
           substitute for advice from your target university, employer, or a
           qualified professional. Requirements vary by institution and

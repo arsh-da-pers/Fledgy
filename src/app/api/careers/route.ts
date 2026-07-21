@@ -17,12 +17,18 @@ export async function POST(req: NextRequest) {
   try {
     const {
       email,
+      audience,
       curriculum,
       subjects,
       otherSubjects,
+      currentField,
+      yearsExperience,
+      switchReason,
       personalityAnswers,
       aptitudeAnswers,
     } = await req.json();
+
+    const isSwitcher = audience === "switcher";
 
     if (!email || !isValidEmail(email)) {
       return NextResponse.json(
@@ -30,7 +36,14 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    if (!curriculum) {
+    if (isSwitcher) {
+      if (!currentField || String(currentField).trim().length < 2) {
+        return NextResponse.json(
+          { error: "Please tell us what field or role you're in now." },
+          { status: 400 }
+        );
+      }
+    } else if (!curriculum) {
       return NextResponse.json(
         { error: "Please tell us which curriculum you're studying." },
         { status: 400 }
@@ -93,28 +106,46 @@ export async function POST(req: NextRequest) {
 
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-    const prompt = `You are Fledgy's career guidance advisor, speaking to a high-school-aged student who is exploring what to study or do next. You've just given them a short, validated personality snapshot (Mini-IPIP Big Five) and a quick aptitude quiz — this is directional guidance, not a formal diagnostic or a guarantee.
+    const contextBlock = isSwitcher
+      ? `Current field or role: ${currentField}
+Years of work experience: ${yearsExperience || "not specified"}
+Reason for considering a switch: ${switchReason || "not specified"}`
+      : `Curriculum: ${curriculum}
+Subjects studied: ${subjectList}`;
 
-Curriculum: ${curriculum}
-Subjects studied: ${subjectList}
+    const audienceFraming = isSwitcher
+      ? `You are Fledgy's career guidance advisor, speaking to a working adult who is considering a career switch. You've just given them a short, validated personality snapshot (Mini-IPIP Big Five) and a quick aptitude quiz. This is directional guidance, not a formal diagnostic or a guarantee.`
+      : `You are Fledgy's career guidance advisor, speaking to a student who is exploring what to study or do next. You've just given them a short, validated personality snapshot (Mini-IPIP Big Five) and a quick aptitude quiz. This is directional guidance, not a formal diagnostic or a guarantee.`;
+
+    const recommendationInstruction = isSwitcher
+      ? `Based on all of this together (personality + aptitude strengths + their current field and transferable experience), recommend the 5 career paths worth exploring as a switch. Be specific (e.g. "Product Management" not just "tech jobs"), favour realistic moves that build on their existing experience, and vary the 5 across a couple of different directions where the evidence supports it. For each, briefly explain WHY it fits, referencing their actual scores and background, not generic praise.`
+      : `Based on all of this together (personality + aptitude strengths + subjects), recommend the 5 career paths that fit this student best. Be specific (e.g. "Actuarial Science" not just "Maths-related jobs") and vary the 5 across a couple of different fields where the evidence supports it, don't just list 5 versions of the same career. For each, briefly explain WHY it fits, referencing their actual scores and subjects, not generic praise.`;
+
+    const nextStepsHint = isSwitcher
+      ? "concrete transition step, e.g. a skill to build, a certification, or a way to test the field"
+      : "concrete suggestion, e.g. a subject, exam, or extracurricular to explore";
+
+    const prompt = `${audienceFraming}
+
+${contextBlock}
 
 Big Five personality scores (0-100 scale): ${traitSummary}
 
 Aptitude quiz results (0-100 scale): Overall ${aptitude.overall}, Logical reasoning ${aptitude.byCategory.logical}, Numerical reasoning ${aptitude.byCategory.numerical}, Verbal reasoning ${aptitude.byCategory.verbal}
 
-Based on all of this together (personality + aptitude strengths + subjects), recommend the 5 career paths that fit this student best. Be specific (e.g. "Actuarial Science" not just "Maths-related jobs") and vary the 5 across a couple of different fields where the evidence supports it — don't just list 5 versions of the same career. For each, briefly explain WHY it fits, referencing their actual scores/subjects, not generic praise.
+${recommendationInstruction}
 
 Return ONLY valid JSON, no other text, in this exact shape:
 {
-  "summary": "<one warm, 2-sentence overview of this student's overall profile>",
+  "summary": "<one warm, 2-sentence overview of this person's overall profile>",
   "careers": [
-    { "title": "<career name>", "why": "<1-2 sentences tying it to their specific traits/aptitude/subjects>" },
+    { "title": "<career name>", "why": "<1-2 sentences tying it to their specific traits/aptitude/background>" },
     { "title": "<career name>", "why": "<...>" },
     { "title": "<career name>", "why": "<...>" },
     { "title": "<career name>", "why": "<...>" },
     { "title": "<career name>", "why": "<...>" }
   ],
-  "next_steps": ["<short, concrete suggestion, e.g. a subject/exam/extracurricular to explore>", "<suggestion 2>", "<suggestion 3>"]
+  "next_steps": ["<short, ${nextStepsHint}>", "<suggestion 2>", "<suggestion 3>"]
 }`;
 
     const msg = await anthropic.messages.create({
@@ -130,7 +161,8 @@ Return ONLY valid JSON, no other text, in this exact shape:
     logFeedback({
       tool: "careers",
       email,
-      curriculum,
+      audience: isSwitcher ? "switcher" : "student",
+      curriculum: isSwitcher ? currentField : curriculum,
       aptitudeScore: aptitude.overall,
     });
 

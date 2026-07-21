@@ -32,9 +32,13 @@ export default function CareersPage() {
   const [aptitudeQuestions, setAptitudeQuestions] = useState<AptitudeQuestion[]>([]);
 
   const [email, setEmail] = useState("");
+  const [audience, setAudience] = useState<"student" | "switcher" | "">("");
   const [curriculum, setCurriculum] = useState<Curriculum | "">("");
   const [subjects, setSubjects] = useState<string[]>([]);
   const [otherSubjects, setOtherSubjects] = useState("");
+  const [currentField, setCurrentField] = useState("");
+  const [yearsExperience, setYearsExperience] = useState("");
+  const [switchReason, setSwitchReason] = useState("");
 
   const [personalityAnswers, setPersonalityAnswers] = useState<Record<number, number>>({});
   const [aptitudeAnswers, setAptitudeAnswers] = useState<Record<number, number>>({});
@@ -58,7 +62,13 @@ export default function CareersPage() {
 
   const subjectOptions = curriculum && curriculum !== "Other" ? SUBJECTS_BY_CURRICULUM[curriculum] : [];
 
-  const step0Valid = email.trim().length > 3 && curriculum !== "";
+  const step0Valid =
+    email.trim().length > 3 &&
+    (audience === "student"
+      ? curriculum !== ""
+      : audience === "switcher"
+      ? currentField.trim().length > 1
+      : false);
   const step1Valid = personalityItems.length > 0 && personalityItems.every((i) => personalityAnswers[i.id]);
   const step2Valid = aptitudeQuestions.length > 0 && aptitudeQuestions.every((q) => aptitudeAnswers[q.id] !== undefined);
 
@@ -79,9 +89,13 @@ export default function CareersPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email,
+          audience,
           curriculum,
           subjects,
           otherSubjects,
+          currentField,
+          yearsExperience,
+          switchReason,
           personalityAnswers,
           aptitudeAnswers,
         }),
@@ -126,9 +140,10 @@ export default function CareersPage() {
           Find your career direction
         </h1>
         <p className="mt-2 text-[#6b5c45]">
-          A ~5-7 minute quiz — a quick, validated personality snapshot plus a
-          short aptitude check — before you even get to essays or CVs. Not a
-          clinical assessment, just a solid starting point.
+          A 5 to 7 minute quiz: a quick, validated personality snapshot plus a
+          short aptitude check. Whether you&apos;re a student choosing a path
+          or weighing a career switch, it&apos;s a solid starting point, not a
+          clinical assessment.
         </p>
 
         {step < 3 && (
@@ -157,57 +172,131 @@ export default function CareersPage() {
             />
 
             <div>
-              <p className="mb-2 text-sm font-medium text-[#3a3629]">Your curriculum</p>
+              <p className="mb-2 text-sm font-medium text-[#3a3629]">
+                Where are you right now?
+              </p>
               <div className="grid gap-2 sm:grid-cols-2">
-                {CURRICULA.map((c) => (
+                {[
+                  { value: "student", label: "Student choosing a path" },
+                  { value: "switcher", label: "Considering a career switch" },
+                ].map((a) => (
                   <button
-                    key={c.value}
+                    key={a.value}
                     type="button"
-                    onClick={() => {
-                      setCurriculum(c.value);
-                      setSubjects([]);
-                    }}
+                    onClick={() => setAudience(a.value as "student" | "switcher")}
                     className={`rounded-lg border px-4 py-3 text-left text-sm transition ${
-                      curriculum === c.value
+                      audience === a.value
                         ? "border-[#8a6d2f] bg-[#f4e8cf] text-[#5a4720] font-medium"
                         : "border-[#f0dfc4] bg-white text-[#3a3629] hover:border-[#c9b98a]"
                     }`}
                   >
-                    {c.label}
+                    {a.label}
                   </button>
                 ))}
               </div>
             </div>
 
-            {curriculum && curriculum !== "Other" && (
-              <div>
-                <p className="mb-2 text-sm font-medium text-[#3a3629]">
-                  Subjects you're studying (pick all that apply)
-                </p>
-                <div className="grid gap-2 sm:grid-cols-2">
-                  {subjectOptions.map((s) => (
-                    <label
-                      key={s}
-                      className="flex items-center gap-2 rounded-lg border border-[#f0dfc4] bg-white px-3 py-2 text-sm text-[#3a3629]"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={subjects.includes(s)}
-                        onChange={() => toggleSubject(s)}
-                      />
-                      {s}
-                    </label>
-                  ))}
+            {audience === "student" && (
+              <>
+                <div>
+                  <p className="mb-2 text-sm font-medium text-[#3a3629]">Your curriculum</p>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    {CURRICULA.map((c) => (
+                      <button
+                        key={c.value}
+                        type="button"
+                        onClick={() => {
+                          setCurriculum(c.value);
+                          setSubjects([]);
+                        }}
+                        className={`rounded-lg border px-4 py-3 text-left text-sm transition ${
+                          curriculum === c.value
+                            ? "border-[#8a6d2f] bg-[#f4e8cf] text-[#5a4720] font-medium"
+                            : "border-[#f0dfc4] bg-white text-[#3a3629] hover:border-[#c9b98a]"
+                        }`}
+                      >
+                        {c.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+
+                {curriculum && curriculum !== "Other" && (
+                  <div>
+                    <p className="mb-2 text-sm font-medium text-[#3a3629]">
+                      Subjects you&apos;re studying (pick all that apply)
+                    </p>
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      {subjectOptions.map((s) => (
+                        <label
+                          key={s}
+                          className="flex items-center gap-2 rounded-lg border border-[#f0dfc4] bg-white px-3 py-2 text-sm text-[#3a3629]"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={subjects.includes(s)}
+                            onChange={() => toggleSubject(s)}
+                          />
+                          {s}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <input
+                  className="w-full rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-[#8a6d2f] focus:outline-none"
+                  placeholder="Any other subjects not listed? (optional)"
+                  value={otherSubjects}
+                  onChange={(e) => setOtherSubjects(e.target.value)}
+                />
+              </>
             )}
 
-            <input
-              className="w-full rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-[#8a6d2f] focus:outline-none"
-              placeholder="Any other subjects not listed? (optional)"
-              value={otherSubjects}
-              onChange={(e) => setOtherSubjects(e.target.value)}
-            />
+            {audience === "switcher" && (
+              <>
+                <div>
+                  <p className="mb-2 text-sm font-medium text-[#3a3629]">
+                    What do you do now?
+                  </p>
+                  <input
+                    className="w-full rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-[#8a6d2f] focus:outline-none"
+                    placeholder="Your current field or role (e.g. Marketing, Teaching)"
+                    value={currentField}
+                    onChange={(e) => setCurrentField(e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <p className="mb-2 text-sm font-medium text-[#3a3629]">
+                    Years of work experience
+                  </p>
+                  <div className="grid gap-2 sm:grid-cols-4">
+                    {["0-2", "3-5", "6-10", "10+"].map((y) => (
+                      <button
+                        key={y}
+                        type="button"
+                        onClick={() => setYearsExperience(y)}
+                        className={`rounded-lg border px-3 py-3 text-center text-sm transition ${
+                          yearsExperience === y
+                            ? "border-[#8a6d2f] bg-[#f4e8cf] text-[#5a4720] font-medium"
+                            : "border-[#f0dfc4] bg-white text-[#3a3629] hover:border-[#c9b98a]"
+                        }`}
+                      >
+                        {y}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <input
+                  className="w-full rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-[#8a6d2f] focus:outline-none"
+                  placeholder="What's pulling you to switch? (optional)"
+                  value={switchReason}
+                  onChange={(e) => setSwitchReason(e.target.value)}
+                />
+              </>
+            )}
 
             <button
               type="button"
@@ -401,7 +490,7 @@ export default function CareersPage() {
             </div>
 
             <p className="text-xs text-[#b0a186]">
-              This is guidance, not a verdict — personality items adapted
+              This is guidance, not a verdict. Personality items adapted
               from the public-domain IPIP Mini-IPIP scales (Donnellan et
               al., 2006).
               {typeof result.usesRemaining === "number" && (

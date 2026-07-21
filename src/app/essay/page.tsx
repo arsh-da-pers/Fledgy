@@ -88,7 +88,7 @@ export default function EssayPage() {
         </h1>
         <p className="mt-2 text-[#6b5c45]">
           Paste your essay below. This free score is deliberately surface
-          level — honest, not padded.
+          level: honest, not padded.
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">

@@ -247,8 +247,8 @@ export default function CvPage() {
               </h2>
               <p className="mt-1 text-sm text-[#6b5c45]">
                 We&apos;ll rewrite your CV into the structure and format{" "}
-                {country || "your target country"}&apos;s recruiters expect —
-                free, plain text.
+                {country || "your target country"}&apos;s recruiters expect.
+                Free, plain text.
               </p>
               <button
                 type="button"
@@ -256,7 +256,7 @@ export default function CvPage() {
                 disabled={generating}
                 className="mt-4 w-full rounded-lg border border-teal-700 px-4 py-3 text-sm font-semibold text-teal-700 transition hover:bg-teal-50 disabled:opacity-50"
               >
-                {generating ? "Rewriting your CV…" : "Generate my improved CV — free"}
+                {generating ? "Rewriting your CV…" : "Generate my improved CV, free"}
               </button>
 
               {generateError && generatePaywall && (
@@ -284,14 +284,14 @@ export default function CvPage() {
                       onClick={handleDownload}
                       className="w-full rounded-lg bg-teal-700 px-4 py-3 text-sm font-semibold text-white transition hover:bg-teal-800"
                     >
-                      Download as .txt — free
+                      Download as .txt, free
                     </button>
                     <button
                       type="button"
                       disabled
                       className="w-full cursor-not-allowed rounded-lg border border-dashed border-[#c9b98a] px-4 py-3 text-sm font-semibold text-[#9c8b6f]"
                     >
-                      Polished PDF/Word — coming soon
+                      Polished PDF/Word, coming soon
                     </button>
                   </div>
                 </div>
