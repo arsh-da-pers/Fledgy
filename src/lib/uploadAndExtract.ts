@@ -1,7 +1,5 @@
 "use client";
 
-import { upload } from "@vercel/blob/client";
-
 // Downscales a photo client-side before it ever leaves the browser. Phone
 // camera photos are routinely 3-8MB, which is both slow to upload and
 // pushes on Claude's vision token cost — a CV/essay photo doesn't need
@@ -33,44 +31,39 @@ async function downscaleImage(file: File): Promise<File> {
   });
 }
 
-// Uploads a file straight to Vercel Blob from the browser (so large scans
-// and photos never hit the 4.5MB body limit on our API routes), then asks
-// /api/extract-text to read the text out of it.
+// Sends the file straight to our own /api/extract-text route, which reads
+// the text out of it. Photos are downscaled first (above) so they stay well
+// under Vercel's ~4.5MB request-body limit; for other files we guard the
+// size here and ask the user to compress or paste text if they're too big.
+// (We deliberately don't route through Vercel Blob storage anymore — it added
+// a fragile token dependency for files that are small enough to send directly.)
 export async function uploadAndExtractText(file: File): Promise<string> {
   const prepared = await downscaleImage(file);
 
-  let blob;
+  const MAX_BYTES = 4 * 1024 * 1024;
+  if (prepared.size > MAX_BYTES) {
+    throw new Error(
+      "That file is a little too large to read directly. Please compress it (or export a smaller PDF), or paste your text into the box below."
+    );
+  }
+
+  const form = new FormData();
+  form.append("file", prepared, prepared.name);
+  form.append("filename", prepared.name);
+
+  let res;
   try {
-    blob = await upload(prepared.name, prepared, {
-      access: "private",
-      handleUploadUrl: "/api/upload",
-    });
+    res = await fetch("/api/extract-text", { method: "POST", body: form });
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error(
-      "[fledgy] blob upload() failed",
+      "[fledgy] extract-text upload failed",
       err,
       err instanceof Error ? err.stack : undefined
     );
     throw err;
   }
 
-  let res;
-  try {
-    res = await fetch("/api/extract-text", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url: blob.url, filename: prepared.name }),
-    });
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.error(
-      "[fledgy] extract-text fetch failed",
-      err,
-      err instanceof Error ? err.stack : undefined
-    );
-    throw err;
-  }
   const data = await res.json();
   if (!res.ok) throw new Error(data.error || "Something went wrong.");
   return data.text as string;

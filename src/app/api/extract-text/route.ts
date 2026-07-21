@@ -1,5 +1,4 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { del } from "@vercel/blob";
 import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -50,35 +49,22 @@ async function transcribeWithVision(
 }
 
 export async function POST(req: NextRequest) {
-  // The file is uploaded straight from the browser to Vercel Blob (see
-  // /api/upload) so large scans/photos never hit this function's 4.5MB
-  // request-body limit — we just get a URL to fetch here.
-  let blobUrl: string | null = null;
+  // The file is posted straight from the browser as multipart form data.
+  // Photos are downscaled client-side first (see lib/uploadAndExtract) so
+  // they stay well under Vercel's ~4.5MB request-body limit — no Blob
+  // storage round-trip needed.
   try {
-    const { url, filename } = (await req.json()) as {
-      url?: string;
-      filename?: string;
-    };
+    const form = await req.formData();
+    const file = form.get("file");
+    const filename =
+      (form.get("filename") as string) ||
+      (file instanceof File ? file.name : "");
 
-    if (!url || !filename) {
+    if (!file || !(file instanceof File) || !filename) {
       return NextResponse.json({ error: "No file uploaded." }, { status: 400 });
     }
-    blobUrl = url;
 
-    // This is a private blob, so reading it back needs the same
-    // read-write token used to create it.
-    const fileRes = await fetch(url, {
-      headers: process.env.BLOB_READ_WRITE_TOKEN
-        ? { Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}` }
-        : {},
-    });
-    if (!fileRes.ok) {
-      return NextResponse.json(
-        { error: "Couldn't read the uploaded file. Please try again." },
-        { status: 400 }
-      );
-    }
-    const buffer = Buffer.from(await fileRes.arrayBuffer());
+    const buffer = Buffer.from(await file.arrayBuffer());
     const name = filename.toLowerCase();
 
     let text = "";
@@ -171,11 +157,5 @@ export async function POST(req: NextRequest) {
       },
       { status: 500 }
     );
-  } finally {
-    // Don't keep people's uploaded CVs/essays in storage any longer than
-    // it takes to read the text out of them.
-    if (blobUrl) {
-      del(blobUrl).catch((err) => console.error("[fledgy] blob cleanup failed", err));
-    }
   }
 }
