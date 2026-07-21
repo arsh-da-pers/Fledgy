@@ -70,30 +70,29 @@ export async function POST(req: NextRequest) {
     let text = "";
 
     if (name.endsWith(".pdf")) {
+      // Read the PDF with Claude's document understanding FIRST. It follows
+      // the correct human reading order (designed/multi-column CVs come out
+      // scrambled with plain-text extraction) and actually looks at the page
+      // — layout, columns and photos — instead of scraping a jumbled text
+      // layer. This is what "look at the PDF, don't just render text" needs.
       try {
-        const pdfParse = (await import("pdf-parse")).default;
-        const data = await pdfParse(buffer);
-        text = data.text.trim();
-      } catch {
+        text = await transcribeWithVision(buffer, "application/pdf");
+      } catch (err) {
+        if (!(err instanceof Error && err.message === "NO_API_KEY")) {
+          console.error(err);
+        }
         text = "";
       }
 
-      // A scanned/image-only PDF yields little or no text from pdf-parse —
-      // fall back to letting Claude read the page images directly.
+      // Fall back to plain-text extraction only if vision was unavailable or
+      // came back empty (e.g. no ANTHROPIC_API_KEY on this deployment).
       if (text.length < 20) {
         try {
-          text = await transcribeWithVision(buffer, "application/pdf");
-        } catch (err) {
-          if (err instanceof Error && err.message === "NO_API_KEY") {
-            return NextResponse.json(
-              {
-                error:
-                  "This looks like a scanned PDF, and reading scanned documents needs an ANTHROPIC_API_KEY set on this deployment.",
-              },
-              { status: 500 }
-            );
-          }
-          console.error(err);
+          const pdfParse = (await import("pdf-parse")).default;
+          const data = await pdfParse(buffer);
+          text = data.text.trim();
+        } catch {
+          // leave text empty; the "no readable text" path handles it below
         }
       }
     } else if (name.endsWith(".docx")) {
