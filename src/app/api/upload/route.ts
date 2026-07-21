@@ -11,6 +11,18 @@ export const runtime = "nodejs";
 export async function POST(req: NextRequest) {
   const body = (await req.json()) as HandleUploadBody;
 
+  // Temporary diagnostics — logs metadata only, never the secret itself.
+  const rwToken = process.env.BLOB_READ_WRITE_TOKEN || "";
+  console.log("[fledgy] blob auth diagnostics", {
+    hasOidcToken: !!process.env.VERCEL_OIDC_TOKEN,
+    blobStoreId: process.env.BLOB_STORE_ID || null,
+    hasReadWriteToken: !!rwToken,
+    readWriteTokenLength: rwToken.length,
+    readWriteTokenIsTrimmed: rwToken === rwToken.trim(),
+    readWriteTokenPrefix: rwToken.slice(0, 16),
+    readWriteTokenStoreSegment: rwToken.split("_")[3] || null,
+  });
+
   try {
     const jsonResponse = await handleUpload({
       body,
