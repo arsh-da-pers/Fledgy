@@ -65,7 +65,13 @@ export async function POST(req: NextRequest) {
     }
     blobUrl = url;
 
-    const fileRes = await fetch(url);
+    // This is a private blob, so reading it back needs the same
+    // read-write token used to create it.
+    const fileRes = await fetch(url, {
+      headers: process.env.BLOB_READ_WRITE_TOKEN
+        ? { Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}` }
+        : {},
+    });
     if (!fileRes.ok) {
       return NextResponse.json(
         { error: "Couldn't read the uploaded file. Please try again." },

@@ -42,7 +42,7 @@ export async function uploadAndExtractText(file: File): Promise<string> {
   let blob;
   try {
     blob = await upload(prepared.name, prepared, {
-      access: "public",
+      access: "private",
       handleUploadUrl: "/api/upload",
     });
   } catch (err) {
