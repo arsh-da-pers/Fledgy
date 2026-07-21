@@ -48,6 +48,29 @@ async function transcribeWithVision(
   return textBlock && "text" in textBlock ? textBlock.text.trim() : "";
 }
 
+// Plain-text extraction from a designed/multi-column PDF often comes out with
+// the reading order scrambled (columns interleaved, the name buried mid-page).
+// This has Claude reconstruct the raw extracted text into clean, correctly
+// ordered plain text. It's a text-in/text-out call, so it's reliable and
+// doesn't depend on the PDF renderer.
+async function reflowText(raw: string): Promise<string> {
+  if (!process.env.ANTHROPIC_API_KEY) return raw;
+  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  const msg = await anthropic.messages.create({
+    model: "claude-sonnet-4-5",
+    max_tokens: 4000,
+    messages: [
+      {
+        role: "user",
+        content: `The text below was extracted from a CV/résumé PDF and may be out of order or fragmented because of the page's columns and layout. Reconstruct it into clean, correctly ordered plain text in natural reading order (name and headline first, then each section). Keep ALL of the information; do not summarise, invent, or add commentary. Output only the cleaned text.\n\n---\n${raw}`,
+      },
+    ],
+  });
+  const textBlock = msg.content.find((b) => b.type === "text");
+  const out = textBlock && "text" in textBlock ? textBlock.text.trim() : "";
+  return out.length >= 20 ? out : raw;
+}
+
 export async function POST(req: NextRequest) {
   // The file is posted straight from the browser as multipart form data.
   // Photos are downscaled client-side first (see lib/uploadAndExtract) so
@@ -84,15 +107,26 @@ export async function POST(req: NextRequest) {
         text = "";
       }
 
-      // Fall back to plain-text extraction only if vision was unavailable or
-      // came back empty (e.g. no ANTHROPIC_API_KEY on this deployment).
+      // If reading the page visually didn't yield usable text, fall back to
+      // extracting the PDF's text layer. Designed/multi-column CVs come out of
+      // that extraction with the reading order scrambled, so we then have
+      // Claude reflow it into clean, correctly ordered text.
       if (text.length < 20) {
+        let rawText = "";
         try {
           const pdfParse = (await import("pdf-parse")).default;
           const data = await pdfParse(buffer);
-          text = data.text.trim();
+          rawText = data.text.trim();
         } catch {
-          // leave text empty; the "no readable text" path handles it below
+          rawText = "";
+        }
+        if (rawText.length >= 20) {
+          try {
+            text = await reflowText(rawText);
+          } catch (err) {
+            console.error(err);
+            text = rawText;
+          }
         }
       }
     } else if (name.endsWith(".docx")) {
