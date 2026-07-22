@@ -48,6 +48,54 @@ async function transcribeWithVision(
   return textBlock && "text" in textBlock ? textBlock.text.trim() : "";
 }
 
+// Renders each page of a PDF to a PNG image (what a human actually sees),
+// then has Claude read those page images in order. This is the reliable path
+// for designed/multi-column CVs: plain-text extraction scrambles the reading
+// order, and handing the raw PDF to the model can come back empty, but the
+// image path reads the page exactly as laid out.
+async function transcribePdfViaImages(buffer: Buffer): Promise<string> {
+  if (!process.env.ANTHROPIC_API_KEY) throw new Error("NO_API_KEY");
+
+  // mupdf is a pure-WASM renderer (no native binaries), so it builds and runs
+  // cleanly in the serverless function.
+  const mupdf = await import("mupdf");
+  const doc = mupdf.Document.openDocument(
+    new Uint8Array(buffer),
+    "application/pdf"
+  );
+  const pageCount = Math.min(doc.countPages(), 5); // safety cap for long PDFs
+  const pageImages: Buffer[] = [];
+  for (let i = 0; i < pageCount; i++) {
+    const page = doc.loadPage(i);
+    const pixmap = page.toPixmap(
+      mupdf.Matrix.scale(2, 2),
+      mupdf.ColorSpace.DeviceRGB,
+      false,
+      true
+    );
+    pageImages.push(Buffer.from(pixmap.asPNG()));
+  }
+  if (pageImages.length === 0) return "";
+
+  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  const content: Anthropic.ContentBlockParam[] = pageImages.map((buf) => ({
+    type: "image",
+    source: { type: "base64", media_type: "image/png", data: buf.toString("base64") },
+  }));
+  content.push({
+    type: "text",
+    text: "These images are the pages of a CV/résumé, in order. Transcribe ALL the visible text exactly as written, in natural human reading order (for a multi-column layout, read each section sensibly rather than mixing columns line by line). Do not summarize, comment, or add anything — output only the transcribed text.",
+  });
+
+  const msg = await anthropic.messages.create({
+    model: "claude-sonnet-4-5",
+    max_tokens: 4000,
+    messages: [{ role: "user", content }],
+  });
+  const textBlock = msg.content.find((b) => b.type === "text");
+  return textBlock && "text" in textBlock ? textBlock.text.trim() : "";
+}
+
 // Plain-text extraction from a designed/multi-column PDF often comes out with
 // the reading order scrambled (columns interleaved, the name buried mid-page).
 // This has Claude reconstruct the raw extracted text into clean, correctly
@@ -98,8 +146,9 @@ export async function POST(req: NextRequest) {
       // scrambled with plain-text extraction) and actually looks at the page
       // — layout, columns and photos — instead of scraping a jumbled text
       // layer. This is what "look at the PDF, don't just render text" needs.
+      // Render the pages to images and read them like a human sees the page.
       try {
-        text = await transcribeWithVision(buffer, "application/pdf");
+        text = await transcribePdfViaImages(buffer);
       } catch (err) {
         if (!(err instanceof Error && err.message === "NO_API_KEY")) {
           console.error(err);
@@ -107,10 +156,10 @@ export async function POST(req: NextRequest) {
         text = "";
       }
 
-      // If reading the page visually didn't yield usable text, fall back to
-      // extracting the PDF's text layer. Designed/multi-column CVs come out of
-      // that extraction with the reading order scrambled, so we then have
-      // Claude reflow it into clean, correctly ordered text.
+      // If the image read didn't yield usable text, fall back to extracting the
+      // PDF's text layer. Designed/multi-column CVs come out of that extraction
+      // with the reading order scrambled, so we then have Claude reflow it into
+      // clean, correctly ordered text.
       if (text.length < 20) {
         let rawText = "";
         try {
