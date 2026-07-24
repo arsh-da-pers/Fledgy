@@ -10,8 +10,7 @@ type AptitudeQuestion = { id: number; category: string; text: string; options: s
 
 type Result = {
   summary: string;
-  careers: { title: string; why: string }[];
-  next_steps: string[];
+  teaser_career?: { title: string; why: string };
   traits: Record<Trait, number>;
   aptitude: { overall: number; byCategory: Record<string, number> };
   usesRemaining?: number;
@@ -423,7 +422,7 @@ export default function CareersPage() {
                 onClick={handleSubmit}
                 className="flex-1 rounded-lg bg-[#8a6d2f] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#6f5825] disabled:opacity-40"
               >
-                {submitting ? "Working out your results…" : "See my career directions"}
+                {submitting ? "Working out your results…" : "See my results"}
               </button>
             </div>
           </div>
@@ -463,30 +462,63 @@ export default function CareersPage() {
               </div>
             </div>
 
-            <div>
-              <h2 className="text-lg font-semibold text-[#2a2115]">Your top 5 directions</h2>
-              <div className="mt-3 space-y-3">
-                {result.careers.map((c, i) => (
-                  <div key={i} className="rounded-lg border border-[#f0dfc4] bg-white p-4">
-                    <p className="text-sm font-semibold text-[#2a2115]">
-                      {i + 1}. {c.title}
-                    </p>
-                    <p className="mt-1 text-sm text-[#6b5c45]">{c.why}</p>
-                  </div>
-                ))}
+            {result.teaser_career && (
+              <div>
+                <h2 className="text-lg font-semibold text-[#2a2115]">
+                  One direction to explore
+                </h2>
+                <p className="mt-1 text-xs text-[#b0a186]">
+                  A taste of your matches — your strongest fits are in the full report.
+                </p>
+                <div className="mt-3 rounded-lg border border-[#f0dfc4] bg-white p-4">
+                  <p className="text-sm font-semibold text-[#2a2115]">
+                    {result.teaser_career.title}
+                  </p>
+                  <p className="mt-1 text-sm text-[#6b5c45]">{result.teaser_career.why}</p>
+                </div>
               </div>
-            </div>
+            )}
 
-            <div className="rounded-lg border border-[#f0dfc4] bg-[#fdf9f0] p-4">
-              <p className="text-sm font-semibold text-[#2a2115]">Next steps to try</p>
-              <ul className="mt-2 space-y-1.5">
-                {result.next_steps.map((s, i) => (
-                  <li key={i} className="flex gap-2 text-sm text-[#3a3629]">
-                    <span className="text-[#8a6d2f]">•</span>
-                    <span>{s}</span>
-                  </li>
-                ))}
+            <div className="relative overflow-hidden rounded-xl border border-dashed border-[#c9b98a] bg-[#fdf9f0] p-6">
+              <Mark
+                size={54}
+                opacity={0.25}
+                className="pointer-events-none absolute -right-3 -top-4"
+              />
+              <span className="inline-block rounded-full bg-[#f4e8cf] px-2.5 py-1 text-xs font-bold tracking-widest text-[#8a6d2f]">
+                FULL CAREER REPORT · COMING SOON
+              </span>
+              <h2 className="mt-3 text-xl font-semibold text-[#2a2115]">
+                Unlock your full report
+              </h2>
+              <p className="mt-1 text-sm text-[#6b5c45]">
+                Your scores are the snapshot. The full report turns them into a plan:
+              </p>
+              <ul className="mt-4 space-y-2.5 text-sm text-[#6b5c45]">
+                <li className="flex gap-2">
+                  <span className="text-[#b0a186]">○</span>
+                  <span>Your strongest career matches, each with why it fits you</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-[#b0a186]">○</span>
+                  <span>A personalized action plan and next steps</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-[#b0a186]">○</span>
+                  <span>A study or career-switch roadmap for where you are</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-[#b0a186]">○</span>
+                  <span>Your strengths and blind spots, and a downloadable PDF</span>
+                </li>
               </ul>
+              <button
+                type="button"
+                disabled
+                className="mt-5 w-full cursor-not-allowed rounded-lg border border-dashed border-[#c9b98a] px-4 py-3 text-sm font-semibold text-[#9c8b6f]"
+              >
+                Unlock full report — coming soon
+              </button>
             </div>
 
             <p className="text-xs text-[#b0a186]">

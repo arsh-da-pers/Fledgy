@@ -132,6 +132,10 @@ export default function EssayPage() {
           {uploadError && (
             <p className="text-xs text-red-600">{uploadError}</p>
           )}
+          <p className="text-xs text-[#9c8b6f]">
+            🔒 Private by design: Fledgy reads your file to score it, then
+            discards it. We don&apos;t store your essay.
+          </p>
           <textarea
             className="h-64 w-full rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-[#e2653b] focus:outline-none"
             placeholder="Paste your personal statement or essay here..."

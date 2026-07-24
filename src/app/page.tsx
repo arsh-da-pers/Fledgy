@@ -49,8 +49,8 @@ export default function Home() {
             </h2>
             <p className="mt-2 text-sm text-[#6b5c45]">
               Choosing what to study, or weighing a career switch? A quick
-              personality and aptitude quiz points you toward 5 careers worth
-              exploring.
+              personality and aptitude quiz reads your strengths and points you
+              toward a direction worth exploring.
             </p>
             <span className="mt-4 inline-block text-sm font-medium text-[#8a6d2f] group-hover:underline">
               Take the quiz →

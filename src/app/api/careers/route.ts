@@ -113,44 +113,34 @@ Reason for considering a switch: ${switchReason || "not specified"}`
       : `Curriculum: ${curriculum}
 Subjects studied: ${subjectList}`;
 
-    const audienceFraming = isSwitcher
-      ? `You are Fledgy's career guidance advisor, speaking to a working adult who is considering a career switch. You've just given them a short, validated personality snapshot (Mini-IPIP Big Five) and a quick aptitude quiz. This is directional guidance, not a formal diagnostic or a guarantee.`
-      : `You are Fledgy's career guidance advisor, speaking to a student who is exploring what to study or do next. You've just given them a short, validated personality snapshot (Mini-IPIP Big Five) and a quick aptitude quiz. This is directional guidance, not a formal diagnostic or a guarantee.`;
+    const audienceNoun = isSwitcher
+      ? "working adult considering a career switch"
+      : "student exploring what to study or do next";
 
-    const recommendationInstruction = isSwitcher
-      ? `Based on all of this together (personality + aptitude strengths + their current field and transferable experience), recommend the 5 career paths worth exploring as a switch. Be specific (e.g. "Product Management" not just "tech jobs"), favour realistic moves that build on their existing experience, and vary the 5 across a couple of different directions where the evidence supports it. For each, briefly explain WHY it fits, referencing their actual scores and background, not generic praise.`
-      : `Based on all of this together (personality + aptitude strengths + subjects), recommend the 5 career paths that fit this student best. Be specific (e.g. "Actuarial Science" not just "Maths-related jobs") and vary the 5 across a couple of different fields where the evidence supports it, don't just list 5 versions of the same career. For each, briefly explain WHY it fits, referencing their actual scores and subjects, not generic praise.`;
-
-    const nextStepsHint = isSwitcher
-      ? "concrete transition step, e.g. a skill to build, a certification, or a way to test the field"
-      : "concrete suggestion, e.g. a subject, exam, or extracurricular to explore";
-
-    const prompt = `${audienceFraming}
+    // FREE tier: return the validated scores, a warm read, and ONE deliberately
+    // NON-top career as a teaser. The strongest matches, reasoning for each, the
+    // action plan and the roadmap are held for the paid Full Career Report.
+    const prompt = `You are Fledgy's career guidance advisor, speaking to a ${audienceNoun}. This is based on a short validated personality snapshot (Mini-IPIP Big Five) and a quick aptitude quiz — directional guidance, not a formal diagnostic.
 
 ${contextBlock}
 
 Big Five personality scores (0-100 scale): ${traitSummary}
 
-Aptitude quiz results (0-100 scale): Overall ${aptitude.overall}, Logical reasoning ${aptitude.byCategory.logical}, Numerical reasoning ${aptitude.byCategory.numerical}, Verbal reasoning ${aptitude.byCategory.verbal}
+Aptitude quiz results (0-100 scale): Overall ${aptitude.overall}, Logical ${aptitude.byCategory.logical}, Numerical ${aptitude.byCategory.numerical}, Verbal ${aptitude.byCategory.verbal}
 
-${recommendationInstruction}
+Do two things:
+1) Write a warm, encouraging 2-3 sentence read of what their personality and aptitude pattern says about how they work and where they tend to thrive. Do NOT name specific job titles or careers here.
+2) Internally work out their strongest career matches, then return ONLY ONE career as a free teaser — and deliberately NOT their single strongest or most obvious match. Choose a genuine, well-fitting secondary direction worth exploring. Their strongest matches are reserved for the paid full report, so do not reveal them.
 
 Return ONLY valid JSON, no other text, in this exact shape:
 {
-  "summary": "<one warm, 2-sentence overview of this person's overall profile>",
-  "careers": [
-    { "title": "<career name>", "why": "<1-2 sentences tying it to their specific traits/aptitude/background>" },
-    { "title": "<career name>", "why": "<...>" },
-    { "title": "<career name>", "why": "<...>" },
-    { "title": "<career name>", "why": "<...>" },
-    { "title": "<career name>", "why": "<...>" }
-  ],
-  "next_steps": ["<short, ${nextStepsHint}>", "<suggestion 2>", "<suggestion 3>"]
+  "summary": "<2-3 sentence read of their profile, no job titles>",
+  "teaser_career": { "title": "<one solid secondary career, NOT their top match>", "why": "<1-2 sentences tying it to their actual traits/aptitude/background>" }
 }`;
 
     const msg = await anthropic.messages.create({
       model: "claude-sonnet-4-5",
-      max_tokens: 1200,
+      max_tokens: 700,
       messages: [{ role: "user", content: prompt }],
     });
 
