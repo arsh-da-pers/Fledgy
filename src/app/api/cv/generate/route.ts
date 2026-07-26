@@ -55,6 +55,11 @@ export async function POST(req: NextRequest) {
 
     const prompt = `You are Fledgy, a CV writer specialised in CROSS-CULTURAL hiring norms. Take the person's existing CV content below and REWRITE it into a clean, well-structured CV formatted the way recruiters in the target country actually expect — correct section order, length, level of detail, tone, and any country-specific conventions (e.g. whether to include a photo/age/nationality, date formats, how achievements are phrased). Keep all of the person's real facts, experience, and education — do not invent new jobs, degrees, or achievements. Improve the wording, structure, and formatting; do not fabricate content.
 
+Make every experience bullet ACTION- AND RESULTS-BASED:
+- Start each bullet with a strong action verb (Led, Built, Grew, Negotiated, Delivered, Streamlined…), not "Responsible for" or passive phrasing.
+- Surface measurable impact wherever the original content supports it (numbers, %, scale, outcomes). Never invent figures — only quantify where the person's own content gives you something real to work with.
+- Cut duty-listing and filler; keep it tight. Aim for the length norm of the target country (most CVs 1-2 pages; do not pad).
+
 Target country: ${country}
 Target field: ${field || "not specified"}
 
