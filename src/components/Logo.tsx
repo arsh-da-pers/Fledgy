@@ -19,7 +19,7 @@ export default function Logo({
           x="90"
           y="100"
           textAnchor="middle"
-          fontFamily="'Dancing Script', cursive"
+          style={{ fontFamily: "var(--font-dancing), cursive" }}
           fontWeight="700"
           fontSize="90"
           fill="#1C6B63"
@@ -31,7 +31,7 @@ export default function Logo({
       {showText && (
         <span
           className="text-[#1C6B63]"
-          style={{ fontFamily: "'Quicksand', sans-serif", fontWeight: 700 }}
+          style={{ fontFamily: "var(--font-quicksand), sans-serif", fontWeight: 700 }}
         >
           Fledgy
         </span>

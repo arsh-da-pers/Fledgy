@@ -21,7 +21,7 @@ export default function Mark({
         x="90"
         y="100"
         textAnchor="middle"
-        fontFamily="'Dancing Script', cursive"
+        style={{ fontFamily: "var(--font-dancing), cursive" }}
         fontWeight="700"
         fontSize="90"
         fill="#1C6B63"

@@ -1,13 +1,33 @@
 import type { Metadata } from "next";
+import { Dancing_Script, Quicksand } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
+const dancingScript = Dancing_Script({
+  subsets: ["latin"],
+  weight: "700",
+  variable: "--font-dancing",
+  display: "swap",
+});
+
+const quicksand = Quicksand({
+  subsets: ["latin"],
+  weight: ["500", "700"],
+  variable: "--font-quicksand",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "Fledgy · Grow Your Wings",
+  metadataBase: new URL("https://fledgy.guide"),
+  title: {
+    default: "Fledgy · AI Essay & CV Feedback for International Students",
+    template: "%s · Fledgy",
+  },
   description:
     "AI-powered essay and CV feedback built for international students and talent. Honest scores, country-specific advice, free to try.",
+  alternates: { canonical: "/" },
   verification: {
     google: "EMa9Nxzi4MesmPEZV3OjqD1mlghN3K6Oc2XvNmoPsZc",
   },
@@ -19,19 +39,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html
+      lang="en"
+      className={`h-full antialiased ${dancingScript.variable} ${quicksand.variable}`}
+    >
       <body className="min-h-full flex flex-col bg-[#fdf3e7] text-[#2a2115]">
         <Header />
         {children}

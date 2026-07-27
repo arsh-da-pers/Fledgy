@@ -11,7 +11,7 @@ export default function HeroArt() {
         x="620"
         y="64"
         textAnchor="middle"
-        fontFamily="'Dancing Script', cursive"
+        style={{ fontFamily: "var(--font-dancing), cursive" }}
         fontWeight="700"
         fontSize="83"
         fill="#1C6B63"

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Mark from "@/components/Mark";
+import PageFaq from "@/components/PageFaq";
 import { uploadAndExtractText } from "@/lib/uploadAndExtract";
 
 type Result = {
@@ -208,6 +209,36 @@ export default function EssayPage() {
             </p>
           </div>
         )}
+
+        <PageFaq
+          title="About Fledgy's essay scorer"
+          intro={[
+            "Fledgy's free essay scorer gives international students and university applicants an honest score out of 100 on their personal statement, admissions essay, or statement of purpose (SOP). Instead of vague praise, you get a blunt verdict and specific, actionable tips you can use before you submit.",
+            "It's built for the reality of applying abroad: admissions tone, word-count discipline, and the qualities reviewers at competitive universities actually look for. Paste your text or upload a PDF or Word file — Fledgy reads it, scores it, and discards it. Your essay is never stored.",
+          ]}
+          faqs={[
+            {
+              q: "Is the essay scorer free?",
+              a: "Yes. Fledgy gives you free essay scores so you can improve your personal statement before you apply. The free score is deliberately surface-level and honest — a fuller paid report with section-by-section breakdowns is coming later.",
+            },
+            {
+              q: "What kinds of essays can I score?",
+              a: "University personal statements, admissions essays, statements of purpose (SOP), and scholarship essays. It works for both undergraduate and postgraduate applications to universities around the world.",
+            },
+            {
+              q: "Can I upload a PDF or Word document?",
+              a: "Yes. You can upload a PDF, Word (.docx), or a photo of your essay, or simply paste the text. Fledgy extracts the text, scores it, and does not store your document.",
+            },
+            {
+              q: "How is the score calculated?",
+              a: "Fledgy's AI evaluates your essay against the qualities admissions reviewers value — clarity, structure, specificity, and tone — and returns a score out of 100 with a one-line verdict and concrete tips.",
+            },
+            {
+              q: "Will you keep or share my essay?",
+              a: "No. Your essay is read only to generate your score and is then discarded. Fledgy does not store or share your writing.",
+            },
+          ]}
+        />
       </div>
     </main>
   );
