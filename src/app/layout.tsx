@@ -22,11 +22,11 @@ const quicksand = Quicksand({
 export const metadata: Metadata = {
   metadataBase: new URL("https://fledgy.guide"),
   title: {
-    default: "Fledgy · AI Essay & CV Feedback for International Students",
+    default: "Fledgy · AI Feedback on Your Essay, CV & Career",
     template: "%s · Fledgy",
   },
   description:
-    "AI-powered essay and CV feedback built for international students and talent. Honest scores, country-specific advice, free to try.",
+    "AI-powered essay, CV, and career feedback for students, applicants, job seekers, and professionals — including international students. Honest scores, country-specific advice, free to try.",
   alternates: { canonical: "/" },
   verification: {
     google: "EMa9Nxzi4MesmPEZV3OjqD1mlghN3K6Oc2XvNmoPsZc",

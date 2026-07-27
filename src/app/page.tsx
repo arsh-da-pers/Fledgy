@@ -14,9 +14,9 @@ export default function Home() {
           Grow your wings.
         </h1>
         <p className="mt-5 max-w-xl text-lg text-[#6b5c45]">
-          Honest, AI-powered feedback on your university essay and CV, built
-          for students and talent applying from anywhere in the world, not
-          just the US or UK.
+          Honest, AI-powered feedback on your essay, CV, and career, built for
+          students, applicants, job seekers, and professionals applying from
+          anywhere in the world, not just the US or UK.
         </p>
 
         <div className="mt-8 flex items-center gap-4">

@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
 
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-    const prompt = `You are Fledgy, an honest, unflattering admissions essay reviewer for international students applying to universities outside their home country. You never give empty praise. You are direct about weaknesses.
+    const prompt = `You are Fledgy, an honest, unflattering admissions essay reviewer for university applicants, including international students applying abroad. You never give empty praise. You are direct about weaknesses.
 
 Target university: ${university || "not specified"}
 Target course: ${course || "not specified"}

@@ -3,9 +3,9 @@ import Link from "next/link";
 import { getAllPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
-  title: "Blog — Essay, CV & Career Advice for International Students",
+  title: "Blog — Essay, CV & Career Advice",
   description:
-    "Practical guides on personal statements, CVs, and career direction for international students and applicants, from the team at Fledgy.",
+    "Practical guides on personal statements, CVs, and career direction for students, applicants, job seekers, and professionals — including international students — from the team at Fledgy.",
   alternates: { canonical: "/blog" },
 };
 
@@ -23,7 +23,7 @@ export default function BlogIndex() {
         </h1>
         <p className="mt-2 text-[#6b5c45]">
           Practical guides on personal statements, CVs, and choosing your path —
-          written for international students and applicants.
+          written for students, applicants, job seekers, and professionals.
         </p>
 
         <div className="mt-10 space-y-8">

@@ -148,7 +148,7 @@ export const posts: Post[] = [
       { type: "h2", text: "Get a starting point in a few minutes" },
       {
         type: "p",
-        text: "If you're staring at a blank page, a structured starting point helps more than another late-night search. Fledgy's [free career direction quiz](/careers) combines a personality profile and an aptitude check to suggest paths that match how you actually think and work — with guidance built for international students.",
+        text: "If you're staring at a blank page, a structured starting point helps more than another late-night search. Fledgy's [career quiz](/careers) combines a personality profile and an aptitude check to suggest paths that match how you actually think and work — whether you're a student, changing careers, or growing in your field.",
       },
     ],
   },

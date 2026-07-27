@@ -213,7 +213,7 @@ export default function EssayPage() {
         <PageFaq
           title="About Fledgy's essay scorer"
           intro={[
-            "Fledgy's free essay scorer gives international students and university applicants an honest score out of 100 on their personal statement, admissions essay, or statement of purpose (SOP). Instead of vague praise, you get a blunt verdict and specific, actionable tips you can use before you submit.",
+            "Fledgy's free essay scorer gives students and university applicants — including international students — an honest score out of 100 on their personal statement, admissions essay, or statement of purpose (SOP). Instead of vague praise, you get a blunt verdict and specific, actionable tips you can use before you submit.",
             "It's built for the reality of applying abroad: admissions tone, word-count discipline, and the qualities reviewers at competitive universities actually look for. Paste your text or upload a PDF or Word file — Fledgy reads it, scores it, and discards it. Your essay is never stored.",
           ]}
           faqs={[

@@ -314,7 +314,7 @@ export default function CvPage() {
         <PageFaq
           title="About Fledgy's CV scorer"
           intro={[
-            "Fledgy's free CV scorer rates your résumé against the hiring norms of your target country and gives you a recruiter-ready rewrite you can download. International students and job seekers often lose interviews to formatting and phrasing that don't match local expectations — Fledgy catches those gaps.",
+            "Fledgy's free CV scorer rates your résumé against the hiring norms of your target country and gives you a recruiter-ready rewrite you can download. Students, graduates, and professionals — international candidates especially — often lose interviews to formatting and phrasing that don't match local expectations. Fledgy catches those gaps.",
             "Upload a PDF or Word file, or paste your CV text. Fledgy scores it, highlights what's holding it back, and can generate a cleaner, plainer version aligned to the country you're applying in. Your file is read to score it, then discarded.",
           ]}
           faqs={[
