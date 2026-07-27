@@ -34,13 +34,16 @@ export default function CareersPage() {
   const [aptitudeQuestions, setAptitudeQuestions] = useState<AptitudeQuestion[]>([]);
 
   const [email, setEmail] = useState("");
-  const [audience, setAudience] = useState<"student" | "switcher" | "">("");
+  const [audience, setAudience] = useState<
+    "student" | "switcher" | "advancer" | ""
+  >("");
   const [curriculum, setCurriculum] = useState<Curriculum | "">("");
   const [subjects, setSubjects] = useState<string[]>([]);
   const [otherSubjects, setOtherSubjects] = useState("");
   const [currentField, setCurrentField] = useState("");
   const [yearsExperience, setYearsExperience] = useState("");
   const [switchReason, setSwitchReason] = useState("");
+  const [growthGoal, setGrowthGoal] = useState("");
 
   const [personalityAnswers, setPersonalityAnswers] = useState<Record<number, number>>({});
   const [aptitudeAnswers, setAptitudeAnswers] = useState<Record<number, number>>({});
@@ -54,8 +57,8 @@ export default function CareersPage() {
   async function handleShare() {
     const a = result?.archetype;
     const text = a
-      ? `My Fledgy career type is "${a.name}" — ${a.tagline} Find your direction free:`
-      : "I just found my career direction with Fledgy. Find yours free:";
+      ? `My Fledgy career type is "${a.name}" — ${a.tagline} Find yours, free to try:`
+      : "I just found my career direction with Fledgy. Find yours, free to try:";
     const url = "https://fledgy.guide/careers";
     try {
       if (typeof navigator !== "undefined" && navigator.share) {
@@ -88,7 +91,7 @@ export default function CareersPage() {
     email.trim().length > 3 &&
     (audience === "student"
       ? curriculum !== ""
-      : audience === "switcher"
+      : audience === "switcher" || audience === "advancer"
       ? currentField.trim().length > 1
       : false);
   const step1Valid = personalityItems.length > 0 && personalityItems.every((i) => personalityAnswers[i.id]);
@@ -118,6 +121,7 @@ export default function CareersPage() {
           currentField,
           yearsExperience,
           switchReason,
+          growthGoal,
           personalityAnswers,
           aptitudeAnswers,
         }),
@@ -154,7 +158,7 @@ export default function CareersPage() {
       <div className="w-full max-w-2xl px-6 py-12">
         <div className="flex items-start justify-between">
           <span className="inline-block rounded-full bg-[#f4e8cf] px-2.5 py-1 text-xs font-bold tracking-widest text-[#8a6d2f]">
-            FREE · CAREER DIRECTION QUIZ
+            EARLY ACCESS · FREE TO TRY
           </span>
           <Mark size={40} opacity={0.85} />
         </div>
@@ -163,9 +167,9 @@ export default function CareersPage() {
         </h1>
         <p className="mt-2 text-[#6b5c45]">
           A 5 to 7 minute quiz: a quick, validated personality snapshot plus a
-          short aptitude check. Whether you&apos;re a student choosing a path
-          or weighing a career switch, it&apos;s a solid starting point, not a
-          clinical assessment.
+          short aptitude check. Whether you&apos;re a student choosing a path,
+          weighing a career switch, or looking to grow in your current field,
+          it&apos;s a solid starting point, not a clinical assessment.
         </p>
 
         {step < 3 && (
@@ -201,11 +205,14 @@ export default function CareersPage() {
                 {[
                   { value: "student", label: "Student choosing a path" },
                   { value: "switcher", label: "Considering a career switch" },
+                  { value: "advancer", label: "Growing in my current field" },
                 ].map((a) => (
                   <button
                     key={a.value}
                     type="button"
-                    onClick={() => setAudience(a.value as "student" | "switcher")}
+                    onClick={() =>
+                      setAudience(a.value as "student" | "switcher" | "advancer")
+                    }
                     className={`rounded-lg border px-4 py-3 text-left text-sm transition ${
                       audience === a.value
                         ? "border-[#8a6d2f] bg-[#f4e8cf] text-[#5a4720] font-medium"
@@ -275,7 +282,7 @@ export default function CareersPage() {
               </>
             )}
 
-            {audience === "switcher" && (
+            {(audience === "switcher" || audience === "advancer") && (
               <>
                 <div>
                   <p className="mb-2 text-sm font-medium text-[#3a3629]">
@@ -311,12 +318,22 @@ export default function CareersPage() {
                   </div>
                 </div>
 
-                <input
-                  className="w-full rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-[#8a6d2f] focus:outline-none"
-                  placeholder="What's pulling you to switch? (optional)"
-                  value={switchReason}
-                  onChange={(e) => setSwitchReason(e.target.value)}
-                />
+                {audience === "switcher" && (
+                  <input
+                    className="w-full rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-[#8a6d2f] focus:outline-none"
+                    placeholder="What's pulling you to switch? (optional)"
+                    value={switchReason}
+                    onChange={(e) => setSwitchReason(e.target.value)}
+                  />
+                )}
+                {audience === "advancer" && (
+                  <input
+                    className="w-full rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-[#8a6d2f] focus:outline-none"
+                    placeholder="Where would you like to grow? (e.g. into management, a specialism) (optional)"
+                    value={growthGoal}
+                    onChange={(e) => setGrowthGoal(e.target.value)}
+                  />
+                )}
               </>
             )}
 
@@ -526,10 +543,12 @@ export default function CareersPage() {
               <div>
                 <div className="flex items-baseline justify-between">
                   <h2 className="text-lg font-semibold text-[#2a2115]">
-                    Careers that fit you
+                    {audience === "advancer"
+                      ? "Directions to grow into"
+                      : "Careers that fit you"}
                   </h2>
                   <span className="rounded-full bg-[#f4e8cf] px-2.5 py-1 text-[10px] font-bold tracking-widest text-[#8a6d2f]">
-                    FREE · EARLY ACCESS
+                    EARLY ACCESS
                   </span>
                 </div>
                 <div className="mt-3 space-y-3">
@@ -547,7 +566,11 @@ export default function CareersPage() {
 
             {result.next_steps?.length > 0 && (
               <div className="rounded-lg border border-[#f0dfc4] bg-[#fdf9f0] p-4">
-                <p className="text-sm font-semibold text-[#2a2115]">Your next steps</p>
+                <p className="text-sm font-semibold text-[#2a2115]">
+                  {audience === "advancer"
+                    ? "Courses & skills to build"
+                    : "Your next steps"}
+                </p>
                 <ul className="mt-2 space-y-1.5">
                   {result.next_steps.map((s, i) => (
                     <li key={i} className="flex gap-2 text-sm text-[#3a3629]">
@@ -586,27 +609,27 @@ export default function CareersPage() {
         )}
 
         <PageFaq
-          title="About the career direction quiz"
+          title="About the career quiz"
           intro={[
-            "Not sure which career or degree fits you? Fledgy's free career direction quiz combines a personality profile and an aptitude check to point you toward paths that match how you actually think and work. It's designed for students and early-career talent deciding what to study or do next.",
-            "You'll answer a short set of questions and get a summary of your strengths, trait-by-trait scores, and career directions to explore — with guidance that accounts for studying and working internationally.",
+            "Whether you're a student choosing what to study, someone weighing a career switch, or a professional looking to grow in your current field, Fledgy's career quiz points you toward paths that match how you actually think and work. It combines a validated personality profile with a quick aptitude check.",
+            "You'll answer a short set of questions and get a shareable career type, a read on your strengths, matched directions to explore, and concrete next steps — including specific courses and skills to build if you're aiming to advance.",
           ]}
           faqs={[
             {
               q: "Is the career quiz free?",
-              a: "Yes. The career direction quiz is free and gives you a personality and aptitude profile with career directions to explore.",
+              a: "The career quiz is in early access and free to try, with a limited number of runs. Paid access is coming as we expand it.",
+            },
+            {
+              q: "Who is the career quiz for?",
+              a: "Anyone deciding a direction — students choosing what to study, people considering a career switch, and working professionals who want to grow in their current field. You don't need to be a student.",
             },
             {
               q: "How long does the quiz take?",
-              a: "Just a few minutes. You answer a short set of questions and get an instant summary of your traits and suggested career directions.",
+              a: "Just a few minutes. You answer a short set of questions and get an instant summary of your traits, matched directions, and suggested next steps.",
             },
             {
               q: "What do I get at the end?",
-              a: "A summary of your strengths, trait-by-trait scores, and career directions that fit your profile — a starting point for choosing a degree or career path.",
-            },
-            {
-              q: "Is this useful for international students?",
-              a: "Yes. Fledgy is built for people studying and working across borders, so the guidance factors in applying and building a career internationally.",
+              a: "A shareable career type, your personality and aptitude scores, matched directions, and concrete next steps. If you're looking to advance, that includes specific courses and certifications to help you develop.",
             },
           ]}
         />

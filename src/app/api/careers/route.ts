@@ -24,11 +24,13 @@ export async function POST(req: NextRequest) {
       currentField,
       yearsExperience,
       switchReason,
+      growthGoal,
       personalityAnswers,
       aptitudeAnswers,
     } = await req.json();
 
     const isSwitcher = audience === "switcher";
+    const isAdvancer = audience === "advancer";
 
     if (!email || !isValidEmail(email)) {
       return NextResponse.json(
@@ -36,7 +38,7 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    if (isSwitcher) {
+    if (isSwitcher || isAdvancer) {
       if (!currentField || String(currentField).trim().length < 2) {
         return NextResponse.json(
           { error: "Please tell us what field or role you're in now." },
@@ -106,21 +108,27 @@ export async function POST(req: NextRequest) {
 
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-    const contextBlock = isSwitcher
+    const contextBlock = isAdvancer
+      ? `Current field or role: ${currentField}
+Years of work experience: ${yearsExperience || "not specified"}
+Where they want to grow: ${growthGoal || "not specified"}`
+      : isSwitcher
       ? `Current field or role: ${currentField}
 Years of work experience: ${yearsExperience || "not specified"}
 Reason for considering a switch: ${switchReason || "not specified"}`
       : `Curriculum: ${curriculum}
 Subjects studied: ${subjectList}`;
 
-    const audienceNoun = isSwitcher
+    const audienceNoun = isAdvancer
+      ? "working professional looking to grow and advance in their current field"
+      : isSwitcher
       ? "working adult considering a career switch"
       : "student exploring what to study or do next";
 
     // EARLY ACCESS: the full report is open for free (badged "early access" in
     // the UI) — archetype, a warm read, 5-6 matched careers with reasoning, and
     // a short action plan. Will move behind the paywall later.
-    const backgroundWord = isSwitcher ? "background" : "subjects";
+    const backgroundWord = isSwitcher || isAdvancer ? "background" : "subjects";
     const prompt = `You are Fledgy's career guidance advisor, speaking to a ${audienceNoun}. This is based on a short validated personality snapshot (Mini-IPIP Big Five) and a quick aptitude quiz — directional guidance, not a formal diagnostic.
 
 ${contextBlock}
@@ -132,8 +140,8 @@ Aptitude quiz results (0-100 scale): Overall ${aptitude.overall}, Logical ${apti
 Produce a full career report:
 1) A career ARCHETYPE: a short, memorable, positive "type" label (2-4 words, e.g. "The Strategist", "The Builder", "The Connector", "The Analyst") that captures their personality + aptitude pattern, plus a one-line tagline. Make it feel personal and shareable, grounded in their actual scores.
 2) A warm, encouraging 2-3 sentence read of their overall profile.
-3) The 5-6 career paths that fit them best. Be specific (e.g. "Actuarial Science", not "maths jobs"), vary across a couple of different fields where the evidence supports it, and for each explain WHY it fits their actual traits/aptitude/${backgroundWord}.${isSwitcher ? " Favour realistic moves that build on their existing experience." : ""}
-4) A short, concrete action plan of 3 next steps${isSwitcher ? " (e.g. a skill to build, a certification, or a way to test a field)" : " (e.g. a subject, exam, or extracurricular to explore)"}.
+3) The 5-6 ${isAdvancer ? "growth directions that make sense for them — specific roles, specialisations, or senior moves to aim for within or adjacent to their current field" : "career paths that fit them best"}. Be specific (e.g. "Actuarial Science", not "maths jobs"), vary across a couple of directions where the evidence supports it, and for each explain WHY it fits their actual traits/aptitude/${backgroundWord}.${isSwitcher ? " Favour realistic moves that build on their existing experience." : ""}${isAdvancer ? " Favour realistic upward or specialising moves that build on their existing experience." : ""}
+4) A short, concrete action plan of 3 next steps${isAdvancer ? " — focus on specific courses, certifications, or credentials they should take to develop themselves toward those directions, naming real, well-known ones where possible" : isSwitcher ? " (e.g. a skill to build, a certification, or a way to test a field)" : " (e.g. a subject, exam, or extracurricular to explore)"}.
 
 Return ONLY valid JSON, no other text, in this exact shape:
 {
@@ -159,8 +167,8 @@ The careers array must have 5 or 6 items.`;
     logFeedback({
       tool: "careers",
       email,
-      audience: isSwitcher ? "switcher" : "student",
-      curriculum: isSwitcher ? currentField : curriculum,
+      audience: isAdvancer ? "advancer" : isSwitcher ? "switcher" : "student",
+      curriculum: isSwitcher || isAdvancer ? currentField : curriculum,
       aptitudeScore: aptitude.overall,
     });
 
