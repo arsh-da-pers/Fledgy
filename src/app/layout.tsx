@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "Fledgy · Grow Your Wings",
   description:
     "AI-powered essay and CV feedback built for international students and talent. Honest scores, country-specific advice, free to try.",
+  verification: {
+    google: "EMa9Nxzi4MesmPEZV3OjqD1mlghN3K6Oc2XvNmoPsZc",
+  },
 };
 
 export default function RootLayout({
