@@ -117,9 +117,10 @@ Subjects studied: ${subjectList}`;
       ? "working adult considering a career switch"
       : "student exploring what to study or do next";
 
-    // FREE tier: return the validated scores, a warm read, and ONE deliberately
-    // NON-top career as a teaser. The strongest matches, reasoning for each, the
-    // action plan and the roadmap are held for the paid Full Career Report.
+    // EARLY ACCESS: the full report is open for free (badged "early access" in
+    // the UI) — archetype, a warm read, 5-6 matched careers with reasoning, and
+    // a short action plan. Will move behind the paywall later.
+    const backgroundWord = isSwitcher ? "background" : "subjects";
     const prompt = `You are Fledgy's career guidance advisor, speaking to a ${audienceNoun}. This is based on a short validated personality snapshot (Mini-IPIP Big Five) and a quick aptitude quiz — directional guidance, not a formal diagnostic.
 
 ${contextBlock}
@@ -128,19 +129,26 @@ Big Five personality scores (0-100 scale): ${traitSummary}
 
 Aptitude quiz results (0-100 scale): Overall ${aptitude.overall}, Logical ${aptitude.byCategory.logical}, Numerical ${aptitude.byCategory.numerical}, Verbal ${aptitude.byCategory.verbal}
 
-Do two things:
-1) Write a warm, encouraging 2-3 sentence read of what their personality and aptitude pattern says about how they work and where they tend to thrive. Do NOT name specific job titles or careers here.
-2) Internally work out their strongest career matches, then return ONLY ONE career as a free teaser — and deliberately NOT their single strongest or most obvious match. Choose a genuine, well-fitting secondary direction worth exploring. Their strongest matches are reserved for the paid full report, so do not reveal them.
+Produce a full career report:
+1) A career ARCHETYPE: a short, memorable, positive "type" label (2-4 words, e.g. "The Strategist", "The Builder", "The Connector", "The Analyst") that captures their personality + aptitude pattern, plus a one-line tagline. Make it feel personal and shareable, grounded in their actual scores.
+2) A warm, encouraging 2-3 sentence read of their overall profile.
+3) The 5-6 career paths that fit them best. Be specific (e.g. "Actuarial Science", not "maths jobs"), vary across a couple of different fields where the evidence supports it, and for each explain WHY it fits their actual traits/aptitude/${backgroundWord}.${isSwitcher ? " Favour realistic moves that build on their existing experience." : ""}
+4) A short, concrete action plan of 3 next steps${isSwitcher ? " (e.g. a skill to build, a certification, or a way to test a field)" : " (e.g. a subject, exam, or extracurricular to explore)"}.
 
 Return ONLY valid JSON, no other text, in this exact shape:
 {
-  "summary": "<2-3 sentence read of their profile, no job titles>",
-  "teaser_career": { "title": "<one solid secondary career, NOT their top match>", "why": "<1-2 sentences tying it to their actual traits/aptitude/background>" }
-}`;
+  "archetype": { "name": "<2-4 word type>", "tagline": "<one short line>" },
+  "summary": "<2-3 sentence read of their profile>",
+  "careers": [
+    { "title": "<career name>", "why": "<1-2 sentences tying it to their specific traits/aptitude/${backgroundWord}>" }
+  ],
+  "next_steps": ["<step 1>", "<step 2>", "<step 3>"]
+}
+The careers array must have 5 or 6 items.`;
 
     const msg = await anthropic.messages.create({
       model: "claude-sonnet-4-5",
-      max_tokens: 700,
+      max_tokens: 1500,
       messages: [{ role: "user", content: prompt }],
     });
 

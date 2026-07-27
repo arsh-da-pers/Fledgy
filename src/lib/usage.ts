@@ -10,7 +10,7 @@
 
 import { kv } from "@vercel/kv";
 
-export const FREE_LIMIT = 2;
+export const FREE_LIMIT = 1;
 
 export type UsageCheck =
   | { allowed: true; count: number; remaining: number }

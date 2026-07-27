@@ -9,8 +9,10 @@ type PersonalityItem = { id: number; text: string; trait: Trait; keyed: "+" | "-
 type AptitudeQuestion = { id: number; category: string; text: string; options: string[] };
 
 type Result = {
+  archetype?: { name: string; tagline: string };
   summary: string;
-  teaser_career?: { title: string; why: string };
+  careers: { title: string; why: string }[];
+  next_steps: string[];
   traits: Record<Trait, number>;
   aptitude: { overall: number; byCategory: Record<string, number> };
   usesRemaining?: number;
@@ -46,6 +48,26 @@ export default function CareersPage() {
   const [error, setError] = useState<string | null>(null);
   const [paywall, setPaywall] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
+  const [shareCopied, setShareCopied] = useState(false);
+
+  async function handleShare() {
+    const a = result?.archetype;
+    const text = a
+      ? `My Fledgy career type is "${a.name}" — ${a.tagline} Find your direction free:`
+      : "I just found my career direction with Fledgy. Find yours free:";
+    const url = "https://fledgy.guide/careers";
+    try {
+      if (typeof navigator !== "undefined" && navigator.share) {
+        await navigator.share({ title: "My Fledgy career type", text, url });
+      } else if (navigator?.clipboard) {
+        await navigator.clipboard.writeText(`${text} ${url}`);
+        setShareCopied(true);
+        setTimeout(() => setShareCopied(false), 2000);
+      }
+    } catch {
+      // share cancelled — ignore
+    }
+  }
 
   useEffect(() => {
     const saved = window.localStorage.getItem("fledgy_email");
@@ -431,6 +453,43 @@ export default function CareersPage() {
         {/* Step 3: results */}
         {step === 3 && result && (
           <div className="mt-8 space-y-6">
+            {result.archetype && (
+              <div className="relative overflow-hidden rounded-2xl border border-[#e7d3bc] bg-[#fdf3e7] p-6 shadow-sm">
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full bg-[#f3d9c9]"
+                />
+                <div className="relative flex items-center gap-2">
+                  <Mark size={30} opacity={0.95} />
+                  <span className="text-lg font-semibold text-teal-800">Fledgy</span>
+                  <span className="ml-auto rounded-full bg-[#f4e8cf] px-2.5 py-1 text-[10px] font-bold tracking-widest text-[#8a6d2f]">
+                    EARLY ACCESS
+                  </span>
+                </div>
+                <p className="relative mt-4 text-xs font-bold tracking-widest text-[#c8532c]">
+                  YOUR CAREER TYPE
+                </p>
+                <h2 className="relative mt-1 text-3xl font-semibold text-[#2a2115]">
+                  {result.archetype.name}
+                </h2>
+                <p className="relative mt-2 text-sm text-[#6b5c45]">
+                  {result.archetype.tagline}
+                </p>
+                <div className="relative mt-5 flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={handleShare}
+                    className="rounded-lg bg-teal-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-teal-800"
+                  >
+                    Share my type
+                  </button>
+                  <span className="text-xs text-[#b0a186]">
+                    {shareCopied ? "Link copied!" : "or screenshot to share"}
+                  </span>
+                </div>
+              </div>
+            )}
+
             <div className="rounded-xl border border-[#f0dfc4] bg-white p-6 shadow-sm">
               <div className="flex items-start justify-between">
                 <p className="text-sm italic text-[#3a3629]">{result.summary}</p>
@@ -462,64 +521,42 @@ export default function CareersPage() {
               </div>
             </div>
 
-            {result.teaser_career && (
+            {result.careers?.length > 0 && (
               <div>
-                <h2 className="text-lg font-semibold text-[#2a2115]">
-                  One direction to explore
-                </h2>
-                <p className="mt-1 text-xs text-[#b0a186]">
-                  A taste of your matches — your strongest fits are in the full report.
-                </p>
-                <div className="mt-3 rounded-lg border border-[#f0dfc4] bg-white p-4">
-                  <p className="text-sm font-semibold text-[#2a2115]">
-                    {result.teaser_career.title}
-                  </p>
-                  <p className="mt-1 text-sm text-[#6b5c45]">{result.teaser_career.why}</p>
+                <div className="flex items-baseline justify-between">
+                  <h2 className="text-lg font-semibold text-[#2a2115]">
+                    Careers that fit you
+                  </h2>
+                  <span className="rounded-full bg-[#f4e8cf] px-2.5 py-1 text-[10px] font-bold tracking-widest text-[#8a6d2f]">
+                    FREE · EARLY ACCESS
+                  </span>
+                </div>
+                <div className="mt-3 space-y-3">
+                  {result.careers.map((c, i) => (
+                    <div key={i} className="rounded-lg border border-[#f0dfc4] bg-white p-4">
+                      <p className="text-sm font-semibold text-[#2a2115]">
+                        {i + 1}. {c.title}
+                      </p>
+                      <p className="mt-1 text-sm text-[#6b5c45]">{c.why}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
 
-            <div className="relative overflow-hidden rounded-xl border border-dashed border-[#c9b98a] bg-[#fdf9f0] p-6">
-              <Mark
-                size={54}
-                opacity={0.25}
-                className="pointer-events-none absolute -right-3 -top-4"
-              />
-              <span className="inline-block rounded-full bg-[#f4e8cf] px-2.5 py-1 text-xs font-bold tracking-widest text-[#8a6d2f]">
-                FULL CAREER REPORT · COMING SOON
-              </span>
-              <h2 className="mt-3 text-xl font-semibold text-[#2a2115]">
-                Unlock your full report
-              </h2>
-              <p className="mt-1 text-sm text-[#6b5c45]">
-                Your scores are the snapshot. The full report turns them into a plan:
-              </p>
-              <ul className="mt-4 space-y-2.5 text-sm text-[#6b5c45]">
-                <li className="flex gap-2">
-                  <span className="text-[#b0a186]">○</span>
-                  <span>Your strongest career matches, each with why it fits you</span>
-                </li>
-                <li className="flex gap-2">
-                  <span className="text-[#b0a186]">○</span>
-                  <span>A personalized action plan and next steps</span>
-                </li>
-                <li className="flex gap-2">
-                  <span className="text-[#b0a186]">○</span>
-                  <span>A study or career-switch roadmap for where you are</span>
-                </li>
-                <li className="flex gap-2">
-                  <span className="text-[#b0a186]">○</span>
-                  <span>Your strengths and blind spots, and a downloadable PDF</span>
-                </li>
-              </ul>
-              <button
-                type="button"
-                disabled
-                className="mt-5 w-full cursor-not-allowed rounded-lg border border-dashed border-[#c9b98a] px-4 py-3 text-sm font-semibold text-[#9c8b6f]"
-              >
-                Unlock full report — coming soon
-              </button>
-            </div>
+            {result.next_steps?.length > 0 && (
+              <div className="rounded-lg border border-[#f0dfc4] bg-[#fdf9f0] p-4">
+                <p className="text-sm font-semibold text-[#2a2115]">Your next steps</p>
+                <ul className="mt-2 space-y-1.5">
+                  {result.next_steps.map((s, i) => (
+                    <li key={i} className="flex gap-2 text-sm text-[#3a3629]">
+                      <span className="text-[#8a6d2f]">•</span>
+                      <span>{s}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             <p className="text-xs text-[#b0a186]">
               This is guidance, not a verdict. Personality items adapted

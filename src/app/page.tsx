@@ -49,8 +49,8 @@ export default function Home() {
             </h2>
             <p className="mt-2 text-sm text-[#6b5c45]">
               Choosing what to study, or weighing a career switch? A quick
-              personality and aptitude quiz reads your strengths and points you
-              toward a direction worth exploring.
+              personality and aptitude quiz reveals your career type and the
+              paths that fit you — full report free while in early access.
             </p>
             <span className="mt-4 inline-block text-sm font-medium text-[#8a6d2f] group-hover:underline">
               Take the quiz →
@@ -117,15 +117,15 @@ export default function Home() {
             Free today, more depth coming.
           </h2>
           <p className="mt-1 text-sm text-[#6b5c45]">
-            Every email gets 2 free scores across the career quiz, essay, CV,
-            and CV generation, no card required. A deeper paid tier, led by the
-            Refined CV, is on the way. We&apos;ll email you the moment it opens.
+            The career report is free while in early access, and every email
+            gets a free score on the essay and CV tools, no card required. A
+            deeper paid tier, led by the Refined CV, is on the way.
           </p>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             <div className="rounded-xl border border-[#f0dfc4] bg-white p-6">
               <span className="inline-block rounded-full bg-[#d7f0ec] px-2.5 py-1 text-xs font-bold tracking-widest text-teal-800">
-                FREE · 2 SCORES PER EMAIL
+                FREE TO START
               </span>
               <ul className="mt-4 space-y-2.5 text-sm text-[#3a3629]">
                 <li className="flex gap-2">
