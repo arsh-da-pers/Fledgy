@@ -160,7 +160,7 @@ export default function CvPage() {
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-dashed border-[#c9b98a] bg-white px-4 py-2 text-sm font-medium text-[#6b5c45] transition hover:border-teal-600 hover:text-teal-700">
-              {uploading ? "Reading file…" : "Upload PDF, Word, or photo"}
+              {uploading ? "Reading your file…" : "Upload PDF, Word, or photo"}
               <input
                 type="file"
                 accept=".pdf,.docx,.jpg,.jpeg,.png"
@@ -173,6 +173,12 @@ export default function CvPage() {
               {uploadedName ? `Loaded: ${uploadedName}` : "or paste your CV text below"}
             </span>
           </div>
+          {uploading && (
+            <p className="text-xs text-teal-700">
+              Fledgy is reading your document and extracting the text — a PDF
+              can take up to ~20 seconds. Please keep this tab open.
+            </p>
+          )}
           {uploadError && (
             <p className="text-xs text-red-600">{uploadError}</p>
           )}

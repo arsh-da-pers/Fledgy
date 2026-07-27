@@ -2,6 +2,9 @@ import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "nodejs";
+// Reading a PDF renders its pages and runs a vision call, which can take
+// 10-25s — raise the function limit so it doesn't time out (default is 10s).
+export const maxDuration = 60;
 
 // Uses Claude's vision/document understanding to transcribe text from a
 // scanned PDF or a photographed/screenshotted document — no OCR library
@@ -67,8 +70,10 @@ async function transcribePdfViaImages(buffer: Buffer): Promise<string> {
   const pageImages: Buffer[] = [];
   for (let i = 0; i < pageCount; i++) {
     const page = doc.loadPage(i);
+    // ~1.8x keeps an A4 page near Claude's max image edge (~1540px) — any
+    // larger just gets downscaled anyway, so this renders faster for free.
     const pixmap = page.toPixmap(
-      mupdf.Matrix.scale(2, 2),
+      mupdf.Matrix.scale(1.8, 1.8),
       mupdf.ColorSpace.DeviceRGB,
       false,
       true
