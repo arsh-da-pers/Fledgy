@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Mark from "@/components/Mark";
+import PageFaq from "@/components/PageFaq";
 import { uploadAndExtractText } from "@/lib/uploadAndExtract";
 
 type Result = {
@@ -309,6 +310,36 @@ export default function CvPage() {
             </div>
           </div>
         )}
+
+        <PageFaq
+          title="About Fledgy's CV scorer"
+          intro={[
+            "Fledgy's free CV scorer rates your résumé against the hiring norms of your target country and gives you a recruiter-ready rewrite you can download. International students and job seekers often lose interviews to formatting and phrasing that don't match local expectations — Fledgy catches those gaps.",
+            "Upload a PDF or Word file, or paste your CV text. Fledgy scores it, highlights what's holding it back, and can generate a cleaner, plainer version aligned to the country you're applying in. Your file is read to score it, then discarded.",
+          ]}
+          faqs={[
+            {
+              q: "Is the CV scorer free?",
+              a: "Yes, scoring your CV is free. You get an honest score and specific feedback on what to fix before you apply for jobs or internships.",
+            },
+            {
+              q: "Does it consider my target country?",
+              a: "Yes. CV conventions differ by country — length, whether to include a photo, how to phrase achievements. Fledgy scores your CV against the norms of the country you're targeting.",
+            },
+            {
+              q: "Can Fledgy rewrite my CV?",
+              a: "Yes. Fledgy can generate a rewritten, recruiter-ready version of your CV as a plain-text download that you can format and send.",
+            },
+            {
+              q: "What file types can I upload?",
+              a: "PDF, Word (.docx), or a photo — or you can paste your CV text directly.",
+            },
+            {
+              q: "Is my CV stored?",
+              a: "No. Fledgy reads your CV to score and rewrite it, then discards it. Your document is not stored.",
+            },
+          ]}
+        />
       </div>
     </main>
   );

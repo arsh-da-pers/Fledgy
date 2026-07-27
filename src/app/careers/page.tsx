@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Mark from "@/components/Mark";
+import PageFaq from "@/components/PageFaq";
 import { CURRICULA, SUBJECTS_BY_CURRICULUM, type Curriculum } from "@/lib/curricula";
 import { TRAIT_LABELS, type Trait } from "@/lib/personalityItems";
 
@@ -583,6 +584,32 @@ export default function CareersPage() {
             </div>
           </div>
         )}
+
+        <PageFaq
+          title="About the career direction quiz"
+          intro={[
+            "Not sure which career or degree fits you? Fledgy's free career direction quiz combines a personality profile and an aptitude check to point you toward paths that match how you actually think and work. It's designed for students and early-career talent deciding what to study or do next.",
+            "You'll answer a short set of questions and get a summary of your strengths, trait-by-trait scores, and career directions to explore — with guidance that accounts for studying and working internationally.",
+          ]}
+          faqs={[
+            {
+              q: "Is the career quiz free?",
+              a: "Yes. The career direction quiz is free and gives you a personality and aptitude profile with career directions to explore.",
+            },
+            {
+              q: "How long does the quiz take?",
+              a: "Just a few minutes. You answer a short set of questions and get an instant summary of your traits and suggested career directions.",
+            },
+            {
+              q: "What do I get at the end?",
+              a: "A summary of your strengths, trait-by-trait scores, and career directions that fit your profile — a starting point for choosing a degree or career path.",
+            },
+            {
+              q: "Is this useful for international students?",
+              a: "Yes. Fledgy is built for people studying and working across borders, so the guidance factors in applying and building a career internationally.",
+            },
+          ]}
+        />
       </div>
     </main>
   );
