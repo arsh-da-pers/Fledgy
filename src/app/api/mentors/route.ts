@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { logFeedback } from "@/lib/logFeedback";
 import { isValidEmail } from "@/lib/usage";
+import { recordLead } from "@/lib/leads";
 
 export const runtime = "nodejs";
 
@@ -35,6 +36,8 @@ export async function POST(req: NextRequest) {
       expertise: expertise ? String(expertise).trim() : undefined,
       email,
     });
+
+    await recordLead(email);
 
     return NextResponse.json({ ok: true });
   } catch {
