@@ -22,6 +22,9 @@ export default function Header() {
           <Link href="/cv" className="hover:text-teal-700">
             Score my CV
           </Link>
+          <Link href="/mentors" className="hover:text-teal-700">
+            Mentors
+          </Link>
           <Link href="/blog" className="hover:text-[#2a2115]">
             Blog
           </Link>
