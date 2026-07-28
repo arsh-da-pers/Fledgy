@@ -37,7 +37,12 @@ export async function POST(req: NextRequest) {
       email,
     });
 
-    await recordLead(email);
+    await recordLead(email, {
+      source: "mentors",
+      role,
+      name: name ? String(name).trim() : undefined,
+      expertise: expertise ? String(expertise).trim() : undefined,
+    });
 
     return NextResponse.json({ ok: true });
   } catch {

@@ -3,6 +3,11 @@ import { getAllLeads } from "@/lib/leads";
 
 export const runtime = "nodejs";
 
+function csvCell(v: unknown): string {
+  const s = v === undefined || v === null ? "" : String(v);
+  return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+}
+
 // Private leads export. Protected by the LEADS_ADMIN_KEY env var — if that
 // isn't set, or the provided key doesn't match, we return 404 so the endpoint
 // is invisible. Access with:
@@ -16,11 +21,17 @@ export async function GET(req: NextRequest) {
     return new NextResponse("Not found", { status: 404 });
   }
 
-  const emails = await getAllLeads();
+  const leads = await getAllLeads();
 
   if (req.nextUrl.searchParams.get("format") === "csv") {
-    const csv = ["email", ...emails].join("\n");
-    return new NextResponse(csv, {
+    const cols = ["email", "source", "role", "name", "expertise"] as const;
+    const rows = [
+      cols.join(","),
+      ...leads.map((l) =>
+        cols.map((c) => csvCell((l as Record<string, unknown>)[c])).join(",")
+      ),
+    ];
+    return new NextResponse(rows.join("\n"), {
       headers: {
         "Content-Type": "text/csv; charset=utf-8",
         "Content-Disposition": 'attachment; filename="fledgy-leads.csv"',
@@ -28,5 +39,5 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  return NextResponse.json({ count: emails.length, emails });
+  return NextResponse.json({ count: leads.length, leads });
 }
