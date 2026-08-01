@@ -4,7 +4,17 @@ import { getAllPosts } from "@/lib/blog";
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = "https://fledgy.guide";
 
-  const staticEntries = ["", "/essay", "/cv", "/careers", "/mentors", "/blog"].map(
+  const staticEntries = [
+    "",
+    "/essay",
+    "/cv",
+    "/careers",
+    "/mentors",
+    "/personal-statement-checker",
+    "/cv-checker",
+    "/sop-checker",
+    "/blog",
+  ].map(
     (route) => ({
       url: `${base}${route}`,
       lastModified: new Date(),
