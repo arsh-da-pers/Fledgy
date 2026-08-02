@@ -52,14 +52,14 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
 
   return (
     <main className="flex flex-1 flex-col items-center bg-[#fdf3e7]">
-      <article className="w-full max-w-2xl px-6 py-12">
+      <article className="w-full max-w-2xl px-6 py-10 sm:py-14">
         <Link
           href="/blog"
           className="text-sm font-medium text-[#c8532c] hover:text-[#e2653b]"
         >
           ← All articles
         </Link>
-        <h1 className="mt-4 text-3xl font-semibold leading-tight text-[#2a2115]">
+        <h1 className="mt-4 text-[26px] font-semibold leading-tight text-[#2a2115] sm:text-3xl">
           {post.title}
         </h1>
         <p className="mt-3 text-sm text-[#b0a186]">{formattedDate}</p>

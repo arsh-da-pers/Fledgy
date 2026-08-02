@@ -14,11 +14,11 @@ export default function BlogIndex() {
 
   return (
     <main className="flex flex-1 flex-col items-center bg-[#fdf3e7]">
-      <div className="w-full max-w-2xl px-6 py-12">
+      <div className="w-full max-w-2xl px-6 py-10 sm:py-14">
         <span className="inline-block rounded-full bg-[#fbe3d8] px-2.5 py-1 text-xs font-bold tracking-widest text-[#b6431f]">
           FLEDGY BLOG
         </span>
-        <h1 className="mt-3 text-3xl font-semibold text-[#2a2115]">
+        <h1 className="mt-3 text-[26px] font-semibold text-[#2a2115] sm:text-3xl">
           Advice for applying abroad
         </h1>
         <p className="mt-2 text-[#6b5c45]">
@@ -33,7 +33,7 @@ export default function BlogIndex() {
                 <h2 className="text-xl font-semibold text-[#2a2115] group-hover:text-[#c8532c]">
                   {post.title}
                 </h2>
-                <p className="mt-2 text-[15px] leading-relaxed text-[#6b5c45]">
+                <p className="mt-2 text-base leading-relaxed text-[#6b5c45]">
                   {post.excerpt}
                 </p>
                 <span className="mt-3 inline-block text-sm font-medium text-[#c8532c]">

@@ -60,7 +60,7 @@ export default function PostBody({ body }: { body: Block[] }) {
             return (
               <h2
                 key={i}
-                className="mt-10 text-2xl font-semibold text-[#2a2115]"
+                className="mt-10 text-xl font-semibold leading-snug text-[#2a2115] sm:text-2xl"
               >
                 {renderInline(block.text)}
               </h2>
@@ -69,20 +69,20 @@ export default function PostBody({ body }: { body: Block[] }) {
             return (
               <h3
                 key={i}
-                className="mt-8 text-xl font-semibold text-[#2a2115]"
+                className="mt-8 text-lg font-semibold text-[#2a2115] sm:text-xl"
               >
                 {renderInline(block.text)}
               </h3>
             );
           case "ul":
             return (
-              <ul key={i} className="space-y-2 pl-1">
+              <ul key={i} className="space-y-2.5 pl-1">
                 {block.items.map((item, j) => (
                   <li
                     key={j}
-                    className="flex gap-2 text-[15px] leading-relaxed text-[#4a3f2d]"
+                    className="flex gap-2.5 text-base leading-relaxed text-[#4a3f2d]"
                   >
-                    <span className="text-[#e2653b]">•</span>
+                    <span className="mt-px text-[#e2653b]">•</span>
                     <span>{renderInline(item)}</span>
                   </li>
                 ))}
@@ -92,7 +92,7 @@ export default function PostBody({ body }: { body: Block[] }) {
             return (
               <blockquote
                 key={i}
-                className="border-l-4 border-[#e2a68a] pl-4 text-[15px] italic leading-relaxed text-[#6b5c45]"
+                className="border-l-4 border-[#e2a68a] pl-4 text-base italic leading-relaxed text-[#6b5c45]"
               >
                 {renderInline(block.text)}
               </blockquote>
@@ -102,7 +102,7 @@ export default function PostBody({ body }: { body: Block[] }) {
             return (
               <p
                 key={i}
-                className="text-[15px] leading-relaxed text-[#4a3f2d]"
+                className="text-base leading-relaxed text-[#4a3f2d]"
               >
                 {renderInline(block.text)}
               </p>
