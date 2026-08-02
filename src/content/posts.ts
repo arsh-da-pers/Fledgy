@@ -3,6 +3,63 @@ import type { Post } from "@/lib/blog";
 // Add new posts to the top of this array. Each post needs a unique `slug`.
 export const posts: Post[] = [
   {
+    slug: "how-to-write-a-cover-letter-that-gets-read",
+    title: "How to Write a Cover Letter That Actually Gets Read",
+    description:
+      "A practical guide to writing a cover letter that recruiters actually read — structure, what to include, what to cut, and the mistakes that get you filtered out.",
+    date: "2026-08-02",
+    excerpt:
+      "Most cover letters get skimmed for ten seconds, if that. Here's how to write one that earns the read — whether you're a new graduate, a career changer, or a seasoned professional.",
+    tags: ["cover letter", "job applications", "careers"],
+    body: [
+      {
+        type: "p",
+        text: "A cover letter is the one part of your application where you get to speak directly to a human. Done well, it turns a stack of qualifications into a person a recruiter wants to meet. Done badly — or worse, copied and pasted — it does nothing at all. This guide covers what to write, what to cut, and how to make sure yours earns the ten seconds it gets.",
+      },
+      { type: "h2", text: "Do you even need one?" },
+      {
+        type: "p",
+        text: "Not every application asks for a cover letter, and a generic one is worse than none. But when a role is competitive, a specific, well-aimed letter is often the tiebreaker between two similar CVs. If you're going to write one, write one that could only have been sent to this employer for this job.",
+      },
+      { type: "h2", text: "A structure that works" },
+      {
+        type: "ul",
+        items: [
+          "**The opening** — skip \"I am writing to apply for.\" Lead with why this specific role or company genuinely interests you, in one concrete sentence.",
+          "**The proof** — pick two or three achievements that map directly to what the job needs, and show the result, not just the task.",
+          "**The fit** — connect what you've done to what they're trying to do. Show you understand the role beyond its title.",
+          "**The close** — a short, confident sign-off that invites the next step, without begging for it.",
+        ],
+      },
+      { type: "h2", text: "Match the letter to the job description" },
+      {
+        type: "p",
+        text: "Read the posting and note the words it repeats — the skills, tools, and outcomes it keeps coming back to. Those are the recruiter's priorities. Your letter should echo them honestly, backed by real examples. This isn't keyword-stuffing; it's answering the question they actually asked.",
+      },
+      { type: "h2", text: "Show results, not adjectives" },
+      {
+        type: "p",
+        text: "Anyone can call themselves \"hard-working\" and \"detail-oriented.\" Recruiters have read those words a thousand times and they mean nothing. Replace them with evidence: what you did, and what changed because you did it. \"Detail-oriented\" is a claim; \"cut reporting errors to near zero over a quarter\" is proof.",
+      },
+      { type: "h2", text: "Common mistakes that get you filtered out" },
+      {
+        type: "ul",
+        items: [
+          "Reusing one letter for every application and forgetting to change the company name.",
+          "Summarising your whole CV instead of choosing the few points that matter here.",
+          "Writing three dense paragraphs no one will read — keep it under a page, ideally well under.",
+          "Making it all about what you want, instead of what you'd bring.",
+          "Addressing it to \"To Whom It May Concern\" when a two-minute search would find a name.",
+        ],
+      },
+      { type: "h2", text: "Pair it with a CV that backs it up" },
+      {
+        type: "p",
+        text: "A great cover letter opens the door, but the recruiter's next click is your CV — and if that doesn't deliver, the letter was wasted. Fledgy's [free CV scorer](/cv) rates your CV against real hiring norms and can generate a recruiter-ready rewrite, so the two documents tell one strong, consistent story. Get that right before you hit send.",
+      },
+    ],
+  },
+  {
     slug: "personal-statement-guide-international-students",
     title:
       "How to Write a Personal Statement for University (International Student Guide)",
