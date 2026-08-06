@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import RefCapture from "@/components/RefCapture";
 
 const dancingScript = Dancing_Script({
   subsets: ["latin"],
@@ -44,6 +45,7 @@ export default function RootLayout({
       className={`h-full antialiased ${dancingScript.variable} ${quicksand.variable}`}
     >
       <body className="min-h-full flex flex-col bg-[#fdf3e7] text-[#2a2115]">
+        <RefCapture />
         <Header />
         {children}
         <Footer />

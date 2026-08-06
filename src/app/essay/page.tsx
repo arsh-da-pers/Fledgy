@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import Mark from "@/components/Mark";
 import PageFaq from "@/components/PageFaq";
+import ReferralInvite from "@/components/ReferralInvite";
+import { fireReferral } from "@/lib/referClient";
 import { uploadAndExtractText } from "@/lib/uploadAndExtract";
 
 type Result = {
@@ -57,6 +59,7 @@ export default function EssayPage() {
     setResult(null);
     try {
       window.localStorage.setItem("fledgy_email", email);
+      fireReferral(email);
       const res = await fetch("/api/essay", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -165,6 +168,7 @@ export default function EssayPage() {
               You&apos;re on the waitlist
             </p>
             <p className="mt-1 text-sm text-[#7a5b26]">{error}</p>
+            <ReferralInvite email={email} />
           </div>
         )}
         {error && !paywall && (
