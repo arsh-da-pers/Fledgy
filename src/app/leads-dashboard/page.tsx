@@ -8,6 +8,7 @@ type Lead = {
   role?: string;
   name?: string;
   expertise?: string;
+  tools?: string[];
 };
 
 const REFRESH_MS = 20000;
@@ -132,6 +133,22 @@ export default function LeadsDashboard() {
     { label: "Mentor applicants", value: experts.length },
   ];
 
+  const toolUsage: Record<"essay" | "cv" | "careers", number> = {
+    essay: 0,
+    cv: 0,
+    careers: 0,
+  };
+  real.forEach((l) =>
+    (l.tools || []).forEach((t) => {
+      if (t === "essay" || t === "cv" || t === "careers") toolUsage[t]++;
+    })
+  );
+  const toolLabels: Record<"essay" | "cv" | "careers", string> = {
+    essay: "Essay",
+    cv: "CV",
+    careers: "Career",
+  };
+
   return (
     <main className="flex flex-1 flex-col items-center bg-[#fdf3e7]">
       <div className="w-full max-w-4xl px-6 py-10">
@@ -194,7 +211,20 @@ export default function LeadsDashboard() {
               ))}
             </div>
 
-            <label className="mt-5 flex items-center gap-2 text-xs text-[#9c8b6f]">
+            <div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
+              <span className="font-medium text-[#6b5c45]">Tool usage:</span>
+              {(["essay", "cv", "careers"] as const).map((t) => (
+                <span
+                  key={t}
+                  className="rounded-full border border-[#f0dfc4] bg-white px-3 py-1 text-[#6b5c45]"
+                >
+                  {toolLabels[t]}: <b className="text-[#2a2115]">{toolUsage[t]}</b>
+                </span>
+              ))}
+              <span className="text-[#b0a186]">(recorded from now on)</span>
+            </div>
+
+            <label className="mt-4 flex items-center gap-2 text-xs text-[#9c8b6f]">
               <input
                 type="checkbox"
                 checked={showTest}
@@ -212,6 +242,7 @@ export default function LeadsDashboard() {
                     <th className="px-4 py-3 font-medium">Role</th>
                     <th className="px-4 py-3 font-medium">Name</th>
                     <th className="px-4 py-3 font-medium">Field</th>
+                    <th className="px-4 py-3 font-medium">Tools used</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -243,12 +274,27 @@ export default function LeadsDashboard() {
                       <td className="px-4 py-3 text-[#6b5c45]">
                         {l.expertise || "—"}
                       </td>
+                      <td className="px-4 py-3 text-[#6b5c45]">
+                        {l.tools && l.tools.length
+                          ? l.tools
+                              .map((t) =>
+                                t === "careers"
+                                  ? "Career"
+                                  : t === "cv"
+                                  ? "CV"
+                                  : t === "essay"
+                                  ? "Essay"
+                                  : t
+                              )
+                              .join(", ")
+                          : "—"}
+                      </td>
                     </tr>
                   ))}
                   {shown.length === 0 && (
                     <tr>
                       <td
-                        colSpan={5}
+                        colSpan={6}
                         className="px-4 py-8 text-center text-sm text-[#9c8b6f]"
                       >
                         No signups yet.

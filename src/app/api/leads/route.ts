@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
   const leads = await getAllLeads();
 
   if (req.nextUrl.searchParams.get("format") === "csv") {
-    const cols = ["email", "source", "role", "name", "expertise"] as const;
+    const cols = ["email", "source", "role", "name", "expertise", "tools"] as const;
     const rows = [
       cols.join(","),
       ...leads.map((l) =>

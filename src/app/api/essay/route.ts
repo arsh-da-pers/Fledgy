@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { logFeedback } from "@/lib/logFeedback";
 import { checkAndRecordUsage, isValidEmail, FREE_LIMIT } from "@/lib/usage";
+import { recordToolUse } from "@/lib/leads";
 
 export const runtime = "nodejs";
 
@@ -40,6 +41,8 @@ export async function POST(req: NextRequest) {
         { status: 402 }
       );
     }
+
+    await recordToolUse(email, "essay");
 
     if (!process.env.ANTHROPIC_API_KEY) {
       return NextResponse.json(

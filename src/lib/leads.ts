@@ -12,6 +12,7 @@ import { kv } from "@vercel/kv";
 const LEADS_SET = "fledgy:leads";
 const USAGE_PREFIX = "fledgy:usage:";
 const leadHash = (email: string) => `fledgy:lead:${email.trim().toLowerCase()}`;
+const toolsKey = (email: string) => `fledgy:tools:${email.trim().toLowerCase()}`;
 
 export type LeadDetails = {
   source?: string; // e.g. "mentors"
@@ -20,7 +21,16 @@ export type LeadDetails = {
   expertise?: string;
 };
 
-export type Lead = { email: string } & LeadDetails;
+export type Lead = { email: string; tools?: string[] } & LeadDetails;
+
+// Records which tool an email used (essay | cv | careers). Best-effort.
+export async function recordToolUse(email: string, tool: string) {
+  try {
+    await kv.sadd(toolsKey(email), tool);
+  } catch (err) {
+    console.error("[fledgy:leads] could not record tool use:", err);
+  }
+}
 
 export async function recordLead(email: string, details: LeadDetails = {}) {
   const e = email.trim().toLowerCase();
@@ -66,7 +76,18 @@ export async function getAllLeads(): Promise<Lead[]> {
     } catch {
       /* no detail hash for this email — likely a tool-only user */
     }
-    leads.push({ email, source: details.source || "tool", ...details });
+    let tools: string[] = [];
+    try {
+      tools = (await kv.smembers<string[]>(toolsKey(email))) || [];
+    } catch {
+      /* no tool record yet */
+    }
+    leads.push({
+      email,
+      source: details.source || "tool",
+      ...details,
+      tools: tools.sort(),
+    });
   }
   return leads;
 }
