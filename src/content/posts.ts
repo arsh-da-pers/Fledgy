@@ -3,6 +3,155 @@ import type { Post } from "@/lib/blog";
 // Add new posts to the top of this array. Each post needs a unique `slug`.
 export const posts: Post[] = [
   {
+    slug: "how-to-write-a-statement-of-purpose-sop",
+    title: "How to Write a Statement of Purpose (SOP) for Master's Applications",
+    description:
+      "How to write a Statement of Purpose (SOP) for Master's and PhD applications — a structure that works, what admissions committees look for, and the mistakes to avoid.",
+    date: "2026-08-09",
+    excerpt:
+      "Your SOP is where you argue why this programme and why you. Here's a structure that works, what committees actually score, and the mistakes that sink strong applicants.",
+    tags: ["statement of purpose", "sop", "graduate applications"],
+    body: [
+      {
+        type: "p",
+        text: "A Statement of Purpose (SOP) carries your graduate application. Your grades and test scores get you considered; the SOP is where you argue, in your own words, why this programme and why you. This guide covers what admissions committees look for, a structure that works, and the mistakes that sink otherwise strong applicants.",
+      },
+      { type: "h2", text: "What an SOP actually is" },
+      {
+        type: "p",
+        text: "An SOP is a focused, forward-looking essay — usually 800–1,200 words — explaining your academic background, your motivation for the field, and what you want to do next. Unlike an undergraduate personal statement, it leans heavily on specifics: research interests, projects, and the exact reasons this department fits your goals.",
+      },
+      { type: "h2", text: "A structure that works" },
+      {
+        type: "ul",
+        items: [
+          "**Opening** — a specific hook: the problem, question, or moment that pulled you toward the field. Skip the childhood-dream cliché.",
+          "**Academic background** — the coursework, projects, and research that prepared you, framed as a progression rather than a list.",
+          "**Research or professional experience** — what you did, what you found, and what it taught you about the questions you want to pursue.",
+          "**Why this programme** — name specific professors, labs, or courses and connect them to your goals. This is where generic SOPs lose.",
+          "**Goals** — what you intend to do during and after the degree, concretely enough to be believable.",
+        ],
+      },
+      { type: "h2", text: "What admissions committees are really scoring" },
+      {
+        type: "p",
+        text: "Committees read for fit and focus: does your background support your stated goals, and do your goals match what this programme offers? A brilliant essay aimed at the wrong department still gets rejected. Every paragraph should reinforce that you belong in that specific room.",
+      },
+      { type: "h2", text: "Common SOP mistakes" },
+      {
+        type: "ul",
+        items: [
+          "Writing one generic SOP and just swapping the university name — reviewers spot it instantly.",
+          "Listing achievements without explaining what they taught you or why they matter.",
+          "Spending half the essay on your childhood instead of your research direction.",
+          "Vague goals (\"I want to make an impact\") that could apply to anyone.",
+          "Ignoring the word limit or the programme's specific prompt.",
+        ],
+      },
+      { type: "h2", text: "Check your SOP before you submit" },
+      {
+        type: "p",
+        text: "Once you have a draft, you're too close to judge it objectively. Fledgy's [free SOP checker](/sop-checker) scores your statement of purpose out of 100 and gives specific feedback on structure, focus, and fit — so you know exactly what to sharpen before the deadline.",
+      },
+    ],
+  },
+  {
+    slug: "sop-vs-personal-statement",
+    title: "SOP vs Personal Statement: What's the Difference?",
+    description:
+      "SOP vs personal statement — what's the difference, when you need each, and how to write the right one for graduate, undergraduate, or UCAS applications.",
+    date: "2026-08-09",
+    excerpt:
+      "\"SOP\" and \"personal statement\" aren't the same document. Here's how to tell them apart — and write whichever one your programme is actually asking for.",
+    tags: ["statement of purpose", "personal statement", "applications"],
+    body: [
+      {
+        type: "p",
+        text: "\"SOP\" and \"personal statement\" get used interchangeably, but for many applications they are different documents with different jobs — and mixing them up can cost you. Here's how to tell them apart and write whichever one your programme is actually asking for.",
+      },
+      { type: "h2", text: "The short version" },
+      {
+        type: "p",
+        text: "A Statement of Purpose is programme- and goal-focused: your academic direction, research interests, and why this specific course fits. A personal statement is broader and more personal: who you are, what shaped you, and the qualities you bring. SOPs dominate graduate and most US applications; personal statements are common for undergraduate and UK (UCAS) applications.",
+      },
+      { type: "h2", text: "How they differ" },
+      {
+        type: "ul",
+        items: [
+          "**Focus** — SOP: your goals and research fit. Personal statement: your story and character.",
+          "**Tone** — SOP: professional and specific. Personal statement: reflective and personal.",
+          "**Content** — SOP: coursework, projects, professors, plans. Personal statement: motivation, growth, wider context.",
+          "**Where you'll meet them** — SOP: Master's, PhD, most US programmes. Personal statement: undergrad, UCAS, some scholarships.",
+        ],
+      },
+      { type: "h2", text: "When a programme just says \"essay\"" },
+      {
+        type: "p",
+        text: "If the prompt is vague, let the questions guide you. Asking about your goals and fit? Write an SOP. Asking who you are or what motivates you? Write a personal statement. When in doubt, lead with specifics and back every claim with evidence — that works for both.",
+      },
+      { type: "h2", text: "The one rule that applies to both" },
+      {
+        type: "quote",
+        text: "Show, don't tell. \"I'm passionate about research\" means nothing; describing the project that kept you up at night means everything.",
+      },
+      { type: "h2", text: "Get either one scored before you send it" },
+      {
+        type: "p",
+        text: "Whichever you're writing, an outside read helps most. Fledgy scores both — try the [SOP checker](/sop-checker) for graduate statements or the [essay scorer](/essay) for personal statements, each with specific, honest feedback out of 100.",
+      },
+    ],
+  },
+  {
+    slug: "cv-vs-resume-difference",
+    title: "CV vs Resume: What's the Difference (and Which Do You Need)?",
+    description:
+      "CV vs resume — the real difference, what each includes, and which one to send depending on your country and the role you're applying for.",
+    date: "2026-08-09",
+    excerpt:
+      "In some countries they mean the same thing; in others they don't. Here's the difference between a CV and a resume — and which one to send where.",
+    tags: ["cv", "resume", "job applications"],
+    body: [
+      {
+        type: "p",
+        text: "\"CV\" and \"resume\" are often used as if they mean the same thing — and in some countries they do. But send the wrong format for the wrong market and you can look out of step before anyone reads a word. Here's the difference and how to know which one to use.",
+      },
+      { type: "h2", text: "The core difference" },
+      {
+        type: "p",
+        text: "A resume is a short, targeted summary — usually one page — tailored to a specific job. A CV (curriculum vitae) is longer and more comprehensive, covering your full academic and professional history. In the US and Canada, \"resume\" is the default for most jobs and \"CV\" means the long academic version. In the UK, Europe, and much of Asia and the Middle East, \"CV\" is simply the everyday word for what Americans call a resume.",
+      },
+      { type: "h2", text: "CV vs resume at a glance" },
+      {
+        type: "ul",
+        items: [
+          "**Length** — Resume: one page (sometimes two). CV: two or more pages, as long as it needs to be.",
+          "**Purpose** — Resume: one specific job. CV: a full record, common in academia and research.",
+          "**Content** — Resume: only the most relevant experience. CV: education, publications, projects, the full history.",
+          "**Region** — \"Resume\" is US and Canada. \"CV\" is the UK, Europe, Asia, and the Middle East (and academia everywhere).",
+        ],
+      },
+      { type: "h2", text: "Which one should you send?" },
+      {
+        type: "ul",
+        items: [
+          "Applying to a company job in the US or Canada? Send a one-page **resume**.",
+          "Applying in the UK, Europe, India, or the Gulf? They'll call it a **CV**, but they usually mean the short, targeted version — keep it to one or two pages.",
+          "Applying for academic, research, or PhD roles anywhere? Send a full **academic CV**.",
+        ],
+      },
+      { type: "h2", text: "The mistake that costs interviews" },
+      {
+        type: "p",
+        text: "The real error isn't the label — it's sending a long, unfocused document when the employer wanted a tight, tailored one. Whatever it's called in your market, lead with results, match the role, and cut anything that doesn't earn its place.",
+      },
+      { type: "h2", text: "Get yours checked against local norms" },
+      {
+        type: "p",
+        text: "Not sure your document fits the market you're applying to? Fledgy's [free CV checker](/cv-checker) scores it against real hiring norms for your target country and can generate a recruiter-ready rewrite — so it lands the way it should, wherever you send it.",
+      },
+    ],
+  },
+  {
     slug: "how-to-write-a-cover-letter-that-gets-read",
     title: "How to Write a Cover Letter That Actually Gets Read",
     description:
