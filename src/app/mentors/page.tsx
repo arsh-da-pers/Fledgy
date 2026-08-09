@@ -37,11 +37,11 @@ function MentorCard({ m }: { m: Mentor }) {
           <img
             src={m.photo}
             alt={m.name}
-            className="h-14 w-14 rounded-full object-cover"
+            className="h-20 w-20 rounded-full object-cover"
           />
         ) : (
           <div
-            className="flex h-14 w-14 items-center justify-center rounded-full text-lg font-bold text-white"
+            className="flex h-20 w-20 items-center justify-center rounded-full text-2xl font-bold text-white"
             style={{ backgroundColor: m.accent }}
           >
             {initials(m.name)}
@@ -102,9 +102,9 @@ export default function MentorsPage() {
           Book 1:1 with people who&apos;ve been there
         </h1>
         <p className="mt-2 max-w-2xl text-[#6b5c45]">
-          Honest, personalized advice from recruiters and industry experts — on
-          your career, university applications, CV, and more. Focused 30-minute
-          sessions, booked around their availability.
+          Real, honest advice from people who&apos;ve actually done it — a
+          recruiter, a pilot, a career psychologist. Book a focused 30-minute
+          chat about your career, uni plans, CV, or whatever&apos;s on your mind.
         </p>
 
         {/* How it works */}

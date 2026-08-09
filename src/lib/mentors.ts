@@ -34,7 +34,7 @@ export const MENTORS: Mentor[] = [
     title: "Business Psychologist & Career Mentor",
     areas: ["Career direction", "University applications", "CV · LinkedIn · interviews"],
     blurb:
-      "A psychologist at heart — BA in Psychology, then an MSc in Business Psychology from Manchester. I've mentored 600+ students, taught, and helped people land jobs across the UK, the Gulf and globally. I've hired across startups and big corporates and sat in the room where the yes/no gets decided — so I know what gets a CV shortlisted and what quietly gets people passed over. Warm, honest guidance on your CV, interviews, LinkedIn, university applications and career direction — all rooted in the why behind how people (and hiring managers) actually think. ✨",
+      "I'm a psychologist at heart — BA in Psychology, then an MSc in Business Psychology from Manchester. Over the years I've mentored 600+ students, taught, and helped people land jobs across the UK, the Gulf and beyond. I've also hired across startups and big corporates and sat in the room where the yes/no actually happens, so I know what gets a CV noticed and what quietly gets it passed over. Come to me for honest, down-to-earth help with your CV, interviews, LinkedIn, uni applications, or just figuring out your next move — and because it's all rooted in psychology, we'll get into why people (and hiring managers) really think the way they do. ✨",
     sessionLength: "30 min",
     price: "$29",
     bookingUrl: "",
@@ -47,7 +47,7 @@ export const MENTORS: Mentor[] = [
     title: "Recruiter · Tech, Fintech & Crypto",
     areas: ["CV feedback", "Interview prep", "LinkedIn & job search"],
     blurb:
-      "I've spent 4+ years hiring across tech, fintech, crypto and corporate roles — globally. I've read thousands of CVs and interviewed people from all over the world, so I know what actually gets someone noticed (and what gets them skipped). No fluff, no gatekeeping — just honest interview tips, CV feedback, LinkedIn help and career guidance that makes sense. First job, career switch, or chasing your next big role, I'll help you work smarter, not harder. ✨",
+      "I've spent 4+ years hiring across tech, fintech, crypto and corporate roles, all over the world. I've read thousands of CVs and interviewed people from just about everywhere, so I know what actually makes someone stand out — and what quietly gets them skipped. No fluff, no gatekeeping: just real interview tips, honest CV feedback, LinkedIn help, and career advice that actually makes sense. Whether it's your first job, a career switch, or chasing your next big role, I'll help you work smarter, not harder. ✨",
     sessionLength: "30 min",
     price: "$29",
     bookingUrl: "",
@@ -60,7 +60,7 @@ export const MENTORS: Mentor[] = [
     title: "Commercial Pilot",
     areas: ["Aviation careers", "Flight school & licenses", "Interviews & sim prep"],
     blurb:
-      "A commercial pilot flying since 2015 — I've lived every stage of this career, from cadet to the cockpit. Aviation is one of the toughest industries to break into: the training path is long, expensive, and full of steps nobody explains clearly. Whether you're figuring out flight school, working through your licenses and ratings, prepping for airline interviews and sim assessments, or just wondering if a career in the skies is right for you, I'll give you the honest insider view — what's worth your money, what the process is actually like, and how to land that first seat. No sugar-coating, no gatekeeping. ✈️",
+      "I've been flying since 2015, so I've been through every stage of this — from wide-eyed cadet to the flight deck. Aviation is brutal to break into: it's long, expensive, and full of steps nobody really explains. So whether you're weighing up flight school, slogging through licenses and ratings, prepping for airline interviews and sim checks, or just wondering if the cockpit is really for you, I'll give it to you straight — what's worth your money, what it's actually like, and how to land that first seat. No sugar-coating, no gatekeeping. ✈️",
     sessionLength: "30 min",
     price: "$29",
     bookingUrl: "",
