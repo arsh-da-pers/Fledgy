@@ -34,7 +34,7 @@ export const MENTORS: Mentor[] = [
     title: "Business Psychologist & Career Mentor",
     areas: ["Career direction", "University applications", "CV · LinkedIn · interviews"],
     blurb:
-      "A psychologist at heart — BA in Psychology, then an MSc in Business Psychology from Manchester. I've mentored 600+ students, taught, and helped people land jobs across the UAE, Saudi, Qatar and Bahrain. I've hired across startups and big corporates and sat in the room where the yes/no gets decided — so I know what gets a CV shortlisted and what quietly gets people passed over. Warm, honest guidance on your CV, interviews, LinkedIn, university applications and career direction — all rooted in the why behind how people (and hiring managers) actually think. ✨",
+      "A psychologist at heart — BA in Psychology, then an MSc in Business Psychology from Manchester. I've mentored 600+ students, taught, and helped people land jobs across the UK, the Gulf and globally. I've hired across startups and big corporates and sat in the room where the yes/no gets decided — so I know what gets a CV shortlisted and what quietly gets people passed over. Warm, honest guidance on your CV, interviews, LinkedIn, university applications and career direction — all rooted in the why behind how people (and hiring managers) actually think. ✨",
     sessionLength: "30 min",
     price: "$29",
     bookingUrl: "",
