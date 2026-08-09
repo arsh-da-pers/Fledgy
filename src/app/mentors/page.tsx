@@ -11,17 +11,18 @@ export const metadata: Metadata = {
 
 function bookingHref(m: Mentor): string {
   if (m.bookingUrl && m.bookingUrl.trim().length > 0) return m.bookingUrl;
+  const to = m.email && m.email.trim().length > 0 ? m.email : BOOKING_EMAIL;
   const subject = `Session request: ${m.name} (${m.title})`;
-  const body = `Hi Fledgy team,
+  const body = `Hi ${m.name},
 
-I'd like to book a 1:1 session with ${m.name}.
+I'd like to book a 1:1 session with you.
 
 My name:
 What I'd like help with:
 My availability (a few options):
 
 Thanks!`;
-  return `mailto:${BOOKING_EMAIL}?subject=${encodeURIComponent(
+  return `mailto:${to}?subject=${encodeURIComponent(
     subject
   )}&body=${encodeURIComponent(body)}`;
 }

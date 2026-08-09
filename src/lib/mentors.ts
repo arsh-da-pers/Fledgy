@@ -16,6 +16,7 @@ export type Mentor = {
   blurb: string;
   sessionLength: string;
   price: string; // e.g. "$29"
+  email?: string; // where "Request a session" is sent; falls back to BOOKING_EMAIL if empty
   bookingUrl?: string; // Calendly / Cal.com link — leave empty until ready
   photo?: string; // e.g. "/mentors/arshkiran.jpg"
   accent: string; // avatar fallback background (used only if no photo)
@@ -37,6 +38,7 @@ export const MENTORS: Mentor[] = [
       "I'm a psychologist at heart — BA in Psychology, then an MSc in Business Psychology from Manchester. Over the years I've mentored 600+ students, taught, and helped people land jobs across the UK, the Gulf and beyond. I've also hired across startups and big corporates and sat in the room where the yes/no actually happens, so I know what gets a CV noticed and what quietly gets it passed over. Come to me for honest, down-to-earth help with your CV, interviews, LinkedIn, uni applications, or just figuring out your next move — and because it's all rooted in psychology, we'll get into why people (and hiring managers) really think the way they do. ✨",
     sessionLength: "30 min",
     price: "$29",
+    email: "arshkiran@fledgy.guide",
     bookingUrl: "",
     photo: "/mentors/arshkiran.jpg",
     accent: "#0f766e",
@@ -50,6 +52,7 @@ export const MENTORS: Mentor[] = [
       "I've spent 4+ years hiring across tech, fintech, crypto and corporate roles, all over the world. I've read thousands of CVs and interviewed people from just about everywhere, so I know what actually makes someone stand out — and what quietly gets them skipped. No fluff, no gatekeeping: just real interview tips, honest CV feedback, LinkedIn help, and career advice that actually makes sense. Whether it's your first job, a career switch, or chasing your next big role, I'll help you work smarter, not harder. ✨",
     sessionLength: "30 min",
     price: "$29",
+    email: "", // TODO: add Hasna's email (provided tomorrow); falls back to hello@fledgy.guide until then
     bookingUrl: "",
     photo: "/mentors/hasna.jpg",
     accent: "#b45309",
@@ -63,6 +66,7 @@ export const MENTORS: Mentor[] = [
       "I've been flying since 2015, so I've been through every stage of this — from wide-eyed cadet to the flight deck. Aviation is brutal to break into: it's long, expensive, and full of steps nobody really explains. So whether you're weighing up flight school, slogging through licenses and ratings, prepping for airline interviews and sim checks, or just wondering if the cockpit is really for you, I'll give it to you straight — what's worth your money, what it's actually like, and how to land that first seat. No sugar-coating, no gatekeeping. ✈️",
     sessionLength: "30 min",
     price: "$29",
+    email: "ajitkahlon@gmail.com",
     bookingUrl: "",
     photo: "/mentors/ajit.jpg",
     accent: "#1d4ed8",
