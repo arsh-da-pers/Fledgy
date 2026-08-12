@@ -3,6 +3,64 @@ import type { Post } from "@/lib/blog";
 // Add new posts to the top of this array. Each post needs a unique `slug`.
 export const posts: Post[] = [
   {
+    slug: "how-to-write-a-cv-with-no-experience",
+    title: "How to Write a CV With No Experience (Student & Graduate Guide)",
+    description:
+      "How to write a strong CV with no work experience — what actually counts, which sections to lead with, and how to turn projects and activities into achievements.",
+    date: "2026-08-09",
+    excerpt:
+      "No jobs yet? You still have plenty to work with. Here's how to build a CV that reads like a strong candidate — using projects, coursework, and activities.",
+    tags: ["cv", "students", "graduates"],
+    body: [
+      {
+        type: "p",
+        text: "Every job seems to want experience, and you can't get experience without a job. It's the most frustrating catch-22 in job hunting — but a strong CV with \"no experience\" is absolutely possible. You have more to work with than you think; the trick is knowing what counts and how to present it.",
+      },
+      { type: "h2", text: "You have more experience than you think" },
+      {
+        type: "p",
+        text: "\"Experience\" isn't only paid, full-time jobs. Coursework, group projects, volunteering, part-time and casual work, clubs and societies, side projects, competitions, and freelancing all count. Employers hiring for entry-level roles expect this — they're looking for evidence of skills and attitude, not a decade of job titles.",
+      },
+      { type: "h2", text: "Lead with your strengths, not your gaps" },
+      {
+        type: "p",
+        text: "With little work history, open with a short personal profile (two or three lines) and your education. The profile says who you are, what you're good at, and what you're looking for. Then let education, projects, and skills carry the weight that job titles normally would.",
+      },
+      { type: "h2", text: "Sections that do the heavy lifting" },
+      {
+        type: "ul",
+        items: [
+          "**Personal profile** — a tight two-to-three line summary aimed at the specific role.",
+          "**Education** — degree, relevant modules, strong grades, and any notable coursework or dissertation.",
+          "**Projects & coursework** — describe what you built or solved and the result, just as you would a job.",
+          "**Volunteering & activities** — leadership, teamwork, and reliability shown in real settings.",
+          "**Skills** — tools, software, languages, and certifications relevant to the role.",
+        ],
+      },
+      { type: "h2", text: "Turn activities into achievements" },
+      {
+        type: "p",
+        text: "The mistake is listing what you were part of. Instead, show what you did and what changed. \"Member of the events society\" says little; \"Organised a 120-person event and grew attendance 30% on the previous year\" shows initiative and results — exactly what a first employer wants to see.",
+      },
+      { type: "h2", text: "Common mistakes" },
+      {
+        type: "ul",
+        items: [
+          "Leaving gaps blank instead of filling them with projects, study, or volunteering.",
+          "Writing \"no experience\" or apologising for it — never draw attention to it.",
+          "Listing duties instead of outcomes, even for non-work activities.",
+          "Sending one generic CV everywhere instead of tailoring the profile and skills to each role.",
+          "Running over one page when you don't need to.",
+        ],
+      },
+      { type: "h2", text: "Check it before you apply" },
+      {
+        type: "p",
+        text: "When you don't have work history to fall back on, presentation matters even more. Fledgy's [free CV scorer](/cv) rates your CV against real hiring norms, flags weak phrasing, and can generate a recruiter-ready rewrite — so a light-on-experience CV still reads like a strong candidate.",
+      },
+    ],
+  },
+  {
     slug: "how-to-write-a-statement-of-purpose-sop",
     title: "How to Write a Statement of Purpose (SOP) for Master's Applications",
     description:
