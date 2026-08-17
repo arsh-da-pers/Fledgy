@@ -3,6 +3,66 @@ import type { Post } from "@/lib/blog";
 // Add new posts to the top of this array. Each post needs a unique `slug`.
 export const posts: Post[] = [
   {
+    slug: "how-to-answer-tell-me-about-yourself",
+    title: "How to Answer \"Tell Me About Yourself\" in an Interview",
+    description:
+      "How to answer \"Tell me about yourself\" in an interview — what interviewers really want, a simple present-past-future formula, an example, and mistakes to avoid.",
+    date: "2026-08-09",
+    excerpt:
+      "It's the first question and the most fumbled. Here's a simple formula for answering \"tell me about yourself\" — what to include, what to cut, and an example.",
+    tags: ["interviews", "job applications", "careers"],
+    body: [
+      {
+        type: "p",
+        text: "\"Tell me about yourself\" is almost always the first question — and one of the most fumbled. It isn't an invitation to recite your life story or read your CV aloud. It's your chance to set the tone and frame everything that follows. Here's how to answer it well.",
+      },
+      { type: "h2", text: "What the interviewer actually wants" },
+      {
+        type: "p",
+        text: "They're not testing your memory of your own CV. They want a quick, relevant sense of who you are professionally and why you're sitting in that chair. A good answer is short — 60 to 90 seconds — focused on the role, and it ends by pointing forward to why you're excited about this job.",
+      },
+      { type: "h2", text: "The present–past–future formula" },
+      {
+        type: "p",
+        text: "The simplest structure that works every time: where you are now, how you got here, and where you want to go — tied to this role.",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Present** — your current role or status in one line: \"I'm a final-year computer science student\" or \"I'm a marketing coordinator with three years in B2B.\"",
+          "**Past** — the one or two experiences that led you here and are relevant to this job. Not everything — just what matters.",
+          "**Future** — why this role, at this company, is the natural next step. This is where you show you actually want it.",
+        ],
+      },
+      { type: "h2", text: "A quick example" },
+      {
+        type: "quote",
+        text: "\"I'm a final-year business student. Over the last two years I've run marketing for our 400-member entrepreneurship society and interned at a fintech startup, where I grew their newsletter from 500 to 4,000 subscribers. I loved the analytical side of that work — which is exactly why this data-focused marketing role caught my eye.\"",
+      },
+      { type: "h2", text: "Common mistakes" },
+      {
+        type: "ul",
+        items: [
+          "Starting at birth — \"I was born in…\". Begin with where you are now.",
+          "Reciting your entire CV line by line — they've already read it.",
+          "Being so vague it could describe anyone (\"I'm a hard worker who loves challenges\").",
+          "Rambling past 90 seconds. Prepare it, time it, and stop.",
+          "Forgetting to connect your answer to this specific role.",
+        ],
+      },
+      { type: "h2", text: "Prepare it — don't memorise it word for word" },
+      {
+        type: "p",
+        text: "Write out your present–past–future, then practise it aloud until it feels natural rather than recited. You want the structure locked in and the delivery loose, so it sounds like you and not a script.",
+      },
+      { type: "h2", text: "Point your answer at the right target" },
+      {
+        type: "p",
+        text: "The best \"tell me about yourself\" answers are aimed at a specific kind of role — which is hard if you're still unsure what you're going for. If that's you, Fledgy's [career quiz](/careers) suggests paths that fit how you actually think and work, so you know exactly what to aim your pitch at.",
+      },
+    ],
+  },
+  {
     slug: "how-to-write-a-cv-with-no-experience",
     title: "How to Write a CV With No Experience (Student & Graduate Guide)",
     description:
