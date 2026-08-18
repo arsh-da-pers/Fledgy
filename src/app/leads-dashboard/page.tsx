@@ -9,12 +9,24 @@ type Lead = {
   name?: string;
   expertise?: string;
   tools?: string[];
+  firstSeen?: string;
 };
 
 const REFRESH_MS = 20000;
 
 function isTest(email: string) {
   return email.startsWith("kv-test") || email.startsWith("reftest-");
+}
+
+function formatDate(iso?: string) {
+  if (!iso) return "—";
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return "—";
+  return d.toLocaleDateString(undefined, {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 }
 
 export default function LeadsDashboard() {
@@ -114,9 +126,13 @@ export default function LeadsDashboard() {
   const all = leads || [];
   const real = all.filter((l) => !isTest(l.email));
   const shown = (showTest ? all : real).slice().sort((a, b) => {
-    // mentors first, then tool users
-    const rank = (l: Lead) => (l.source === "mentors" ? 0 : 1);
-    return rank(a) - rank(b) || a.email.localeCompare(b.email);
+    // Newest first by first-seen date; undated (pre-tracking) rows sink to the
+    // bottom. Ties fall back to email for a stable order.
+    const ta = a.firstSeen ? Date.parse(a.firstSeen) : NaN;
+    const tb = b.firstSeen ? Date.parse(b.firstSeen) : NaN;
+    const va = isNaN(ta) ? -Infinity : ta;
+    const vb = isNaN(tb) ? -Infinity : tb;
+    return vb - va || a.email.localeCompare(b.email);
   });
   const tool = real.filter((l) => l.source === "tool");
   const seekers = real.filter(
@@ -126,8 +142,15 @@ export default function LeadsDashboard() {
     (l) => l.source === "mentors" && l.role === "mentor"
   );
 
+  const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  const newThisWeek = real.filter((l) => {
+    const t = l.firstSeen ? Date.parse(l.firstSeen) : NaN;
+    return !isNaN(t) && t >= weekAgo;
+  }).length;
+
   const tiles = [
     { label: "Total signups", value: real.length },
+    { label: "New this week", value: newThisWeek },
     { label: "Tool users", value: tool.length },
     { label: "Mentor waitlist", value: seekers.length },
     { label: "Mentor applicants", value: experts.length },
@@ -195,7 +218,7 @@ export default function LeadsDashboard() {
 
         {!error && (
           <>
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
               {tiles.map((t) => (
                 <div
                   key={t.label}
@@ -237,6 +260,7 @@ export default function LeadsDashboard() {
               <table className="w-full min-w-[640px] text-left text-sm">
                 <thead>
                   <tr className="border-b border-[#f0dfc4] text-xs uppercase tracking-wide text-[#9c8b6f]">
+                    <th className="px-4 py-3 font-medium">Date</th>
                     <th className="px-4 py-3 font-medium">Email</th>
                     <th className="px-4 py-3 font-medium">Source</th>
                     <th className="px-4 py-3 font-medium">Role</th>
@@ -253,6 +277,9 @@ export default function LeadsDashboard() {
                         isTest(l.email) ? "opacity-40" : ""
                       }`}
                     >
+                      <td className="whitespace-nowrap px-4 py-3 text-[#6b5c45]">
+                        {formatDate(l.firstSeen)}
+                      </td>
                       <td className="px-4 py-3 text-[#2a2115]">{l.email}</td>
                       <td className="px-4 py-3">
                         <span
@@ -294,7 +321,7 @@ export default function LeadsDashboard() {
                   {shown.length === 0 && (
                     <tr>
                       <td
-                        colSpan={6}
+                        colSpan={7}
                         className="px-4 py-8 text-center text-sm text-[#9c8b6f]"
                       >
                         No signups yet.
