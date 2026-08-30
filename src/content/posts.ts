@@ -3,6 +3,67 @@ import type { Post } from "@/lib/blog";
 // Add new posts to the top of this array. Each post needs a unique `slug`.
 export const posts: Post[] = [
   {
+    slug: "how-to-ask-for-a-promotion",
+    title: "How to Ask for a Promotion (and What to Do If the Answer Is Not Yet)",
+    description:
+      "How to ask for a promotion — building your case, timing the conversation, what to say, and how to keep growing if the answer is \"not yet.\"",
+    date: "2026-08-30",
+    excerpt:
+      "Waiting to be noticed rarely works. Here's how to build the case, time the conversation, and keep growing even if the answer isn't yes yet.",
+    tags: ["career growth", "promotion", "working professionals"],
+    body: [
+      {
+        type: "p",
+        text: "Most people wait to be noticed. They put their head down, do good work, and assume someone above them is quietly tracking it and will eventually offer more money or a bigger title. Sometimes that happens. More often, the people who get promoted are the ones who made the case for themselves clearly, at the right time, in the right way. Here's how to do that without it feeling like office politics.",
+      },
+      { type: "h2", text: "Build the case before you ask" },
+      {
+        type: "p",
+        text: "A promotion request is really a proposal: you're asking the business to invest more in you, and you need to show why that's a good bet. Vague confidence (\"I've been here two years and work hard\") doesn't move anyone. Specific, remembered impact does.",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Track outcomes, not tasks.** \"Managed the client onboarding process\" is a task. \"Cut onboarding time from three weeks to nine days, reducing early churn\" is an outcome — the kind a manager can repeat to their own boss.",
+          "**Collect it as you go.** Keep a running note of wins, numbers, and positive feedback the month they happen. Trying to reconstruct a year of impact the night before a review never works as well.",
+          "**Show you're already operating at the next level.** The strongest case isn't \"I'll grow into this role\" — it's \"here's where I've already been doing it.\" Mentoring juniors, owning a project beyond your title, or making decisions your role wasn't designed for all count.",
+          "**Know the gap, not just your strengths.** Look honestly at what separates you from people already at the next level — scope, visibility, a specific skill — and address it directly rather than hoping no one notices.",
+        ],
+      },
+      { type: "h2", text: "Time it deliberately" },
+      {
+        type: "p",
+        text: "Don't wait for an annual review to be the first time your manager hears you want more. By then, budgets and headcount decisions are often already made. Raise your intent to grow well before the formal cycle — a quarter ahead is a reasonable rule of thumb — so your manager has time to build a case for you, not just react to one.",
+      },
+      { type: "h2", text: "How to have the conversation" },
+      {
+        type: "p",
+        text: "Frame it as a discussion about growth, not an ultimatum. Ask directly what it would take to reach the next level, and listen for specifics rather than accepting a vague \"let's see how it goes.\" A useful structure: state your interest in growing into a specific role or level, walk through two or three concrete examples of impact, then ask what gap remains between where you are and where you want to be. Ending with an open question — rather than a demand — keeps the conversation collaborative and gives your manager room to become an advocate.",
+      },
+      { type: "h2", text: "Common mistakes that stall the conversation" },
+      {
+        type: "ul",
+        items: [
+          "Comparing yourself to a coworker's raise or title instead of making the case on your own impact.",
+          "Asking once and then going quiet for a year, instead of checking in on progress regularly.",
+          "Leading with tenure (\"I've been here three years\") instead of evidence of growth.",
+          "Making it purely about money when the real blocker is scope or level — solve the actual gap first.",
+          "Being vague when your manager asks what you want next. Know your target title or scope going in.",
+        ],
+      },
+      { type: "h2", text: "If the answer is \"not yet\"" },
+      {
+        type: "p",
+        text: "A \"not now\" isn't a rejection if you leave the conversation with a clear list of what needs to change and a rough timeline to revisit it. Write down exactly what was said, agree on a check-in date, and then go close the gap — take on the project, build the skill, or get the visibility that was missing. The difference between people who get promoted on the second try and those who don't usually isn't talent; it's whether they actually closed the specific gap they were given.",
+      },
+      { type: "h2", text: "Keep growing, even between promotions" },
+      {
+        type: "p",
+        text: "Not every step forward needs a new title. Broader ownership, a stretch project, or a skill that makes you harder to replace all compound over time — and they're also exactly what you'll cite in your next promotion case. If you're not sure which direction offers the most growth from where you sit, Fledgy's [career quiz](/careers) can help map out paths that fit your strengths and interests. And when a bigger move — a new role, a new company — is actually next, make sure your [CV](/cv) reflects the level you've been operating at, not just the title on the door.",
+      },
+    ],
+  },
+  {
     slug: "how-to-answer-tell-me-about-yourself",
     title: "How to Answer \"Tell Me About Yourself\" in an Interview",
     description:
