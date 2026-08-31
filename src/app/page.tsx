@@ -1,5 +1,6 @@
 import Link from "next/link";
 import HeroArt from "@/components/HeroArt";
+import HeroCta from "@/components/HeroCta";
 import Mark from "@/components/Mark";
 
 export default function Home() {
@@ -10,26 +11,67 @@ export default function Home() {
       </div>
 
       <div className="w-full max-w-3xl px-6 pb-20 pt-8 sm:pb-28">
-        <h1 className="text-4xl font-semibold tracking-tight text-[#2a2115] sm:text-5xl">
-          Grow your wings.
+        <p className="text-xs font-bold uppercase tracking-[0.14em] text-teal-700">
+          Free · no card needed
+        </p>
+        <p
+          className="mt-2 text-xl text-[#b39873]"
+          style={{ fontFamily: "var(--font-dancing), cursive" }}
+        >
+          Grow your wings
+        </p>
+        <h1 className="mt-1 text-4xl font-semibold tracking-tight text-[#2a2115] sm:text-5xl">
+          Find out where you actually stand.
         </h1>
-        <p className="mt-5 max-w-xl text-lg text-[#6b5c45]">
-          Honest, AI-powered feedback on your essay, CV, and career, built for
-          students, applicants, job seekers, and professionals applying from
-          anywhere in the world, not just the US or UK.
+        <p className="mt-4 max-w-xl text-lg text-[#6b5c45]">
+          Honest AI feedback on your career direction, your essay and your CV —
+          built for students applying from anywhere, not just the US and UK.
         </p>
 
-        <div className="mt-8 flex items-center gap-4">
+        <HeroCta />
+
+        {/* Show the output before asking for the input. Replace with a real
+            screenshot of a score result before this goes to a wide audience. */}
+        <div className="mt-6 flex max-w-md items-center gap-4 rounded-xl border border-[#f0dfc4] bg-white p-4">
+          <div className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-full bg-teal-700 text-white">
+            <span className="text-xl font-bold leading-none tabular-nums">72</span>
+            <span className="text-[9px] opacity-85">/100</span>
+          </div>
+          <p className="text-sm text-[#6b5c45]">
+            <span className="block font-semibold text-[#2a2115]">
+              What you get back
+            </span>
+            A blunt score, the three things holding it back, and what to change
+            — in about 60 seconds.
+          </p>
+        </div>
+
+        <div className="mt-5 grid max-w-md grid-cols-3 gap-2 border-t border-[#f0dfc4] pt-4 text-center text-xs text-[#6b5c45]">
+          <p>
+            <span className="block text-sm font-bold text-teal-700">
+              Nothing stored
+            </span>
+            Read, scored, discarded
+          </p>
+          <p>
+            <span className="block text-sm font-bold text-teal-700">
+              60 seconds
+            </span>
+            No sign-up wall
+          </p>
+          <p>
+            <span className="block text-sm font-bold text-teal-700">
+              Any country
+            </span>
+            Not just US/UK
+          </p>
+        </div>
+
+        <div className="mt-14 flex items-center gap-4">
           <Mark size={40} opacity={0.9} />
           <div className="h-px flex-1 bg-[#f0dfc4]" />
           <Mark size={40} opacity={0.9} className="scale-x-[-1]" />
         </div>
-
-        <p className="mt-8 max-w-xl text-[#6b5c45]">
-          Fledgy is with you at every step: finding your direction, sharpening
-          your essay, and shaping a CV that lands, wherever in the world
-          you&apos;re applying. Three tools, one journey, all free to start.
-        </p>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-3">
           <Link
