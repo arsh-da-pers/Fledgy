@@ -89,13 +89,15 @@ export default function CareersPage() {
 
   const subjectOptions = curriculum && curriculum !== "Other" ? SUBJECTS_BY_CURRICULUM[curriculum] : [];
 
+  // The email is asked for at the end (step 2), not here, so nobody has to
+  // hand over an address before seeing a single question.
   const step0Valid =
-    email.trim().length > 3 &&
-    (audience === "student"
+    audience === "student"
       ? curriculum !== ""
       : audience === "switcher" || audience === "advancer"
       ? currentField.trim().length > 1
-      : false);
+      : false;
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   const step1Valid = personalityItems.length > 0 && personalityItems.every((i) => personalityAnswers[i.id]);
   const step2Valid = aptitudeQuestions.length > 0 && aptitudeQuestions.every((q) => aptitudeAnswers[q.id] !== undefined);
 
@@ -191,15 +193,6 @@ export default function CareersPage() {
         {/* Step 0: profile */}
         {step === 0 && !loadingQuestions && (
           <div className="mt-8 space-y-4">
-            <input
-              type="email"
-              className="w-full rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-[#8a6d2f] focus:outline-none"
-              placeholder="Your email (so we can save your result)"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-
             <div>
               <p className="mb-2 text-sm font-medium text-[#3a3629]">
                 Where are you right now?
@@ -452,6 +445,29 @@ export default function CareersPage() {
               </p>
             )}
 
+            {/* The one ask, at the point where it has been earned: they have
+                answered everything and the result is one tap away. */}
+            <div className="rounded-xl border border-[#f0dfc4] bg-white p-4">
+              <label
+                htmlFor="careers-email"
+                className="text-sm font-medium text-[#3a3629]"
+              >
+                Your results are ready. Where should we send them?
+              </label>
+              <input
+                id="careers-email"
+                type="email"
+                className="mt-2 w-full rounded-lg border border-[#f0dfc4] bg-[#fffdf9] px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-[#8a6d2f] focus:outline-none"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <p className="mt-2 text-xs text-[#6b5c45]">
+                We save your result to this address so you can come back to it.
+              </p>
+            </div>
+
             <div className="flex gap-3">
               <button
                 type="button"
@@ -462,7 +478,7 @@ export default function CareersPage() {
               </button>
               <button
                 type="button"
-                disabled={!step2Valid || submitting}
+                disabled={!step2Valid || !emailValid || submitting}
                 onClick={handleSubmit}
                 className="flex-1 rounded-lg bg-[#8a6d2f] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#6f5825] disabled:opacity-40"
               >
