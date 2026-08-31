@@ -15,7 +15,7 @@ export default function HeroCta() {
       </Link>
 
       <p className="mt-2.5 text-center text-sm text-[#6b5c45] sm:text-left">
-        No email needed to start.
+        Free while in early access. Takes about 2 minutes.
       </p>
 
       <p className="mt-5 text-sm text-[#6b5c45]">
