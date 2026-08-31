@@ -18,18 +18,22 @@ export default function HeroCta() {
         No email needed to start.
       </p>
 
-      <div className="mt-4 grid grid-cols-2 gap-3 sm:max-w-md">
+      <p className="mt-5 text-sm text-[#6b5c45]">
+        Already written something? Score it instead:
+      </p>
+
+      <div className="mt-2 grid grid-cols-2 gap-3 sm:max-w-md">
         <Link
           href="/essay"
           onClick={() => track("hero_secondary", { tool: "essay" })}
-          className="rounded-lg border-[1.5px] border-teal-700 px-3 py-2.5 text-center text-sm font-semibold text-teal-700 transition hover:bg-teal-700 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#e2653b]"
+          className="rounded-xl border-[1.5px] border-teal-700 px-4 py-3.5 text-center font-semibold text-teal-700 transition hover:bg-teal-700 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#e2653b]"
         >
           Score my essay
         </Link>
         <Link
           href="/cv"
           onClick={() => track("hero_secondary", { tool: "cv" })}
-          className="rounded-lg border-[1.5px] border-teal-700 px-3 py-2.5 text-center text-sm font-semibold text-teal-700 transition hover:bg-teal-700 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#e2653b]"
+          className="rounded-xl border-[1.5px] border-teal-700 px-4 py-3.5 text-center font-semibold text-teal-700 transition hover:bg-teal-700 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#e2653b]"
         >
           Score my CV
         </Link>

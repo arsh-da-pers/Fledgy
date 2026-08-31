@@ -1,6 +1,7 @@
 import Link from "next/link";
 import HeroArt from "@/components/HeroArt";
 import HeroCta from "@/components/HeroCta";
+import EmailCapture from "@/components/EmailCapture";
 import Mark from "@/components/Mark";
 
 export default function Home() {
@@ -66,6 +67,8 @@ export default function Home() {
             Not just US/UK
           </p>
         </div>
+
+        <EmailCapture />
 
         <div className="mt-14 flex items-center gap-4">
           <Mark size={40} opacity={0.9} />
