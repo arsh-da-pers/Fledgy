@@ -75,7 +75,13 @@ export async function POST(req: NextRequest) {
 Make every experience bullet ACTION- AND RESULTS-BASED:
 - Start each bullet with a strong action verb (Led, Built, Grew, Negotiated, Delivered, Streamlined…), not "Responsible for" or passive phrasing.
 - Surface measurable impact wherever the original content supports it (numbers, %, scale, outcomes). Never invent figures — only quantify where the person's own content gives you something real to work with.
-- Cut duty-listing and filler; keep it tight. Aim for the length norm of the target country (most CVs 1-2 pages; do not pad).
+- Cut duty-listing and filler; keep it tight.
+
+LENGTH — TREAT THIS AS A HARD CONSTRAINT, NOT A PREFERENCE:
+First work out the correct page count for ${country} from that country's actual hiring convention, and from how much real experience this person has. A US or Canadian resume for someone under ten years in is ONE page. The UK, the Gulf, India and most of Europe run to TWO. Very few countries ever want three, and a CV that runs long reads as someone who cannot prioritise — which costs interviews.
+The layout this is typeset into fits roughly 500 words per page. So decide the page count, multiply by 500, and keep the entire CV under that word count. Do not go over it.
+To hit the budget, cut rather than compress: drop the oldest and least relevant roles to a single line each, remove generic skills anyone would claim, delete filler sections, and keep only the bullets that carry real evidence. Never shrink every bullet into vagueness to fit — a shorter CV of specific claims beats a longer one of weak ones.
+Say nothing about length, page count, or what you cut.
 
 Target country: ${country}
 Target field: ${field || "not specified"}

@@ -6,7 +6,7 @@ import PageFaq from "@/components/PageFaq";
 import ReferralInvite from "@/components/ReferralInvite";
 import Paywall from "@/components/Paywall";
 import { CV_ITERATIONS } from "@/lib/products";
-import { printCv } from "@/lib/cvPdf";
+import { printCv, estimatePages } from "@/lib/cvPdf";
 import { fireReferral } from "@/lib/referClient";
 import { uploadAndExtractText } from "@/lib/uploadAndExtract";
 
@@ -435,10 +435,20 @@ export default function CvPage() {
                     </button>
                   </div>
                   <p className="mt-2.5 text-xs leading-relaxed text-ink-faint">
-                    The PDF opens your print dialog — choose{" "}
+                    About {estimatePages(generatedCv)} page
+                    {estimatePages(generatedCv) === 1 ? "" : "s"}. The PDF opens your
+                    print dialog — choose{" "}
                     <span className="font-semibold text-ink-muted">Save as PDF</span> as
                     the destination. On a phone, tap Share then Save to Files.
                   </p>
+                  {estimatePages(generatedCv) > 2 && (
+                    <p className="mt-2 rounded-lg border border-cream-deep bg-cream px-3.5 py-2.5 text-xs leading-relaxed text-ink">
+                      That&apos;s longer than most recruiters read. Hit{" "}
+                      <span className="font-semibold">Rewrite it again</span> and it will
+                      cut to the length {country || "your target country"} actually
+                      expects.
+                    </p>
+                  )}
                 </div>
               )}
             </div>

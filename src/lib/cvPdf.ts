@@ -142,6 +142,15 @@ function renderBlock(b: Block): string {
  * @param photo optional data: URL. Kept in the browser — it is embedded straight
  *              into the print document and never sent to our servers.
  */
+/** Roughly how many A4 pages this CV will print to in the layout above.
+ *  Word count is a good enough proxy at this size; headings and bullet
+ *  spacing are folded into the words-per-page figure. Approximate by design —
+ *  it's there to catch a three-page CV, not to be exact. */
+export function estimatePages(raw: string): number {
+  const words = raw.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / 500));
+}
+
 export function buildCvHtml(raw: string, photo?: string): string {
   const blocks = parseCv(raw);
 
