@@ -110,7 +110,7 @@ export const PRODUCTS: Record<ProductId, Product> = {
     name: "Fledgy CV Report + Written CV",
     tagline: "The full report, and a CV written for you",
     description:
-      "A section-by-section report on your CV for your target country, plus a complete CV rewritten and formatted the way that country's recruiters expect. Rewrite it up to 3 times.",
+      "A section-by-section report on your CV for your target country, plus a complete CV rewritten and formatted the way that country's recruiters expect, downloadable as a polished PDF. Rewrite it up to 3 times.",
     priceCents: 1900,
     priceDisplay: "$19",
     priceDisplayInr: "₹1,599",
@@ -118,6 +118,7 @@ export const PRODUCTS: Record<ProductId, Product> = {
       "A complete CV written for you, formatted for your target country",
       "Cross-cultural checks — photo, age, dates, length and tone, by country",
       "Action-led bullets rewritten to show real impact, never invented",
+      "Download it as a polished, typeset PDF ready to send",
       "3 rewrites, so you can refine it as you apply",
     ],
     iterations: 3,
@@ -138,7 +139,7 @@ export const PRODUCTS: Record<ProductId, Product> = {
     priceDisplayInr: "₹2,099",
     includes: [
       "Everything in the full career report — every matched career and your action plan",
-      "Everything in the CV product — your CV written for your target country",
+      "Everything in the CV product — your CV written for your target country, as a polished PDF",
       "3 CV rewrites included",
       "Saves $12 against buying the two separately",
     ],

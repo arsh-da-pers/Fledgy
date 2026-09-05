@@ -6,6 +6,7 @@ import PageFaq from "@/components/PageFaq";
 import ReferralInvite from "@/components/ReferralInvite";
 import Paywall from "@/components/Paywall";
 import { CV_ITERATIONS } from "@/lib/products";
+import { printCv } from "@/lib/cvPdf";
 import { fireReferral } from "@/lib/referClient";
 import { uploadAndExtractText } from "@/lib/uploadAndExtract";
 
@@ -357,19 +358,24 @@ export default function CvPage() {
                   <div className="mt-3 grid gap-3 sm:grid-cols-2">
                     <button
                       type="button"
-                      onClick={handleDownload}
-                      className="w-full rounded-lg bg-brand-teal px-4 py-3 text-sm font-semibold text-white transition hover:bg-brand-teal-dark"
+                      onClick={() => printCv(generatedCv)}
+                      className="flex w-full items-center justify-center rounded-xl bg-brand-teal px-4 py-3.5 text-base font-semibold text-white transition hover:bg-brand-teal-dark sm:text-sm"
                     >
-                      Download my CV
+                      Download polished PDF
                     </button>
                     <button
                       type="button"
-                      disabled
-                      className="w-full cursor-not-allowed rounded-lg border border-dashed border-cream-deep px-4 py-3 text-sm font-semibold text-ink-faint"
+                      onClick={handleDownload}
+                      className="flex w-full items-center justify-center rounded-xl border border-brand-teal px-4 py-3.5 text-base font-semibold text-brand-teal transition hover:bg-brand-teal-tint sm:text-sm"
                     >
-                      Polished PDF/Word, coming soon
+                      Plain text (.txt)
                     </button>
                   </div>
+                  <p className="mt-2.5 text-xs leading-relaxed text-ink-faint">
+                    The PDF opens your print dialog — choose{" "}
+                    <span className="font-semibold text-ink-muted">Save as PDF</span> as
+                    the destination. On a phone, tap Share then Save to Files.
+                  </p>
                 </div>
               )}
             </div>
