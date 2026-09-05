@@ -1,30 +1,28 @@
-// Turns the plain-text CV the model writes into a properly typeset document
-// and hands it to the browser's print engine, where "Save as PDF" produces the
-// polished file.
+// Turns the plain-text CV the model writes into a typeset document and hands it
+// to the browser's print engine, where "Save as PDF" produces the polished file.
 //
 // WHY NOT A PDF LIBRARY: every option (pdfkit, puppeteer, react-pdf) is a new
 // npm dependency, and this repo's lockfile can't be regenerated without a local
-// npm install. The browser's own engine also does line-breaking, hyphenation
-// and font hinting better than anything we'd hand-roll, and it works on a phone
-// — where "Print" offers Save to Files / share sheet.
+// npm install. The browser's engine also does line-breaking and font hinting
+// better than anything we'd hand-roll, and it works on a phone, where Print
+// offers Save to Files.
 //
-// The document is deliberately NOT Fledgy-branded: cream and orange belong on
-// the site, not on someone's CV. This is a recruiter-facing document, so it's
-// black on white and conservative, with one restrained accent rule.
+// The document is deliberately NOT Fledgy-branded — cream and orange belong on
+// the site, not on a candidate's CV. Near-black on white, with one restrained
+// accent rule.
 
 type Block =
   | { kind: "name"; text: string }
   | { kind: "contact"; text: string }
   | { kind: "section"; text: string }
-  | { kind: "subhead"; text: string }
+  | { kind: "subhead"; text: string; meta?: string }
   | { kind: "bullets"; items: string[] }
   | { kind: "para"; text: string };
 
 const BULLET = /^\s*[-•*–—]\s+/;
 
-// A heading like "PROFESSIONAL EXPERIENCE" — all caps, short, no sentence
-// punctuation. Guards against a shouted sentence inside the body being
-// mistaken for a section.
+// "PROFESSIONAL EXPERIENCE" — all caps, short, no sentence punctuation. The
+// guards stop a shouted sentence in the body being read as a section.
 function isSectionHeading(line: string): boolean {
   const t = line.trim();
   if (t.length === 0 || t.length > 46) return false;
@@ -35,6 +33,19 @@ function isSectionHeading(line: string): boolean {
 
 function looksLikeContact(line: string): boolean {
   return /@|\+\d|\bhttps?:\/\/|linkedin|\|/i.test(line);
+}
+
+// "Head of Sales | Acme, Dubai | 2019 - 2022" -> text + meta, so the date can
+// be set flush right the way a typeset CV does it.
+function splitDate(line: string): { text: string; meta?: string } {
+  const parts = line.split(/\s+[|·—–]\s+/);
+  if (parts.length > 1) {
+    const last = parts[parts.length - 1];
+    if (/(19|20)\d{2}|present|current/i.test(last)) {
+      return { text: parts.slice(0, -1).join(" · "), meta: last };
+    }
+  }
+  return { text: line };
 }
 
 export function parseCv(raw: string): Block[] {
@@ -70,7 +81,6 @@ export function parseCv(raw: string): Block[] {
       return;
     }
 
-    // The line or two straight after the name is usually contact details.
     if (blocks.length <= 2 && looksLikeContact(line)) {
       blocks.push({ kind: "contact", text: line });
       return;
@@ -81,10 +91,14 @@ export function parseCv(raw: string): Block[] {
       return;
     }
 
-    // A short line that introduces bullets is a role/company/date header.
+    // A short line that introduces bullets, or carries a year, is a role header.
     const next = (lines[i + 1] ?? "").trim();
-    if (line.length <= 90 && (BULLET.test(lines[i + 1] ?? "") || /\b(19|20)\d{2}\b/.test(line)) && next !== "") {
-      blocks.push({ kind: "subhead", text: line });
+    if (
+      line.length <= 90 &&
+      (BULLET.test(lines[i + 1] ?? "") || /\b(19|20)\d{2}\b/.test(line)) &&
+      next !== ""
+    ) {
+      blocks.push({ kind: "subhead", ...splitDate(line) });
       return;
     }
 
@@ -103,27 +117,52 @@ function escapeHtml(s: string): string {
     .replace(/"/g, "&quot;");
 }
 
-export function buildCvHtml(raw: string): string {
+function renderBlock(b: Block): string {
+  switch (b.kind) {
+    case "name":
+      return `<h1>${escapeHtml(b.text)}</h1>`;
+    case "contact":
+      return `<p class="contact">${escapeHtml(b.text)}</p>`;
+    case "section":
+      return `<h2>${escapeHtml(b.text)}</h2>`;
+    case "subhead":
+      return b.meta
+        ? `<p class="subhead"><span>${escapeHtml(b.text)}</span><span class="meta">${escapeHtml(
+            b.meta
+          )}</span></p>`
+        : `<p class="subhead">${escapeHtml(b.text)}</p>`;
+    case "bullets":
+      return `<ul>${b.items.map((i) => `<li>${escapeHtml(i)}</li>`).join("")}</ul>`;
+    default:
+      return `<p>${escapeHtml(b.text)}</p>`;
+  }
+}
+
+/**
+ * @param photo optional data: URL. Kept in the browser — it is embedded straight
+ *              into the print document and never sent to our servers.
+ */
+export function buildCvHtml(raw: string, photo?: string): string {
   const blocks = parseCv(raw);
 
-  const body = blocks
-    .map((b) => {
-      switch (b.kind) {
-        case "name":
-          return `<h1>${escapeHtml(b.text)}</h1>`;
-        case "contact":
-          return `<p class="contact">${escapeHtml(b.text)}</p>`;
-        case "section":
-          return `<h2>${escapeHtml(b.text)}</h2>`;
-        case "subhead":
-          return `<p class="subhead">${escapeHtml(b.text)}</p>`;
-        case "bullets":
-          return `<ul>${b.items.map((i) => `<li>${escapeHtml(i)}</li>`).join("")}</ul>`;
-        default:
-          return `<p>${escapeHtml(b.text)}</p>`;
-      }
-    })
+  // Everything before the first section heading is the header block.
+  const firstSection = blocks.findIndex((b) => b.kind === "section");
+  const headBlocks = firstSection === -1 ? blocks : blocks.slice(0, firstSection);
+  const restBlocks = firstSection === -1 ? [] : blocks.slice(firstSection);
+
+  const headHtml = headBlocks
+    .map((b) =>
+      b.kind === "name"
+        ? `<h1>${escapeHtml(b.text)}</h1>`
+        : `<p class="contact">${escapeHtml((b as { text: string }).text)}</p>`
+    )
     .join("\n");
+
+  const photoHtml = photo
+    ? `<div class="photo"><img src="${photo}" alt=""></div>`
+    : "";
+
+  const bodyHtml = restBlocks.map(renderBlock).join("\n");
 
   return `<!doctype html>
 <html lang="en">
@@ -131,77 +170,115 @@ export function buildCvHtml(raw: string): string {
 <meta charset="utf-8">
 <title>CV</title>
 <style>
-  @page { size: A4; margin: 18mm 16mm; }
+  /* margin:0 is deliberate. Browsers draw their own header and footer — the
+     page URL, the date, "1/1" — into the @page margin box, and no CSS can turn
+     those off. With no margin there is nowhere to draw them, so the document
+     comes out clean. The sheet's own padding replaces the margin. */
+  @page { size: A4; margin: 0; }
 
   * { box-sizing: border-box; }
 
-  html, body {
-    margin: 0;
-    padding: 0;
-    background: #fff;
-    color: #14110f;
-  }
+  html, body { margin: 0; padding: 0; background: #fff; color: #14110f; }
 
   body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 10.5pt;
     line-height: 1.45;
     -webkit-font-smoothing: antialiased;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
   }
 
-  .sheet { max-width: 180mm; margin: 0 auto; }
+  .sheet { padding: 15mm 15mm 14mm; }
+
+  .head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8mm;
+  }
+
+  .head-text { flex: 1; min-width: 0; }
 
   h1 {
-    font-size: 21pt;
+    font-size: 23pt;
     font-weight: 700;
-    letter-spacing: -0.01em;
-    margin: 0 0 2mm;
-    line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin: 0 0 1.5mm;
+    line-height: 1.05;
   }
 
   .contact {
-    margin: 0 0 5mm;
-    font-size: 9.5pt;
-    color: #4a4441;
+    margin: 0 0 0.8mm;
+    font-size: 9pt;
+    letter-spacing: 0.02em;
+    color: #5b5450;
+  }
+
+  .photo {
+    width: 28mm;
+    height: 34mm;
+    flex: 0 0 auto;
+    overflow: hidden;
+    border-radius: 1.5mm;
+    background: #ece7e2;
+  }
+
+  .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* The one piece of real ornament: a two-tone rule under the header. */
+  .accent {
+    height: 1.4mm;
+    margin: 4mm 0 6mm;
+    background: linear-gradient(90deg,
+      #1c6b63 0%, #1c6b63 26%,
+      #d9603f 26%, #d9603f 36%,
+      #ded8d3 36%);
   }
 
   h2 {
-    font-size: 9pt;
+    font-size: 8.5pt;
     font-weight: 700;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: #1c6b63;
-    margin: 7mm 0 2.5mm;
+    margin: 6.5mm 0 2.5mm;
     padding-bottom: 1.2mm;
-    border-bottom: 0.6pt solid #c9c3bf;
-    /* Never leave a heading stranded at the foot of a page. */
+    border-bottom: 0.5pt solid #d5cfca;
     break-after: avoid;
     page-break-after: avoid;
   }
 
-  h2:first-of-type { margin-top: 5mm; }
+  h2:first-of-type { margin-top: 0; }
 
   .subhead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 6mm;
     font-weight: 700;
-    margin: 3.5mm 0 1mm;
+    margin: 3.5mm 0 1.2mm;
     font-size: 10.5pt;
     break-after: avoid;
     page-break-after: avoid;
   }
 
+  .subhead .meta {
+    font-weight: 500;
+    font-size: 9pt;
+    color: #6b625d;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
   p { margin: 0 0 2mm; }
 
-  ul {
-    margin: 0 0 2.5mm;
-    padding-left: 4.5mm;
-    list-style: none;
-  }
+  ul { margin: 0 0 2.5mm; padding-left: 4mm; list-style: none; }
 
   li {
     position: relative;
-    margin: 0 0 1.4mm;
-    padding-left: 3.2mm;
-    /* Keep a bullet from splitting across a page break. */
+    margin: 0 0 1.5mm;
+    padding-left: 3.4mm;
     break-inside: avoid;
     page-break-inside: avoid;
   }
@@ -211,21 +288,33 @@ export function buildCvHtml(raw: string): string {
     position: absolute;
     left: 0;
     top: 1.7mm;
-    width: 1.3mm;
-    height: 1.3mm;
+    width: 1.4mm;
+    height: 1.4mm;
     border-radius: 50%;
     background: #1c6b63;
   }
 
-  /* Screen preview only — the print engine drops this. */
   @media screen {
-    body { padding: 10mm; }
+    body { background: #f4f1ed; }
+    .sheet {
+      max-width: 210mm;
+      margin: 8mm auto;
+      background: #fff;
+      box-shadow: 0 2mm 8mm rgba(0,0,0,.14);
+    }
   }
 </style>
 </head>
 <body>
 <div class="sheet">
-${body}
+  <header class="head">
+    <div class="head-text">
+${headHtml}
+    </div>
+${photoHtml}
+  </header>
+  <div class="accent"></div>
+${bodyHtml}
 </div>
 </body>
 </html>`;
@@ -236,23 +325,21 @@ ${body}
  * user picks "Save as PDF". An iframe rather than window.open, because popup
  * blockers eat the latter.
  */
-export function printCv(raw: string): void {
-  const existing = document.getElementById("fledgy-cv-print");
-  if (existing) existing.remove();
+export function printCv(raw: string, photo?: string): void {
+  document.getElementById("fledgy-cv-print")?.remove();
 
   const iframe = document.createElement("iframe");
   iframe.id = "fledgy-cv-print";
   iframe.setAttribute("aria-hidden", "true");
   iframe.style.cssText =
     "position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden;";
-  iframe.srcdoc = buildCvHtml(raw);
+  iframe.srcdoc = buildCvHtml(raw, photo);
 
   iframe.onload = () => {
     const win = iframe.contentWindow;
     if (!win) return;
     win.focus();
     win.print();
-    // Leave it long enough for the dialog to take its snapshot.
     window.setTimeout(() => iframe.remove(), 60_000);
   };
 

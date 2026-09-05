@@ -38,6 +38,9 @@ export default function CvPage() {
   const [iterationsLeft, setIterationsLeft] = useState(0);
   const [exhausted, setExhausted] = useState(false);
 
+  const [photo, setPhoto] = useState<string | null>(null);
+  const [photoError, setPhotoError] = useState<string | null>(null);
+
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [uploadedName, setUploadedName] = useState<string | null>(null);
@@ -148,6 +151,24 @@ export default function CvPage() {
       setUploading(false);
       e.target.value = "";
     }
+  }
+
+  // The photo never leaves the browser: it's read to a data URL and embedded
+  // directly into the print document. Nothing is uploaded.
+  function handlePhoto(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 4_000_000) {
+      setPhotoError("That image is over 4MB — please pick a smaller one.");
+      e.target.value = "";
+      return;
+    }
+    setPhotoError(null);
+    const reader = new FileReader();
+    reader.onload = () => setPhoto(typeof reader.result === "string" ? reader.result : null);
+    reader.onerror = () => setPhotoError("We couldn't read that image.");
+    reader.readAsDataURL(file);
+    e.target.value = "";
   }
 
   function handleDownload() {
@@ -355,10 +376,52 @@ export default function CvPage() {
                   <pre className="max-h-96 overflow-y-auto whitespace-pre-wrap rounded-lg border border-line bg-page p-4 text-xs leading-relaxed text-ink">
                     {generatedCv}
                   </pre>
+                  <div className="mt-4 rounded-xl border border-line bg-page p-4">
+                    <p className="text-sm font-semibold text-ink">
+                      Add a photo to your PDF?
+                    </p>
+                    <p className="mt-1 text-xs leading-relaxed text-ink-muted">
+                      Normal on a CV across the Gulf and much of Asia — and a red flag
+                      in the UK, US and Canada, where it invites discrimination claims.
+                      Optional, and it never leaves your device.
+                    </p>
+                    <div className="mt-3 flex flex-wrap items-center gap-3">
+                      <label className="inline-flex min-h-[44px] cursor-pointer items-center rounded-lg border border-dashed border-cream-deep bg-white px-4 py-2 text-sm font-medium text-ink-muted transition hover:border-brand-teal hover:text-brand-teal">
+                        {photo ? "Change photo" : "Add a photo"}
+                        <input
+                          type="file"
+                          accept="image/png,image/jpeg,image/webp"
+                          className="hidden"
+                          onChange={handlePhoto}
+                        />
+                      </label>
+                      {photo && (
+                        <>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={photo}
+                            alt="Your CV photo"
+                            className="h-12 w-10 rounded object-cover"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setPhoto(null)}
+                            className="text-sm font-medium text-ink-faint underline hover:text-ink"
+                          >
+                            Remove
+                          </button>
+                        </>
+                      )}
+                    </div>
+                    {photoError && (
+                      <p className="mt-2 text-xs text-red-600">{photoError}</p>
+                    )}
+                  </div>
+
                   <div className="mt-3 grid gap-3 sm:grid-cols-2">
                     <button
                       type="button"
-                      onClick={() => printCv(generatedCv)}
+                      onClick={() => printCv(generatedCv, photo ?? undefined)}
                       className="flex w-full items-center justify-center rounded-xl bg-brand-teal px-4 py-3.5 text-base font-semibold text-white transition hover:bg-brand-teal-dark sm:text-sm"
                     >
                       Download polished PDF
