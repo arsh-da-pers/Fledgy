@@ -5,6 +5,7 @@ import { checkAndRecordUsage, isValidEmail, FREE_LIMIT } from "@/lib/usage";
 import { recordToolUse } from "@/lib/leads";
 import { scorePersonality, TRAIT_LABELS, type Trait } from "@/lib/personalityItems";
 import { scoreAptitude } from "@/lib/aptitudeQuestions";
+import { hasProduct, saveReport } from "@/lib/entitlements";
 
 export const runtime = "nodejs";
 
@@ -73,13 +74,19 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const usage = await checkAndRecordUsage(email);
+    // Buyers are never rate-limited by the free cap.
+    const entitled = await hasProduct(email, "careers");
+
+    const usage: { allowed: boolean; remaining?: number } = entitled
+      ? { allowed: true, remaining: undefined }
+      : await checkAndRecordUsage(email, "careers");
+
     if (!usage.allowed) {
       logFeedback({ tool: "waitlist", email, hitTool: "careers" });
       return NextResponse.json(
         {
           paywall: true,
-          error: `You've used your ${FREE_LIMIT} free scores. Paid access is coming soon — we've added you to the list and will email you when it's ready.`,
+          error: `You've used your ${FREE_LIMIT} free runs of the career quiz. Unlock the full report to go deeper.`,
         },
         { status: 402 }
       );
@@ -128,9 +135,11 @@ Subjects studied: ${subjectList}`;
       ? "working adult considering a career switch"
       : "student exploring what to study or do next";
 
-    // EARLY ACCESS: the full report is open for free (badged "early access" in
-    // the UI) — archetype, a warm read, 5-6 matched careers with reasoning, and
-    // a short action plan. Will move behind the paywall later.
+    // The model always produces the whole report. What differs is how much of
+    // it leaves the server: free gets the archetype and the profile read, the
+    // paid bundle gets the matched careers and the action plan. The full text
+    // is parked in KV either way so it can be revealed the instant they buy —
+    // nobody has to retake the quiz after paying.
     const backgroundWord = isSwitcher || isAdvancer ? "background" : "subjects";
     const prompt = `You are Fledgy's career guidance advisor, speaking to a ${audienceNoun}. This is based on a short validated personality snapshot (Mini-IPIP Big Five) and a quick aptitude quiz — directional guidance, not a formal diagnostic.
 
@@ -175,10 +184,30 @@ The careers array must have 5 or 6 items.`;
       aptitudeScore: aptitude.overall,
     });
 
+    const careers = Array.isArray(parsed?.careers) ? parsed.careers : [];
+    const nextSteps = Array.isArray(parsed?.next_steps) ? parsed.next_steps : [];
+
+    await saveReport(email, { careers, next_steps: nextSteps });
+
+    // The free tier is a genuine taste, never the whole thing: the scores, the
+    // career type, the profile read, and the FIRST matched career with its
+    // reasoning. The remaining careers and the action plan are always paid.
+    // Anything withheld is withheld server-side — trimming it in the UI alone
+    // would still leave it readable in the network tab.
+    const freeCareers = careers.slice(0, 1);
+
     return NextResponse.json({
       traits,
       aptitude,
-      ...parsed,
+      archetype: parsed?.archetype,
+      summary: parsed?.summary,
+      careers: entitled ? careers : freeCareers,
+      next_steps: entitled ? nextSteps : [],
+      locked: !entitled,
+      // How many are being held back, so the paywall can say so honestly.
+      lockedCareerCount: entitled ? 0 : Math.max(0, careers.length - freeCareers.length),
+      totalCareerCount: careers.length,
+      entitled,
       usesRemaining: usage.remaining,
     });
   } catch (err) {

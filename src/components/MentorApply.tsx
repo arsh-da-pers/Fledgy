@@ -41,9 +41,9 @@ export default function MentorApply() {
 
   if (done) {
     return (
-      <div className="rounded-2xl border border-[#e7d3bc] bg-white p-6 text-center shadow-sm">
-        <p className="text-lg font-semibold text-[#2a2115]">Thanks for applying!</p>
-        <p className="mt-1 text-sm text-[#6b5c45]">
+      <div className="rounded-2xl border border-line bg-white p-6 text-center shadow-sm">
+        <p className="text-lg font-semibold text-ink">Thanks for applying!</p>
+        <p className="mt-1 text-sm text-ink-muted">
           We&apos;ll be in touch about mentoring on Fledgy.
         </p>
       </div>
@@ -53,13 +53,13 @@ export default function MentorApply() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-4 rounded-2xl border border-[#e7d3bc] bg-white p-6 shadow-sm"
+      className="space-y-4 rounded-2xl border border-line bg-white p-6 shadow-sm"
     >
       <div>
-        <p className="text-base font-semibold text-[#2a2115]">
+        <p className="text-base font-semibold text-ink">
           Are you an expert? Become a mentor
         </p>
-        <p className="mt-1 text-sm text-[#6b5c45]">
+        <p className="mt-1 text-sm text-ink-muted">
           Recruiters, hiring managers, and specialists — share your experience
           and earn from 1:1 sessions.
         </p>
@@ -67,13 +67,13 @@ export default function MentorApply() {
 
       <div className="grid gap-3 sm:grid-cols-2">
         <input
-          className="rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-teal-700 focus:outline-none"
+          className="rounded-lg border border-line bg-white px-4 py-3 text-sm text-ink placeholder-ink-faint focus:border-brand-teal focus:outline-none"
           placeholder="Your name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <input
-          className="rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-teal-700 focus:outline-none"
+          className="rounded-lg border border-line bg-white px-4 py-3 text-sm text-ink placeholder-ink-faint focus:border-brand-teal focus:outline-none"
           placeholder="Your field (e.g. Tech recruiting)"
           value={expertise}
           onChange={(e) => setExpertise(e.target.value)}
@@ -82,7 +82,7 @@ export default function MentorApply() {
 
       <input
         type="email"
-        className="w-full rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-teal-700 focus:outline-none"
+        className="w-full rounded-lg border border-line bg-white px-4 py-3 text-sm text-ink placeholder-ink-faint focus:border-brand-teal focus:outline-none"
         placeholder="Your email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
@@ -94,7 +94,7 @@ export default function MentorApply() {
       <button
         type="submit"
         disabled={!valid || submitting}
-        className="w-full rounded-lg bg-teal-700 px-4 py-3 text-sm font-semibold text-white transition hover:bg-teal-800 disabled:opacity-40"
+        className="w-full rounded-lg bg-brand-teal px-4 py-3 text-sm font-semibold text-white transition hover:bg-brand-teal-dark disabled:opacity-40"
       >
         {submitting ? "Sending…" : "Apply to mentor"}
       </button>

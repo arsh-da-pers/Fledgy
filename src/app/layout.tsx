@@ -44,7 +44,7 @@ export default function RootLayout({
       lang="en"
       className={`h-full antialiased ${dancingScript.variable} ${quicksand.variable}`}
     >
-      <body className="min-h-full flex flex-col bg-[#fdf3e7] text-[#2a2115]">
+      <body className="min-h-full flex flex-col bg-page text-ink">
         <RefCapture />
         <Header />
         {children}

@@ -13,30 +13,30 @@ export default function BlogIndex() {
   const posts = getAllPosts();
 
   return (
-    <main className="flex flex-1 flex-col items-center bg-[#fdf3e7]">
-      <div className="w-full max-w-2xl px-6 py-10 sm:py-14">
-        <span className="inline-block rounded-full bg-[#fbe3d8] px-2.5 py-1 text-xs font-bold tracking-widest text-[#b6431f]">
+    <main className="flex flex-1 flex-col items-center bg-page">
+      <div className="w-full max-w-2xl px-5 py-10 sm:px-6 sm:py-14">
+        <span className="inline-block rounded-full bg-brand-orange-tint px-2.5 py-1 text-xs font-bold tracking-widest text-brand-orange-dark">
           FLEDGY BLOG
         </span>
-        <h1 className="mt-3 text-[26px] font-semibold text-[#2a2115] sm:text-3xl">
+        <h1 className="mt-3 text-[26px] font-semibold text-ink sm:text-3xl">
           Advice for applying abroad
         </h1>
-        <p className="mt-2 text-[#6b5c45]">
+        <p className="mt-2 text-ink-muted">
           Practical guides on personal statements, CVs, and choosing your path —
           written for students, applicants, job seekers, and professionals.
         </p>
 
         <div className="mt-10 space-y-8">
           {posts.map((post) => (
-            <article key={post.slug} className="border-b border-[#f0dfc4] pb-8">
+            <article key={post.slug} className="border-b border-line pb-8">
               <Link href={`/blog/${post.slug}`} className="group block">
-                <h2 className="text-xl font-semibold text-[#2a2115] group-hover:text-[#c8532c]">
+                <h2 className="text-xl font-semibold text-ink group-hover:text-brand-orange">
                   {post.title}
                 </h2>
-                <p className="mt-2 text-base leading-relaxed text-[#6b5c45]">
+                <p className="mt-2 text-base leading-relaxed text-ink-muted">
                   {post.excerpt}
                 </p>
-                <span className="mt-3 inline-block text-sm font-medium text-[#c8532c]">
+                <span className="mt-3 inline-block text-sm font-medium text-brand-orange">
                   Read more →
                 </span>
               </Link>

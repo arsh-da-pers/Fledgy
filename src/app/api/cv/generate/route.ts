@@ -1,7 +1,9 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { logFeedback } from "@/lib/logFeedback";
-import { checkAndRecordUsage, isValidEmail, FREE_LIMIT } from "@/lib/usage";
+import { isValidEmail } from "@/lib/usage";
+import { consumeIteration, refundIteration } from "@/lib/entitlements";
+import { CV_ITERATIONS } from "@/lib/products";
 
 export const runtime = "nodejs";
 
@@ -29,13 +31,28 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const usage = await checkAndRecordUsage(email);
-    if (!usage.allowed) {
+    // The written CV is the paid product. Scoring a CV stays free — that lives
+    // in /api/cv — but having one written for you needs the bundle, and each
+    // rewrite spends one of the buyer's iterations.
+    const iteration = await consumeIteration(email, "cv");
+
+    if (!iteration.allowed) {
+      if (iteration.reason === "exhausted") {
+        logFeedback({ tool: "cv_generate_exhausted", email });
+        return NextResponse.json(
+          {
+            exhausted: true,
+            error: `You've used all ${CV_ITERATIONS} of your CV rewrites. Your last version is still yours to download.`,
+          },
+          { status: 403 }
+        );
+      }
+
       logFeedback({ tool: "waitlist", email, hitTool: "cv_generate" });
       return NextResponse.json(
         {
           paywall: true,
-          error: `You've used your ${FREE_LIMIT} free scores. Paid access is coming soon — we've added you to the list and will email you when it's ready.`,
+          error: "Unlock the bundle to have your CV written for you.",
         },
         { status: 402 }
       );
@@ -70,16 +87,24 @@ ${cv}
 
 Output ONLY the rewritten CV as clean plain text, ready to copy or download — use clear section headings (e.g. PROFILE, EXPERIENCE, EDUCATION, SKILLS) in upper case, and simple line breaks between entries. Do not include any commentary, explanation, or markdown formatting — just the CV text itself.`;
 
-    const msg = await anthropic.messages.create({
-      model: "claude-sonnet-4-5",
-      max_tokens: 1600,
-      messages: [{ role: "user", content: prompt }],
-    });
+    const msg = await anthropic.messages
+      .create({
+        model: "claude-sonnet-4-5",
+        max_tokens: 1600,
+        messages: [{ role: "user", content: prompt }],
+      })
+      .catch(async (err) => {
+        // Generation failed after we'd already spent one of their three —
+        // give it straight back before surfacing the error.
+        await refundIteration(email, "cv");
+        throw err;
+      });
 
     const textBlock = msg.content.find((b) => b.type === "text");
     const generatedCv = textBlock && "text" in textBlock ? textBlock.text.trim() : "";
 
     if (!generatedCv) {
+      await refundIteration(email, "cv");
       throw new Error("No content generated");
     }
 
@@ -90,7 +115,12 @@ Output ONLY the rewritten CV as clean plain text, ready to copy or download — 
       field: field || null,
     });
 
-    return NextResponse.json({ cv: generatedCv, usesRemaining: usage.remaining });
+    return NextResponse.json({
+      cv: generatedCv,
+      iterationsUsed: iteration.used,
+      iterationsLeft: iteration.remaining,
+      iterationsTotal: CV_ITERATIONS,
+    });
   } catch (err) {
     console.error(err);
     return NextResponse.json(

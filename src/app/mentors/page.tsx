@@ -31,7 +31,7 @@ function MentorCard({ m }: { m: Mentor }) {
   const external = !!(m.bookingUrl && m.bookingUrl.trim().length > 0);
   const href = bookingHref(m);
   return (
-    <div className="flex flex-col rounded-2xl border border-[#f0dfc4] bg-white p-6 shadow-sm">
+    <div className="card-lift flex flex-col rounded-2xl border border-line bg-white p-5 shadow-sm sm:p-6">
       <div className="flex items-center gap-4">
         {m.photo ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -49,8 +49,8 @@ function MentorCard({ m }: { m: Mentor }) {
           </div>
         )}
         <div>
-          <p className="text-base font-semibold text-[#2a2115]">{m.name}</p>
-          <p className="text-sm text-[#6b5c45]">{m.title}</p>
+          <p className="text-base font-semibold text-ink">{m.name}</p>
+          <p className="text-sm text-ink-muted">{m.title}</p>
         </div>
       </div>
 
@@ -58,28 +58,28 @@ function MentorCard({ m }: { m: Mentor }) {
         {m.areas.map((a) => (
           <span
             key={a}
-            className="rounded-full bg-[#f3ece0] px-2.5 py-1 text-xs font-medium text-[#7a6647]"
+            className="rounded-full bg-cream px-2.5 py-1 text-xs font-medium text-ink-muted"
           >
             {a}
           </span>
         ))}
       </div>
 
-      <p className="mt-4 flex-1 text-sm leading-relaxed text-[#6b5c45]">
+      <p className="mt-4 flex-1 text-sm leading-relaxed text-ink-muted">
         {m.blurb}
       </p>
 
-      <div className="mt-5 flex items-center justify-between border-t border-[#f2e6d3] pt-4">
+      <div className="mt-5 flex items-center justify-between border-t border-cream pt-4">
         <div className="leading-tight">
-          <span className="text-lg font-bold text-[#2a2115]">{m.price}</span>
-          <span className="text-sm text-[#9c8b6f]"> · {m.sessionLength}</span>
+          <span className="text-lg font-bold text-ink">{m.price}</span>
+          <span className="text-sm text-ink-faint"> · {m.sessionLength}</span>
         </div>
         <a
           href={href}
           {...(external
             ? { target: "_blank", rel: "noopener noreferrer" }
             : {})}
-          className="rounded-lg bg-teal-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-teal-800"
+          className="rounded-lg bg-brand-teal px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-teal-dark"
         >
           {external ? "Book a session →" : "Request a session →"}
         </a>
@@ -90,19 +90,19 @@ function MentorCard({ m }: { m: Mentor }) {
 
 export default function MentorsPage() {
   return (
-    <main className="flex flex-1 flex-col items-center bg-[#fdf3e7]">
-      <div className="w-full max-w-5xl px-6 py-12">
+    <main className="flex flex-1 flex-col items-center bg-page">
+      <div className="w-full max-w-5xl px-5 py-10 sm:px-6 sm:py-12">
         {/* Header */}
         <div className="flex items-start justify-between">
-          <span className="inline-block rounded-full bg-[#d7ece7] px-2.5 py-1 text-xs font-bold tracking-widest text-teal-800">
+          <span className="inline-block rounded-full bg-brand-teal-tint px-2.5 py-1 text-xs font-bold tracking-widest text-brand-teal-dark">
             FLEDGY MENTORS
           </span>
           <Mark size={40} opacity={0.85} />
         </div>
-        <h1 className="mt-3 max-w-2xl text-3xl font-semibold text-[#2a2115] sm:text-4xl">
+        <h1 className="mt-3 max-w-2xl text-3xl font-semibold text-ink sm:text-4xl">
           Book 1:1 with people who&apos;ve been there
         </h1>
-        <p className="mt-2 max-w-2xl text-[#6b5c45]">
+        <p className="mt-2 max-w-2xl text-ink-muted">
           Real, honest advice from people who&apos;ve actually done it — a
           recruiter, a pilot, a career psychologist. Book a focused 30-minute
           chat about your career, uni plans, CV, or whatever&apos;s on your mind.
@@ -129,19 +129,19 @@ export default function MentorsPage() {
           ].map((s) => (
             <div
               key={s.n}
-              className="rounded-xl border border-[#f0dfc4] bg-white p-4"
+              className="rounded-xl border border-line bg-white p-4"
             >
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-teal-700 text-sm font-bold text-white">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-teal text-sm font-bold text-white">
                 {s.n}
               </span>
-              <p className="mt-3 text-sm font-semibold text-[#2a2115]">{s.t}</p>
-              <p className="mt-1 text-sm text-[#6b5c45]">{s.d}</p>
+              <p className="mt-3 text-sm font-semibold text-ink">{s.t}</p>
+              <p className="mt-1 text-sm text-ink-muted">{s.d}</p>
             </div>
           ))}
         </div>
 
         {/* Mentor grid */}
-        <h2 className="mt-12 text-xl font-semibold text-[#2a2115]">
+        <h2 className="mt-12 text-xl font-semibold text-ink">
           Meet the mentors
         </h2>
         <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -159,13 +159,13 @@ export default function MentorsPage() {
         <div className="mt-10 grid gap-3 sm:grid-cols-2">
           <a
             href="/careers"
-            className="rounded-lg border border-[#c9b98a] px-4 py-3 text-center text-sm font-semibold text-[#8a6d2f] hover:bg-[#faf3e3]"
+            className="rounded-lg border border-cream-deep px-4 py-3 text-center text-sm font-semibold text-brand-teal hover:bg-cream"
           >
             Try the career quiz →
           </a>
           <a
             href="/cv"
-            className="rounded-lg border border-teal-600 px-4 py-3 text-center text-sm font-semibold text-teal-700 hover:bg-teal-50"
+            className="rounded-lg border border-brand-teal px-4 py-3 text-center text-sm font-semibold text-brand-teal hover:bg-brand-teal-tint"
           >
             Score my CV →
           </a>

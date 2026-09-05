@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Mark from "@/components/Mark";
 import PageFaq from "@/components/PageFaq";
 import ReferralInvite from "@/components/ReferralInvite";
+import Paywall from "@/components/Paywall";
+import { CV_ITERATIONS } from "@/lib/products";
 import { fireReferral } from "@/lib/referClient";
 import { uploadAndExtractText } from "@/lib/uploadAndExtract";
 
@@ -12,6 +14,9 @@ type Result = {
   tips: string[];
   one_line_verdict: string;
   usesRemaining?: number;
+  locked?: boolean;
+  lockedTipCount?: number;
+  entitled?: boolean;
 };
 
 export default function CvPage() {
@@ -28,6 +33,9 @@ export default function CvPage() {
   const [generateError, setGenerateError] = useState<string | null>(null);
   const [generatePaywall, setGeneratePaywall] = useState(false);
   const [generatedCv, setGeneratedCv] = useState<string | null>(null);
+  const [entitled, setEntitled] = useState(false);
+  const [iterationsLeft, setIterationsLeft] = useState(0);
+  const [exhausted, setExhausted] = useState(false);
 
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -37,6 +45,29 @@ export default function CvPage() {
     const saved = window.localStorage.getItem("fledgy_email");
     if (saved) setEmail(saved);
   }, []);
+
+  // Ask what this email owns, so a buyer returning from Stripe (or on another
+  // device) gets the writer rather than the paywall.
+  const checkEntitlement = useCallback(async (forEmail: string) => {
+    if (!forEmail || !forEmail.includes("@")) return;
+    try {
+      const res = await fetch("/api/entitlement", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: forEmail, product: "cv" }),
+      });
+      const data = await res.json();
+      setEntitled(Boolean(data.entitled));
+      setIterationsLeft(data.iterationsLeft ?? 0);
+    } catch {
+      // Leave the paywall up if we can't tell.
+    }
+  }, []);
+
+  useEffect(() => {
+    const t = setTimeout(() => checkEntitlement(email), 400);
+    return () => clearTimeout(t);
+  }, [email, checkEntitlement]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -60,6 +91,7 @@ export default function CvPage() {
         throw new Error(data.error || "Something went wrong.");
       }
       setResult(data);
+      if (data.locked) checkEntitlement(email);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
@@ -80,9 +112,16 @@ export default function CvPage() {
       const data = await res.json();
       if (!res.ok) {
         if (data.paywall) setGeneratePaywall(true);
+        if (data.exhausted) {
+          setExhausted(true);
+          setIterationsLeft(0);
+        }
         throw new Error(data.error || "Something went wrong.");
       }
       setGeneratedCv(data.cv);
+      if (typeof data.iterationsLeft === "number") {
+        setIterationsLeft(data.iterationsLeft);
+      }
     } catch (err) {
       setGenerateError(
         err instanceof Error ? err.message : "Something went wrong."
@@ -122,18 +161,18 @@ export default function CvPage() {
   }
 
   return (
-    <main className="flex flex-1 flex-col items-center bg-[#fdf3e7]">
-      <div className="w-full max-w-2xl px-6 py-12">
+    <main className="flex flex-1 flex-col items-center bg-page">
+      <div className="w-full max-w-2xl px-5 py-10 sm:px-6 sm:py-12">
         <div className="flex items-start justify-between">
-          <span className="inline-block rounded-full bg-[#d7f0ec] px-2.5 py-1 text-xs font-bold tracking-widest text-teal-800">
+          <span className="inline-block rounded-full bg-brand-teal-tint px-2.5 py-1 text-xs font-bold tracking-widest text-brand-teal-dark">
             FREE · CV CONSULTATION
           </span>
           <Mark size={40} opacity={0.85} />
         </div>
-        <h1 className="mt-3 text-3xl font-semibold text-[#2a2115]">
+        <h1 className="mt-3 text-3xl font-semibold text-ink">
           Score my CV
         </h1>
-        <p className="mt-2 text-[#6b5c45]">
+        <p className="mt-2 text-ink-muted">
           Tell us where you&apos;re applying. We score for that country&apos;s
           hiring culture, not just generic ATS keywords.
         </p>
@@ -141,7 +180,7 @@ export default function CvPage() {
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <input
             type="email"
-            className="w-full rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-teal-600 focus:outline-none"
+            className="w-full rounded-lg border border-line bg-white px-4 py-3 text-sm text-ink placeholder-ink-faint focus:border-brand-teal focus:outline-none"
             placeholder="Your email (so we can save your free scores)"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -149,21 +188,21 @@ export default function CvPage() {
           />
           <div className="grid gap-4 sm:grid-cols-2">
             <input
-              className="rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-teal-600 focus:outline-none"
+              className="rounded-lg border border-line bg-white px-4 py-3 text-sm text-ink placeholder-ink-faint focus:border-brand-teal focus:outline-none"
               placeholder="Target country (e.g. United Kingdom)"
               value={country}
               onChange={(e) => setCountry(e.target.value)}
               required
             />
             <input
-              className="rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-teal-600 focus:outline-none"
+              className="rounded-lg border border-line bg-white px-4 py-3 text-sm text-ink placeholder-ink-faint focus:border-brand-teal focus:outline-none"
               placeholder="Field (e.g. Finance & Banking)"
               value={field}
               onChange={(e) => setField(e.target.value)}
             />
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-dashed border-[#c9b98a] bg-white px-4 py-2 text-sm font-medium text-[#6b5c45] transition hover:border-teal-600 hover:text-teal-700">
+            <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-dashed border-cream-deep bg-white px-4 py-2 text-sm font-medium text-ink-muted transition hover:border-brand-teal hover:text-brand-teal">
               {uploading ? "Reading your file…" : "Upload PDF, Word, or photo"}
               <input
                 type="file"
@@ -173,12 +212,12 @@ export default function CvPage() {
                 disabled={uploading}
               />
             </label>
-            <span className="text-xs text-[#b0a186]">
+            <span className="text-xs text-ink-faint">
               {uploadedName ? `Loaded: ${uploadedName}` : "or paste your CV text below"}
             </span>
           </div>
           {uploading && (
-            <p className="text-xs text-teal-700">
+            <p className="text-xs text-brand-teal">
               Fledgy is reading your document and extracting the text — a PDF
               can take up to ~20 seconds. Please keep this tab open.
             </p>
@@ -186,12 +225,12 @@ export default function CvPage() {
           {uploadError && (
             <p className="text-xs text-red-600">{uploadError}</p>
           )}
-          <p className="text-xs text-[#9c8b6f]">
+          <p className="text-xs text-ink-faint">
             🔒 Private by design: Fledgy reads your file to score it, then
             discards it. We don&apos;t store your CV.
           </p>
           <textarea
-            className="h-64 w-full rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-teal-600 focus:outline-none"
+            className="h-64 w-full rounded-lg border border-line bg-white px-4 py-3 text-sm text-ink placeholder-ink-faint focus:border-brand-teal focus:outline-none"
             placeholder="Paste your CV text here..."
             value={cv}
             onChange={(e) => setCv(e.target.value)}
@@ -200,18 +239,18 @@ export default function CvPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-teal-700 px-4 py-3 text-sm font-semibold text-white transition hover:bg-teal-800 disabled:opacity-50"
+            className="w-full rounded-lg bg-brand-teal px-4 py-3 text-sm font-semibold text-white transition hover:bg-brand-teal-dark disabled:opacity-50"
           >
             {loading ? "Reading your CV…" : "Get my free score"}
           </button>
         </form>
 
         {error && paywall && (
-          <div className="mt-6 rounded-lg border border-[#f4d9a8] bg-[#fdf0d9] px-5 py-4">
-            <p className="text-sm font-semibold text-[#7a5b26]">
+          <div className="mt-6 rounded-lg border border-cream-deep bg-cream px-5 py-4">
+            <p className="text-sm font-semibold text-ink">
               You&apos;re on the waitlist
             </p>
-            <p className="mt-1 text-sm text-[#7a5b26]">{error}</p>
+            <p className="mt-1 text-sm text-ink">{error}</p>
             <ReferralInvite email={email} />
           </div>
         )}
@@ -222,31 +261,31 @@ export default function CvPage() {
         )}
 
         {result && (
-          <div className="mt-8 rounded-xl border border-[#f0dfc4] bg-white p-6 shadow-sm">
+          <div className="mt-8 card-lift rounded-2xl border border-line bg-white p-5 shadow-sm sm:p-6">
             <div className="flex items-start justify-between">
               <div className="flex items-baseline gap-3">
-                <span className="text-4xl font-semibold text-teal-700">
+                <span className="text-4xl font-semibold text-brand-teal">
                   {result.score}
                 </span>
-                <span className="text-[#b0a186]">/ 100</span>
+                <span className="text-ink-faint">/ 100</span>
               </div>
               <Mark size={38} opacity={0.75} />
             </div>
-            <p className="mt-2 text-sm italic text-[#3a3629]">
+            <p className="mt-2 text-sm italic text-ink">
               {result.one_line_verdict}
             </p>
             <ul className="mt-4 space-y-2">
               {result.tips.map((tip, i) => (
-                <li key={i} className="flex gap-2 text-sm text-[#3a3629]">
-                  <span className="text-teal-700">•</span>
+                <li key={i} className="flex gap-2 text-sm text-ink">
+                  <span className="text-brand-teal">•</span>
                   <span>{tip}</span>
                 </li>
               ))}
             </ul>
-            <p className="mt-5 text-xs text-[#b0a186]">
-              This is the free surface-level score. The full paid report
-              (section-by-section rewrite, deeper cultural dos/don&apos;ts) is
-              coming in a later version.
+            <p className="mt-5 text-xs text-ink-faint">
+              {result.locked
+                ? "That's your free score, verdict and first fix."
+                : "Your full report."}
               {typeof result.usesRemaining === "number" && (
                 <>
                   {" "}
@@ -256,31 +295,53 @@ export default function CvPage() {
               )}
             </p>
 
-            <div className="mt-6 border-t border-[#f0dfc4] pt-6">
-              <h2 className="text-sm font-semibold text-[#2a2115]">
-                Want an actual improved draft, not just a score?
-              </h2>
-              <p className="mt-1 text-sm text-[#6b5c45]">
-                We&apos;ll rewrite your CV into the structure and format{" "}
-                {country || "your target country"}&apos;s recruiters expect.
-                Free, plain text.
-              </p>
-              <button
-                type="button"
-                onClick={handleGenerate}
-                disabled={generating}
-                className="mt-4 w-full rounded-lg border border-teal-700 px-4 py-3 text-sm font-semibold text-teal-700 transition hover:bg-teal-50 disabled:opacity-50"
-              >
-                {generating ? "Rewriting your CV…" : "Generate my improved CV, free"}
-              </button>
-
-              {generateError && generatePaywall && (
-                <div className="mt-4 rounded-lg border border-[#f4d9a8] bg-[#fdf0d9] px-5 py-4">
-                  <p className="text-sm font-semibold text-[#7a5b26]">
-                    You&apos;re on the waitlist
+            <div className="mt-6 border-t border-line pt-6">
+              {entitled ? (
+                <>
+                  <h2 className="text-base font-semibold text-ink sm:text-sm">
+                    Have your CV written for you
+                  </h2>
+                  <p className="mt-1 text-sm leading-relaxed text-ink-muted">
+                    We&apos;ll rewrite it into the structure and format{" "}
+                    {country || "your target country"}&apos;s recruiters expect —
+                    action-led bullets, the right length, no filler.
                   </p>
-                  <p className="mt-1 text-sm text-[#7a5b26]">{generateError}</p>
-                </div>
+                  <p className="mt-2 text-xs font-semibold text-brand-teal">
+                    {iterationsLeft} of {CV_ITERATIONS} rewrites left
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleGenerate}
+                    disabled={generating || iterationsLeft < 1}
+                    className="mt-4 flex w-full items-center justify-center rounded-xl bg-brand-teal px-4 py-3.5 text-base font-semibold text-white transition hover:bg-brand-teal-dark disabled:opacity-50 sm:text-sm"
+                  >
+                    {generating
+                      ? "Writing your CV…"
+                      : generatedCv
+                      ? "Rewrite it again"
+                      : "Write my CV"}
+                  </button>
+
+                  {exhausted && (
+                    <p className="mt-3 rounded-lg border border-cream-deep bg-cream px-4 py-3 text-sm leading-relaxed text-ink">
+                      You&apos;ve used all {CV_ITERATIONS} rewrites. Your latest version is
+                      still below and yours to download.
+                    </p>
+                  )}
+                </>
+              ) : (
+                <Paywall
+                  product="cv"
+                  bundle="cv_careers"
+                  email={email}
+                  heading="Want the rest of the report, and the CV written for you?"
+                  subheading={`Your score, verdict and first fix are free and always will be. Unlocking gives you every fix, plus a complete CV written and formatted for ${country || "your target country"}.`}
+                  teaser={
+                    result.lockedTipCount
+                      ? `${result.lockedTipCount} more fixes found in your CV`
+                      : undefined
+                  }
+                />
               )}
               {generateError && !generatePaywall && (
                 <p className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -290,21 +351,21 @@ export default function CvPage() {
 
               {generatedCv && (
                 <div className="mt-4">
-                  <pre className="max-h-96 overflow-y-auto whitespace-pre-wrap rounded-lg border border-[#f0dfc4] bg-[#fdf9f0] p-4 text-xs leading-relaxed text-[#2a2115]">
+                  <pre className="max-h-96 overflow-y-auto whitespace-pre-wrap rounded-lg border border-line bg-page p-4 text-xs leading-relaxed text-ink">
                     {generatedCv}
                   </pre>
                   <div className="mt-3 grid gap-3 sm:grid-cols-2">
                     <button
                       type="button"
                       onClick={handleDownload}
-                      className="w-full rounded-lg bg-teal-700 px-4 py-3 text-sm font-semibold text-white transition hover:bg-teal-800"
+                      className="w-full rounded-lg bg-brand-teal px-4 py-3 text-sm font-semibold text-white transition hover:bg-brand-teal-dark"
                     >
-                      Download as .txt, free
+                      Download my CV
                     </button>
                     <button
                       type="button"
                       disabled
-                      className="w-full cursor-not-allowed rounded-lg border border-dashed border-[#c9b98a] px-4 py-3 text-sm font-semibold text-[#9c8b6f]"
+                      className="w-full cursor-not-allowed rounded-lg border border-dashed border-cream-deep px-4 py-3 text-sm font-semibold text-ink-faint"
                     >
                       Polished PDF/Word, coming soon
                     </button>

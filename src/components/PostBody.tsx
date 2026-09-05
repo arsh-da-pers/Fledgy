@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import type { Block } from "@/lib/blog";
 
 const linkClass =
-  "text-[#c8532c] underline underline-offset-2 hover:text-[#e2653b]";
+  "text-brand-orange underline underline-offset-2 hover:text-brand-orange";
 
 // Supports **bold** and [label](url) inline. Internal links (starting with "/")
 // use next/link; external links open in a new tab.
@@ -60,7 +60,7 @@ export default function PostBody({ body }: { body: Block[] }) {
             return (
               <h2
                 key={i}
-                className="mt-10 text-xl font-semibold leading-snug text-[#2a2115] sm:text-2xl"
+                className="mt-10 text-xl font-semibold leading-snug text-ink sm:text-2xl"
               >
                 {renderInline(block.text)}
               </h2>
@@ -69,7 +69,7 @@ export default function PostBody({ body }: { body: Block[] }) {
             return (
               <h3
                 key={i}
-                className="mt-8 text-lg font-semibold text-[#2a2115] sm:text-xl"
+                className="mt-8 text-lg font-semibold text-ink sm:text-xl"
               >
                 {renderInline(block.text)}
               </h3>
@@ -80,9 +80,9 @@ export default function PostBody({ body }: { body: Block[] }) {
                 {block.items.map((item, j) => (
                   <li
                     key={j}
-                    className="flex gap-2.5 text-base leading-relaxed text-[#4a3f2d]"
+                    className="flex gap-2.5 text-base leading-relaxed text-ink-muted"
                   >
-                    <span className="mt-px text-[#e2653b]">•</span>
+                    <span className="mt-px text-brand-orange">•</span>
                     <span>{renderInline(item)}</span>
                   </li>
                 ))}
@@ -92,7 +92,7 @@ export default function PostBody({ body }: { body: Block[] }) {
             return (
               <blockquote
                 key={i}
-                className="border-l-4 border-[#e2a68a] pl-4 text-base italic leading-relaxed text-[#6b5c45]"
+                className="border-l-4 border-brand-orange-tint pl-4 text-base italic leading-relaxed text-ink-muted"
               >
                 {renderInline(block.text)}
               </blockquote>
@@ -102,7 +102,7 @@ export default function PostBody({ body }: { body: Block[] }) {
             return (
               <p
                 key={i}
-                className="text-base leading-relaxed text-[#4a3f2d]"
+                className="text-base leading-relaxed text-ink-muted"
               >
                 {renderInline(block.text)}
               </p>

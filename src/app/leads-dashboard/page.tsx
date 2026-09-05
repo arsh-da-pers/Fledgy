@@ -94,27 +94,27 @@ export default function LeadsDashboard() {
   // Gate: ask for the key if we don't have one.
   if (!key) {
     return (
-      <main className="flex flex-1 flex-col items-center justify-center bg-[#fdf3e7] px-6 py-16">
+      <main className="flex flex-1 flex-col items-center justify-center bg-page px-6 py-16">
         <form
           onSubmit={submitKey}
-          className="w-full max-w-sm rounded-2xl border border-[#e7d3bc] bg-white p-6 shadow-sm"
+          className="w-full max-w-sm rounded-2xl border border-line bg-white p-6 shadow-sm"
         >
-          <h1 className="text-xl font-semibold text-[#2a2115]">
+          <h1 className="text-xl font-semibold text-ink">
             Fledgy Leads
           </h1>
-          <p className="mt-1 text-sm text-[#6b5c45]">
+          <p className="mt-1 text-sm text-ink-muted">
             Enter your admin key to view signups.
           </p>
           <input
             type="password"
-            className="mt-4 w-full rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-[#e2653b] focus:outline-none"
+            className="mt-4 w-full rounded-lg border border-line bg-white px-4 py-3 text-sm text-ink placeholder-ink-faint focus:border-brand-orange focus:outline-none"
             placeholder="Admin key"
             value={keyInput}
             onChange={(e) => setKeyInput(e.target.value)}
           />
           <button
             type="submit"
-            className="mt-3 w-full rounded-lg bg-[#e2653b] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#c8532c]"
+            className="mt-3 w-full rounded-lg bg-brand-orange px-4 py-3 text-sm font-semibold text-white transition hover:bg-brand-orange"
           >
             View dashboard
           </button>
@@ -173,14 +173,14 @@ export default function LeadsDashboard() {
   };
 
   return (
-    <main className="flex flex-1 flex-col items-center bg-[#fdf3e7]">
-      <div className="w-full max-w-4xl px-6 py-10">
+    <main className="flex flex-1 flex-col items-center bg-page">
+      <div className="w-full max-w-4xl px-5 py-10 sm:px-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-semibold text-[#2a2115]">
+            <h1 className="text-2xl font-semibold text-ink">
               Fledgy Leads
             </h1>
-            <p className="mt-1 text-xs text-[#9c8b6f]">
+            <p className="mt-1 text-xs text-ink-faint">
               {updatedAt
                 ? `Live · updated ${updatedAt.toLocaleTimeString()}${
                     loading ? " · refreshing…" : ""
@@ -191,19 +191,19 @@ export default function LeadsDashboard() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => load(key)}
-              className="rounded-lg border border-[#e2a68a] px-3 py-2 text-sm font-medium text-[#c8532c] hover:bg-[#fdf0e8]"
+              className="rounded-lg border border-brand-orange-tint px-3 py-2 text-sm font-medium text-brand-orange hover:bg-brand-orange-tint"
             >
               Refresh
             </button>
             <a
               href={`/api/leads?key=${encodeURIComponent(key)}&format=csv`}
-              className="rounded-lg bg-[#e2653b] px-3 py-2 text-sm font-semibold text-white hover:bg-[#c8532c]"
+              className="rounded-lg bg-brand-orange px-3 py-2 text-sm font-semibold text-white hover:bg-brand-orange"
             >
               Export CSV
             </a>
             <button
               onClick={signOut}
-              className="rounded-lg border border-[#f0dfc4] px-3 py-2 text-sm text-[#6b5c45] hover:bg-white"
+              className="rounded-lg border border-line px-3 py-2 text-sm text-ink-muted hover:bg-white"
             >
               Sign out
             </button>
@@ -222,12 +222,12 @@ export default function LeadsDashboard() {
               {tiles.map((t) => (
                 <div
                   key={t.label}
-                  className="rounded-xl border border-[#f0dfc4] bg-white p-4"
+                  className="rounded-xl border border-line bg-white p-4"
                 >
-                  <p className="text-3xl font-semibold text-[#2a2115]">
+                  <p className="text-3xl font-semibold text-ink">
                     {t.value}
                   </p>
-                  <p className="mt-1 text-xs font-medium text-[#6b5c45]">
+                  <p className="mt-1 text-xs font-medium text-ink-muted">
                     {t.label}
                   </p>
                 </div>
@@ -235,19 +235,19 @@ export default function LeadsDashboard() {
             </div>
 
             <div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
-              <span className="font-medium text-[#6b5c45]">Tool usage:</span>
+              <span className="font-medium text-ink-muted">Tool usage:</span>
               {(["essay", "cv", "careers"] as const).map((t) => (
                 <span
                   key={t}
-                  className="rounded-full border border-[#f0dfc4] bg-white px-3 py-1 text-[#6b5c45]"
+                  className="rounded-full border border-line bg-white px-3 py-1 text-ink-muted"
                 >
-                  {toolLabels[t]}: <b className="text-[#2a2115]">{toolUsage[t]}</b>
+                  {toolLabels[t]}: <b className="text-ink">{toolUsage[t]}</b>
                 </span>
               ))}
-              <span className="text-[#b0a186]">(recorded from now on)</span>
+              <span className="text-ink-faint">(recorded from now on)</span>
             </div>
 
-            <label className="mt-4 flex items-center gap-2 text-xs text-[#9c8b6f]">
+            <label className="mt-4 flex items-center gap-2 text-xs text-ink-faint">
               <input
                 type="checkbox"
                 checked={showTest}
@@ -256,10 +256,10 @@ export default function LeadsDashboard() {
               Show test rows
             </label>
 
-            <div className="mt-3 overflow-x-auto rounded-xl border border-[#f0dfc4] bg-white">
+            <div className="mt-3 overflow-x-auto rounded-xl border border-line bg-white">
               <table className="w-full min-w-[640px] text-left text-sm">
                 <thead>
-                  <tr className="border-b border-[#f0dfc4] text-xs uppercase tracking-wide text-[#9c8b6f]">
+                  <tr className="border-b border-line text-xs uppercase tracking-wide text-ink-faint">
                     <th className="px-4 py-3 font-medium">Date</th>
                     <th className="px-4 py-3 font-medium">Email</th>
                     <th className="px-4 py-3 font-medium">Source</th>
@@ -273,35 +273,35 @@ export default function LeadsDashboard() {
                   {shown.map((l) => (
                     <tr
                       key={l.email}
-                      className={`border-b border-[#f7ecd9] ${
+                      className={`border-b border-cream ${
                         isTest(l.email) ? "opacity-40" : ""
                       }`}
                     >
-                      <td className="whitespace-nowrap px-4 py-3 text-[#6b5c45]">
+                      <td className="whitespace-nowrap px-4 py-3 text-ink-muted">
                         {formatDate(l.firstSeen)}
                       </td>
-                      <td className="px-4 py-3 text-[#2a2115]">{l.email}</td>
+                      <td className="px-4 py-3 text-ink">{l.email}</td>
                       <td className="px-4 py-3">
                         <span
                           className={`rounded-full px-2 py-0.5 text-xs font-medium ${
                             l.source === "mentors"
-                              ? "bg-[#d7ece7] text-teal-800"
-                              : "bg-[#fbe3d8] text-[#b6431f]"
+                              ? "bg-brand-teal-tint text-brand-teal-dark"
+                              : "bg-brand-orange-tint text-brand-orange-dark"
                           }`}
                         >
                           {l.source || "tool"}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-[#6b5c45]">
+                      <td className="px-4 py-3 text-ink-muted">
                         {l.role || "—"}
                       </td>
-                      <td className="px-4 py-3 text-[#6b5c45]">
+                      <td className="px-4 py-3 text-ink-muted">
                         {l.name || "—"}
                       </td>
-                      <td className="px-4 py-3 text-[#6b5c45]">
+                      <td className="px-4 py-3 text-ink-muted">
                         {l.expertise || "—"}
                       </td>
-                      <td className="px-4 py-3 text-[#6b5c45]">
+                      <td className="px-4 py-3 text-ink-muted">
                         {l.tools && l.tools.length
                           ? l.tools
                               .map((t) =>
@@ -322,7 +322,7 @@ export default function LeadsDashboard() {
                     <tr>
                       <td
                         colSpan={7}
-                        className="px-4 py-8 text-center text-sm text-[#9c8b6f]"
+                        className="px-4 py-8 text-center text-sm text-ink-faint"
                       >
                         No signups yet.
                       </td>
