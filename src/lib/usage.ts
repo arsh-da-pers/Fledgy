@@ -17,7 +17,12 @@ import { kv } from "@vercel/kv";
 export const FREE_LIMIT = 3;
 
 /** The tools that meter free usage separately. */
-export type MeteredTool = "essay" | "cv" | "careers";
+export type MeteredTool =
+  | "essay"
+  | "cv"
+  | "careers"
+  | "cv_generate"
+  | "essay_rewrite";
 
 export type UsageCheck =
   | { allowed: true; count: number; remaining: number }

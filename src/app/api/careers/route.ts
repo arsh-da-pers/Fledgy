@@ -6,6 +6,7 @@ import { recordToolUse } from "@/lib/leads";
 import { scorePersonality, TRAIT_LABELS, type Trait } from "@/lib/personalityItems";
 import { scoreAptitude } from "@/lib/aptitudeQuestions";
 import { hasProduct, saveReport } from "@/lib/entitlements";
+import { PAYWALLS_ENABLED } from "@/lib/products";
 
 export const runtime = "nodejs";
 
@@ -77,9 +78,13 @@ export async function POST(req: NextRequest) {
     // Buyers are never rate-limited by the free cap.
     const entitled = await hasProduct(email, "careers");
 
-    const usage: { allowed: boolean; remaining?: number } = entitled
-      ? { allowed: true, remaining: undefined }
-      : await checkAndRecordUsage(email, "careers");
+    // Only a real purchase lifts the free cap. When PAYWALLS_ENABLED is false
+    // everyone reads as entitled, so without this guard nothing would be
+    // metered at all and the model spend would be unbounded.
+    const usage: { allowed: boolean; remaining?: number } =
+      PAYWALLS_ENABLED && entitled
+        ? { allowed: true, remaining: undefined }
+        : await checkAndRecordUsage(email, "careers");
 
     if (!usage.allowed) {
       logFeedback({ tool: "waitlist", email, hitTool: "careers" });

@@ -10,7 +10,7 @@
 // retry — or the webhook and the return page racing each other — is safe.
 
 import { kv } from "@vercel/kv";
-import { PRODUCTS, grantedBy, type ProductId } from "@/lib/products";
+import { PAYWALLS_ENABLED, PRODUCTS, grantedBy, type ProductId } from "@/lib/products";
 
 export type Owned = {
   purchasedAt: string;
@@ -52,6 +52,9 @@ export async function getEntitlements(email: string): Promise<Entitlements> {
 }
 
 export async function hasProduct(email: string, product: ProductId): Promise<boolean> {
+  // Paywalls off: everyone gets everything. See PAYWALLS_ENABLED.
+  if (!PAYWALLS_ENABLED) return true;
+
   const owned = await getEntitlements(email);
   return Boolean(owned[product]);
 }
@@ -100,6 +103,11 @@ export async function consumeIteration(
   email: string,
   product: ProductId
 ): Promise<IterationCheck> {
+  // Paywalls off: rewrites aren't metered, since nobody paid for a quota.
+  if (!PAYWALLS_ENABLED) {
+    return { allowed: true, used: 0, remaining: PRODUCTS[product].iterations };
+  }
+
   const owned = await getEntitlements(email);
   const entry = owned[product];
 

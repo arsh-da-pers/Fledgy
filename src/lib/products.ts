@@ -50,7 +50,23 @@ export type Product = {
 };
 
 /**
- * Master switch. While false, /api/checkout refuses to create a Stripe session
+ * THE KILL SWITCH. While false, nothing on the site is gated — every tool
+ * behaves as though the visitor owns everything, paywalls never render, and no
+ * checkout is offered. Use it whenever the paid experience can't be honoured:
+ * before the live Stripe key exists, during an outage, or to pull selling
+ * without reverting code.
+ *
+ * The rule it protects: never show someone a paywall we can't take money
+ * through. A visitor who is offered less for free AND cannot buy the rest is
+ * strictly worse off than before we shipped any of this.
+ *
+ * TO TURN PAYMENTS ON: add STRIPE_SECRET_KEY for Production in Vercel, then
+ * set this to true and deploy. That is the whole change.
+ */
+export const PAYWALLS_ENABLED = false;
+
+/**
+ * Master switch for pricing. While false, /api/checkout refuses to create a Stripe session
  * and every paywall shows a "pricing soon" state, so nobody can be charged
  * mid-change. Flip to false to pull all selling at once without redeploying
  * page by page.

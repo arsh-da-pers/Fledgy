@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { logFeedback } from "@/lib/logFeedback";
 import { hasProduct } from "@/lib/entitlements";
+import { PAYWALLS_ENABLED } from "@/lib/products";
 import { checkAndRecordUsage, isValidEmail, FREE_LIMIT } from "@/lib/usage";
 import { recordToolUse } from "@/lib/leads";
 
@@ -40,9 +41,13 @@ export async function POST(req: NextRequest) {
     // Buyers are never rate-limited by the free cap.
     const entitled = await hasProduct(email, "cv");
 
-    const usage: { allowed: boolean; remaining?: number } = entitled
-      ? { allowed: true, remaining: undefined }
-      : await checkAndRecordUsage(email, "cv");
+    // Only a real purchase lifts the free cap. When PAYWALLS_ENABLED is false
+    // everyone reads as entitled, so without this guard nothing would be
+    // metered at all and the model spend would be unbounded.
+    const usage: { allowed: boolean; remaining?: number } =
+      PAYWALLS_ENABLED && entitled
+        ? { allowed: true, remaining: undefined }
+        : await checkAndRecordUsage(email, "cv");
 
     if (!usage.allowed) {
       logFeedback({ tool: "waitlist", email, hitTool: "cv" });

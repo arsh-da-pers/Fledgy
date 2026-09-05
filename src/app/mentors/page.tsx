@@ -104,8 +104,8 @@ export default function MentorsPage() {
         </h1>
         <p className="mt-2 max-w-2xl text-ink-muted">
           Real, honest advice from people who&apos;ve actually done it — a
-          recruiter, a pilot, a career psychologist. Book a focused 30-minute
-          chat about your career, uni plans, CV, or whatever&apos;s on your mind.
+          recruiter, a pilot, a career psychologist. A focused 30-minute chat
+          about your career, uni plans, CV, or whatever&apos;s on your mind.
         </p>
 
         {/* How it works */}
@@ -140,15 +140,31 @@ export default function MentorsPage() {
           ))}
         </div>
 
-        {/* Mentor grid */}
-        <h2 className="mt-12 text-xl font-semibold text-ink">
-          Meet the mentors
-        </h2>
-        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {MENTORS.map((m) => (
-            <MentorCard key={m.id} m={m} />
-          ))}
-        </div>
+        {/* Mentor grid — empty until each mentor has agreed to appear. */}
+        {MENTORS.length > 0 ? (
+          <>
+            <h2 className="mt-12 text-xl font-semibold text-ink">
+              Meet the mentors
+            </h2>
+            <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {MENTORS.map((m) => (
+                <MentorCard key={m.id} m={m} />
+              ))}
+            </div>
+          </>
+        ) : (
+          <div className="mt-12 rounded-2xl border border-cream-deep bg-cream p-6">
+            <h2 className="text-xl font-semibold text-ink">
+              Our first mentors are joining shortly
+            </h2>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-muted">
+              We&apos;re opening bookings with a small group — a recruiter, a
+              commercial pilot, and a career psychologist — at $29 for 30 minutes.
+              Want first pick of the slots? Tell us what you need help with below and
+              we&apos;ll come to you when it opens.
+            </p>
+          </div>
+        )}
 
         {/* Become a mentor */}
         <div className="mt-12">

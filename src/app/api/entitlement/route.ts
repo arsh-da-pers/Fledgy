@@ -6,7 +6,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getEntitlements, getReport } from "@/lib/entitlements";
 import { isValidEmail } from "@/lib/usage";
-import { PRODUCTS, isProductId, type ProductId } from "@/lib/products";
+import { PAYWALLS_ENABLED, PRODUCTS, isProductId, type ProductId } from "@/lib/products";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -17,6 +17,18 @@ export async function POST(req: NextRequest) {
 
     if (!email || !isValidEmail(email)) {
       return NextResponse.json({ entitled: false, iterationsLeft: 0, owned: [] });
+    }
+
+    // Paywalls off: report full access so no page renders a paywall.
+    if (!PAYWALLS_ENABLED) {
+      const target = isProductId(product) ? product : null;
+      return NextResponse.json({
+        entitled: true,
+        owned: Object.keys(PRODUCTS),
+        iterationsLeft: target ? PRODUCTS[target].iterations : 0,
+        iterationsTotal: target ? PRODUCTS[target].iterations : 0,
+        report: includeReport ? await getReport(email) : null,
+      });
     }
 
     const owned = await getEntitlements(email);

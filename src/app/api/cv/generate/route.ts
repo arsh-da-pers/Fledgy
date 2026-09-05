@@ -1,9 +1,9 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { logFeedback } from "@/lib/logFeedback";
-import { isValidEmail } from "@/lib/usage";
+import { checkAndRecordUsage, isValidEmail, FREE_LIMIT } from "@/lib/usage";
 import { consumeIteration, refundIteration } from "@/lib/entitlements";
-import { CV_ITERATIONS } from "@/lib/products";
+import { CV_ITERATIONS, PAYWALLS_ENABLED } from "@/lib/products";
 
 export const runtime = "nodejs";
 
@@ -34,6 +34,22 @@ export async function POST(req: NextRequest) {
     // The written CV is the paid product. Scoring a CV stays free — that lives
     // in /api/cv — but having one written for you needs the bundle, and each
     // rewrite spends one of the buyer's iterations.
+    // While paywalls are off nobody has bought a quota, so consumeIteration
+    // always allows — meter these against the free cap instead, or this
+    // endpoint is an uncapped model-spend hole.
+    if (!PAYWALLS_ENABLED) {
+      const free = await checkAndRecordUsage(email, "cv_generate");
+      if (!free.allowed) {
+        return NextResponse.json(
+          {
+            paywall: true,
+            error: `You've used your ${FREE_LIMIT} free CV rewrites. More coming soon.`,
+          },
+          { status: 402 }
+        );
+      }
+    }
+
     const iteration = await consumeIteration(email, "cv");
 
     if (!iteration.allowed) {

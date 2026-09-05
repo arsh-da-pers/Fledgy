@@ -28,7 +28,7 @@ export const BOOKING_EMAIL = "hello@fledgy.guide";
 // Flat launch price for a 1:1 session. Change per-mentor in the array if needed.
 export const DEFAULT_PRICE = "$29";
 
-export const MENTORS: Mentor[] = [
+const PENDING_MENTORS: Mentor[] = [
   {
     id: "arshkiran",
     name: "Arshkiran",
@@ -72,6 +72,29 @@ export const MENTORS: Mentor[] = [
     accent: "#1d4ed8",
   },
 ];
+
+// ---------------------------------------------------------------------------
+// NOT YET PUBLIC.
+//
+// The three profiles above are finished but held back until each person has
+// agreed to their name, photo and bio appearing on fledgy.guide. Hasna and
+// Ajit had not confirmed as of 2026-09-05, and publishing someone's likeness
+// without that is not ours to decide.
+//
+// TO PUBLISH: move the people who HAVE agreed into MENTORS below, and restore
+// their photos, which were removed from the deploy so they aren't fetchable at
+// a guessable URL:  git checkout a1e6855 -- public/mentors/
+// Before you
+// do, also fix the two things that are wrong for launch —
+//   • hasna.email is empty, so her requests fall back to hello@fledgy.guide,
+//     which is Ajit's mailbox
+//   • ajit.email is a personal Gmail sitting in a public mailto on a page
+//     that is in the sitemap; give him an @fledgy.guide address
+// ---------------------------------------------------------------------------
+export const MENTORS: Mentor[] = [];
+
+// Referenced so the held-back profiles don't trip the unused-variable lint.
+export const PENDING_MENTOR_COUNT = PENDING_MENTORS.length;
 
 export function initials(name: string): string {
   return name

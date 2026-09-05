@@ -4,9 +4,9 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { logFeedback } from "@/lib/logFeedback";
-import { isValidEmail } from "@/lib/usage";
+import { checkAndRecordUsage, isValidEmail, FREE_LIMIT } from "@/lib/usage";
 import { consumeIteration, refundIteration } from "@/lib/entitlements";
-import { ESSAY_ITERATIONS } from "@/lib/products";
+import { ESSAY_ITERATIONS, PAYWALLS_ENABLED } from "@/lib/products";
 
 export const runtime = "nodejs";
 
@@ -26,6 +26,22 @@ export async function POST(req: NextRequest) {
         { error: "Please paste a bit more of your essay (at least 50 characters)." },
         { status: 400 }
       );
+    }
+
+    // While paywalls are off nobody has bought a quota, so consumeIteration
+    // always allows — meter these against the free cap instead, or this
+    // endpoint is an uncapped model-spend hole.
+    if (!PAYWALLS_ENABLED) {
+      const free = await checkAndRecordUsage(email, "essay_rewrite");
+      if (!free.allowed) {
+        return NextResponse.json(
+          {
+            paywall: true,
+            error: `You've used your ${FREE_LIMIT} free essay rewrites. More coming soon.`,
+          },
+          { status: 402 }
+        );
+      }
     }
 
     const iteration = await consumeIteration(email, "essay");
