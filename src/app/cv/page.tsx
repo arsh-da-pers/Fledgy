@@ -284,7 +284,7 @@ export default function CvPage() {
             </ul>
             <p className="mt-5 text-xs text-ink-faint">
               {result.locked
-                ? "That's your free score, verdict and first fix."
+                ? "That's your free score, verdict and two fixes."
                 : "Your full report."}
               {typeof result.usesRemaining === "number" && (
                 <>
@@ -335,10 +335,10 @@ export default function CvPage() {
                   bundle="cv_careers"
                   email={email}
                   heading="Want the rest of the report, and the CV written for you?"
-                  subheading={`Your score, verdict and first fix are free and always will be. Unlocking gives you every fix, plus a complete CV written and formatted for ${country || "your target country"}.`}
+                  subheading={`Your score, verdict and two fixes are free and always will be. Unlocking adds the highest-impact fixes — the ones that actually move the needle — plus a complete CV written and formatted for ${country || "your target country"}.`}
                   teaser={
                     result.lockedTipCount
-                      ? `${result.lockedTipCount} more fixes found in your CV`
+                      ? `Your ${result.lockedTipCount} biggest fixes are still locked`
                       : undefined
                   }
                 />

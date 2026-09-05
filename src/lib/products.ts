@@ -101,7 +101,7 @@ export const PRODUCTS: Record<ProductId, Product> = {
     iterations: 0,
     returnTo: "/careers",
     freeTier:
-      "Your personality and aptitude scores, your career type, your profile read, and your first matched career — always free.",
+      "Your personality and aptitude scores, your career type, your profile read, and one of your matched careers — always free.",
     grants: [],
   },
 
@@ -123,7 +123,7 @@ export const PRODUCTS: Record<ProductId, Product> = {
     iterations: 3,
     returnTo: "/cv",
     freeTier:
-      "Your score out of 100, an honest verdict, and your first fix — always free.",
+      "Your score out of 100, an honest verdict, and two real fixes — always free.",
     grants: [],
   },
 

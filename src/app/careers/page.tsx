@@ -587,10 +587,12 @@ export default function CareersPage() {
                     ? "Your other growth directions are ready"
                     : "Your other matched careers are ready"
                 }
-                subheading="That's one of them. The full report names every career matched to your scores, explains why each one fits you specifically, and gives you the action plan to get there."
+                subheading="That's one of your matches — not your strongest. The full report ranks every career matched to your scores, starting with your best fit, explains why each one suits you specifically, and gives you the action plan to get there."
                 teaser={
                   result.lockedCareerCount
-                    ? `${result.lockedCareerCount} more matched to your results`
+                    ? result.lockedCareerCount > 1
+                      ? `Your top match plus ${result.lockedCareerCount - 1} more`
+                      : "Your top match is still locked"
                     : undefined
                 }
               />
@@ -602,8 +604,8 @@ export default function CareersPage() {
                   <h2 className="text-lg font-semibold text-ink">
                     {result.locked
                       ? audience === "advancer"
-                        ? "Your first direction"
-                        : "Your first match"
+                        ? "One of your directions"
+                        : "One of your matches"
                       : audience === "advancer"
                       ? "Directions to grow into"
                       : "Careers that fit you"}
@@ -616,7 +618,7 @@ export default function CareersPage() {
                   {result.careers.map((c, i) => (
                     <div key={i} className="rounded-lg border border-line bg-white p-4">
                       <p className="text-sm font-semibold text-ink">
-                        {i + 1}. {c.title}
+                        {result.locked ? c.title : `${i + 1}. ${c.title}`}
                       </p>
                       <p className="mt-1 text-sm text-ink-muted">{c.why}</p>
                     </div>

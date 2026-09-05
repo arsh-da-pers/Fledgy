@@ -84,16 +84,21 @@ Judge the CV on these, in priority order, and score honestly:
 2. ACTION- AND RESULTS-BASED WRITING. Strong CVs lead each bullet with a punchy action verb and show measurable IMPACT (numbers, %, scale, outcomes) — not a passive list of duties/"responsible for". Penalise duty-listing, vague, passive phrasing, and reward quantified achievements.
 3. LENGTH & FOCUS. Most CVs should be 1-2 pages (1 for students/early-career). If the CV is clearly too long, padded, or dense, flag it — a 3+ page CV is usually a red flag, not a strength. Reward tight, relevant, well-prioritised content.
 
-Give a free, surface-level review only (the full paid report goes deeper). Return ONLY valid JSON, no other text, in this exact shape:
+Give the FULL review — every fix worth making. The server decides how much of it the reader has paid to see, so never hold back here and never mention free, paid, or unlocking.
+
+ORDER THE TIPS BY IMPACT, STRONGEST FIRST. tips[0] must be the single change that would most improve this CV's chances in ${country}; the last entry is the least significant. This ordering is load-bearing, so weigh it properly rather than listing them in the order you happened to notice them.
+
+Return ONLY valid JSON, no other text, in this exact shape:
 {
   "score": <integer 0-100, honest, not inflated>,
-  "tips": ["<at least one country-specific cultural norm point>", "<at least one on making bullets more action-led and quantified, IF the CV needs it>", "<a tip on length/focus or another top issue>"],
+  "tips": ["<the single highest-impact fix>", "<the next highest>", "<...>", "<...>", "<the least significant fix>"],
   "one_line_verdict": "<one blunt sentence on how ready this CV is for that country's recruiters>"
-}`;
+}
+Give 5 or 6 tips. Include at least one country-specific cultural norm point, at least one on making bullets more action-led and quantified if the CV needs it, and one on length/focus — placed at whatever rank their actual impact warrants.`;
 
     const msg = await anthropic.messages.create({
       model: "claude-sonnet-4-5",
-      max_tokens: 700,
+      max_tokens: 1100,
       messages: [{ role: "user", content: prompt }],
     });
 
@@ -110,11 +115,14 @@ Give a free, surface-level review only (the full paid report goes deeper). Retur
       verdict: parsed.one_line_verdict,
     });
 
-    // Free is a genuine glimpse — the honest score, the verdict, and the first
-    // concrete fix. The rest of the report is paid. Withheld server-side, so
-    // it can't be read out of the network tab.
-    const allTips = Array.isArray(parsed?.tips) ? parsed.tips : [];
-    const tips = entitled ? allTips : allTips.slice(0, 1);
+    // Free is a genuine glimpse: the honest score, the verdict, and two real
+    // fixes — but the LEAST significant two. The model ranks tips strongest
+    // first, so the free tier serves from the end of that list and the fixes
+    // that would move the needle most are what unlocking buys. Sliced
+    // server-side, so the withheld ones can't be read out of the network tab.
+    const allTips: string[] = Array.isArray(parsed?.tips) ? parsed.tips : [];
+    const FREE_TIPS = 2;
+    const tips = entitled ? allTips : allTips.slice(-FREE_TIPS);
 
     return NextResponse.json({
       ...parsed,

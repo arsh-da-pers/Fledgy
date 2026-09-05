@@ -164,7 +164,7 @@ Return ONLY valid JSON, no other text, in this exact shape:
   ],
   "next_steps": ["<step 1>", "<step 2>", "<step 3>"]
 }
-The careers array must have 5 or 6 items.`;
+The careers array must have 5 or 6 items, ORDERED BEST-FIT FIRST: careers[0] is the strongest match for this person, the last entry is the weakest of the good options. This ordering is load-bearing, so rank them properly rather than listing them as they occurred to you. Never mention free, paid, or unlocking — the server decides how much of this the reader has paid to see.`;
 
     const msg = await anthropic.messages.create({
       model: "claude-sonnet-4-5",
@@ -189,12 +189,13 @@ The careers array must have 5 or 6 items.`;
 
     await saveReport(email, { careers, next_steps: nextSteps });
 
-    // The free tier is a genuine taste, never the whole thing: the scores, the
-    // career type, the profile read, and the FIRST matched career with its
-    // reasoning. The remaining careers and the action plan are always paid.
-    // Anything withheld is withheld server-side — trimming it in the UI alone
-    // would still leave it readable in the network tab.
-    const freeCareers = careers.slice(0, 1);
+    // The free tier is a taste, never the whole thing: the scores, the career
+    // type, the profile read, and ONE matched career — deliberately the
+    // LOWEST-ranked one, never the top match. The model orders careers
+    // best-fit first, so the free sample comes off the end of that list and
+    // the strongest match is something unlocking buys. Sliced server-side, so
+    // what's withheld can't be read out of the network tab.
+    const freeCareers = careers.length > 1 ? careers.slice(-1) : [];
 
     return NextResponse.json({
       traits,
