@@ -3,6 +3,75 @@ import type { Post } from "@/lib/blog";
 // Add new posts to the top of this array. Each post needs a unique `slug`.
 export const posts: Post[] = [
   {
+    slug: "personal-statement-vs-sop",
+    title:
+      "Personal Statement vs SOP: What's the Difference? (And Which You Need)",
+    description:
+      "Personal statement vs statement of purpose (SOP): the real differences, when each is required, and how to write both well — plus a free way to score yours before you apply.",
+    date: "2026-09-06",
+    excerpt:
+      "\"Personal statement\" and \"SOP\" get used interchangeably, but they're not the same document — and sending the wrong kind can quietly cost you a place. Here's the difference, and which your application actually needs.",
+    tags: ["applications", "SOP", "personal statement", "study abroad"],
+    body: [
+      {
+        type: "p",
+        text: "If you're applying to university abroad, you've probably seen both terms — \"personal statement\" and \"statement of purpose\" (SOP) — sometimes on the same application, sometimes used as if they mean the same thing. They don't. They overlap, but they answer different questions, and writing one when the programme wanted the other is a common, avoidable mistake. Here's the difference in plain terms, and how to tell which you need.",
+      },
+      { type: "h2", text: "The short answer" },
+      {
+        type: "p",
+        text: "A **personal statement** is about *you* — your story, motivation, and what shaped your interest. A **statement of purpose (SOP)** is about your *purpose* — your academic and research goals, why this specific programme, and what you'll do with it. Personal statements lean personal and narrative; SOPs lean focused and professional. Many strong essays blend both, but knowing which the programme is really asking for tells you where to put the weight.",
+      },
+      { type: "h2", text: "What a personal statement is" },
+      {
+        type: "p",
+        text: "A personal statement is a short, first-person essay about who you are and why you want to study a subject. It's the standard for most undergraduate applications (including UCAS in the UK) and many taught Master's programmes. Admissions readers use it to understand your motivation, your background, and whether you'll fit and thrive — not just your grades. Good personal statements tell a specific story: a moment, a problem, a turning point that led you here, and evidence you've pursued the subject beyond the classroom.",
+      },
+      { type: "h2", text: "What a statement of purpose (SOP) is" },
+      {
+        type: "p",
+        text: "An SOP is more focused and forward-looking. It's the norm for graduate study — Master's and especially PhD applications, and most US and Canadian programmes. It answers: what do you want to research or specialise in, why this department and these supervisors, what have you already done that prepares you, and what are your goals afterwards? An SOP reads more like a professional case than a personal story. Committees are checking research fit — whether your interests match what the department actually does.",
+      },
+      { type: "h2", text: "The key differences at a glance" },
+      {
+        type: "ul",
+        items: [
+          "**Focus** — Personal statement: your story and motivation. SOP: your academic/research purpose and fit.",
+          "**Where it's used** — Personal statement: undergrad and many taught Master's (UK/Europe common). SOP: graduate study, PhDs, and most US/Canada programmes.",
+          "**Tone** — Personal statement: reflective and narrative. SOP: focused, specific, professional.",
+          "**What readers want** — Personal statement: who you are and why you'll thrive. SOP: what you'll study, why here, and proof you can do it.",
+          "**Programme specificity** — Personal statement: often reusable across similar courses. SOP: usually tailored to each department and its faculty.",
+        ],
+      },
+      { type: "h2", text: "Which one do you need?" },
+      {
+        type: "p",
+        text: "Read the application instructions first — the exact wording tells you which document (and length) they expect. As a rule of thumb:",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Undergraduate, or a taught Master's in the UK/Europe** → usually a personal statement.",
+          "**PhD, research Master's, or most US/Canada graduate programmes** → usually a statement of purpose.",
+          "**Asked for both** → keep them distinct: the personal statement carries the story and motivation, the SOP carries the research focus and fit. Don't just resubmit the same essay twice.",
+        ],
+      },
+      { type: "h2", text: "How to make either one stronger" },
+      {
+        type: "p",
+        text: "Whichever you're writing, the fixes are similar: be specific instead of generic, lead with evidence rather than adjectives, and cut the clichés every admissions reader has seen a thousand times. The hardest part is seeing your own draft clearly — you're too close to it. Before you submit, get an honest, outside read.",
+      },
+      {
+        type: "p",
+        text: "Fledgy's free tools do exactly that. Paste your essay into the [personal statement checker](/personal-statement-checker) or the [SOP checker](/sop-checker) and get an instant score out of 100 with specific, no-fluff feedback on what's working and what's holding it back — the same [essay scoring engine](/essay) behind both, tuned to what admissions readers actually look for. It's free to try, and it's a lot cheaper than finding out from a rejection.",
+      },
+      {
+        type: "p",
+        text: "The bottom line: a personal statement and an SOP aren't interchangeable. Work out which your programme wants, put the weight where that document expects it, and pressure-test the draft before it's the version a committee reads.",
+      },
+    ],
+  },
+  {
     slug: "how-to-ask-for-a-promotion",
     title: "How to Ask for a Promotion (and What to Do If the Answer Is Not Yet)",
     description:
