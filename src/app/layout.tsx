@@ -5,6 +5,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import RefCapture from "@/components/RefCapture";
+import Clarity from "@/components/Clarity";
 
 const dancingScript = Dancing_Script({
   subsets: ["latin"],
@@ -50,6 +51,7 @@ export default function RootLayout({
         {children}
         <Footer />
         <Analytics />
+        <Clarity />
       </body>
     </html>
   );

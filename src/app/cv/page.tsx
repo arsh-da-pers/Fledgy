@@ -9,6 +9,7 @@ import { CV_ITERATIONS } from "@/lib/products";
 import { printCv, estimatePages } from "@/lib/cvPdf";
 import { fireReferral } from "@/lib/referClient";
 import { uploadAndExtractText } from "@/lib/uploadAndExtract";
+import { track } from "@vercel/analytics";
 
 type Result = {
   score: number;
@@ -81,6 +82,7 @@ export default function CvPage() {
     setResult(null);
     setGeneratedCv(null);
     setGenerateError(null);
+    track("tool_submit", { tool: "cv" });
     try {
       window.localStorage.setItem("fledgy_email", email);
       fireReferral(email);
@@ -95,6 +97,7 @@ export default function CvPage() {
         throw new Error(data.error || "Something went wrong.");
       }
       setResult(data);
+      track("score_shown", { tool: "cv", score: data.score ?? 0 });
       if (data.locked) checkEntitlement(email);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
@@ -123,6 +126,7 @@ export default function CvPage() {
         throw new Error(data.error || "Something went wrong.");
       }
       setGeneratedCv(data.cv);
+      track("refined_output", { tool: "cv" });
       if (typeof data.iterationsLeft === "number") {
         setIterationsLeft(data.iterationsLeft);
       }
@@ -144,6 +148,7 @@ export default function CvPage() {
       const text = await uploadAndExtractText(file);
       setCv(text);
       setUploadedName(file.name);
+      track("upload_used", { tool: "cv" });
     } catch (err) {
       setUploadError(err instanceof Error ? err.message : "Something went wrong.");
       setUploadedName(null);

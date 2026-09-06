@@ -8,6 +8,7 @@ import { ESSAY_ITERATIONS } from "@/lib/products";
 import ReferralInvite from "@/components/ReferralInvite";
 import { fireReferral } from "@/lib/referClient";
 import { uploadAndExtractText } from "@/lib/uploadAndExtract";
+import { track } from "@vercel/analytics";
 
 type Result = {
   score: number;
@@ -74,6 +75,7 @@ export default function EssayPage() {
         throw new Error(data.error || "Something went wrong.");
       }
       setRewritten(data.essay);
+      track("refined_output", { tool: "essay" });
       if (typeof data.iterationsLeft === "number") setIterationsLeft(data.iterationsLeft);
     } catch (err) {
       setRewriteError(err instanceof Error ? err.message : "Something went wrong.");
@@ -101,6 +103,7 @@ export default function EssayPage() {
       const text = await uploadAndExtractText(file);
       setEssay(text);
       setUploadedName(file.name);
+      track("upload_used", { tool: "essay" });
     } catch (err) {
       setUploadError(err instanceof Error ? err.message : "Something went wrong.");
       setUploadedName(null);
@@ -116,6 +119,7 @@ export default function EssayPage() {
     setError(null);
     setPaywall(false);
     setResult(null);
+    track("tool_submit", { tool: "essay" });
     try {
       window.localStorage.setItem("fledgy_email", email);
       fireReferral(email);
@@ -130,6 +134,7 @@ export default function EssayPage() {
         throw new Error(data.error || "Something went wrong.");
       }
       setResult(data);
+      track("score_shown", { tool: "essay", score: data.score ?? 0 });
       if (data.locked) checkEntitlement(email);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
