@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { track } from "@vercel/analytics";
 
 export default function MentorApply() {
   const [email, setEmail] = useState("");
@@ -32,6 +33,7 @@ export default function MentorApply() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong.");
       setDone(true);
+      track("mentor_apply", { role: "mentor" });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {

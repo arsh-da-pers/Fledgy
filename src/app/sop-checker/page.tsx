@@ -3,9 +3,9 @@ import ToolLanding from "@/components/ToolLanding";
 import PageFaq from "@/components/PageFaq";
 
 export const metadata: Metadata = {
-  title: "Free SOP Checker — Statement of Purpose Review & Score",
+  title: "Free SOP Review Online — Statement of Purpose Checker & Score",
   description:
-    "Check your statement of purpose (SOP) free. Get an instant score out of 100 with honest feedback for Master's, PhD, and grad-school applications.",
+    "Review your statement of purpose (SOP) online, free. Get an instant score out of 100 with honest feedback for Master's, PhD, and grad-school applications — before you submit.",
   alternates: { canonical: "/sop-checker" },
 };
 

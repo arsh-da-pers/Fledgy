@@ -6,6 +6,7 @@ import PageFaq from "@/components/PageFaq";
 import ReferralInvite from "@/components/ReferralInvite";
 import Paywall from "@/components/Paywall";
 import { fireReferral } from "@/lib/referClient";
+import { track } from "@vercel/analytics";
 import { CURRICULA, SUBJECTS_BY_CURRICULUM, type Curriculum } from "@/lib/curricula";
 import { TRAIT_LABELS, type Trait } from "@/lib/personalityItems";
 
@@ -95,6 +96,7 @@ export default function CareersPage() {
       ? `My Fledgy career type is "${a.name}" — ${a.tagline} Find yours, free to try:`
       : "I just found my career direction with Fledgy. Find yours, free to try:";
     const url = "https://fledgy.guide/careers";
+    track("share_clicked", { tool: "careers" });
     try {
       if (typeof navigator !== "undefined" && navigator.share) {
         await navigator.share({ title: "My Fledgy career type", text, url });
@@ -142,6 +144,7 @@ export default function CareersPage() {
     setSubmitting(true);
     setError(null);
     setPaywall(false);
+    track("tool_submit", { tool: "careers" });
     try {
       window.localStorage.setItem("fledgy_email", email);
       fireReferral(email);
@@ -168,6 +171,7 @@ export default function CareersPage() {
         throw new Error(data.error || "Something went wrong.");
       }
       setResult(data);
+      track("score_shown", { tool: "careers" });
       if (data.locked) revealIfPaid(email);
       setStep(3);
     } catch (err) {
