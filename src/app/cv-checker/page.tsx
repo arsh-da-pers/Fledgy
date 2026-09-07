@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 
 export default function CvChecker() {
   return (
-    <main className="flex flex-1 flex-col items-center bg-[#fdf3e7]">
-      <div className="w-full max-w-3xl px-6 py-12">
+    <main className="flex flex-1 flex-col items-center bg-page">
+      <div className="w-full max-w-3xl px-5 py-10 sm:px-6 sm:py-12">
         <ToolLanding
           pill="FREE · CV CHECKER"
           h1="Free CV Checker & Reviewer"

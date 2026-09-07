@@ -1,6 +1,8 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { logFeedback } from "@/lib/logFeedback";
+import { hasProduct } from "@/lib/entitlements";
+import { PAYWALLS_ENABLED } from "@/lib/products";
 import { checkAndRecordUsage, isValidEmail, FREE_LIMIT } from "@/lib/usage";
 import { recordToolUse } from "@/lib/leads";
 
@@ -30,13 +32,23 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const usage = await checkAndRecordUsage(email);
+    // Buyers are never rate-limited by the free cap.
+    const entitled = await hasProduct(email, "essay");
+
+    // Only a real purchase lifts the free cap. When PAYWALLS_ENABLED is false
+    // everyone reads as entitled, so without this guard nothing would be
+    // metered at all and the model spend would be unbounded.
+    const usage: { allowed: boolean; remaining?: number } =
+      PAYWALLS_ENABLED && entitled
+        ? { allowed: true, remaining: undefined }
+        : await checkAndRecordUsage(email, "essay");
+
     if (!usage.allowed) {
       logFeedback({ tool: "waitlist", email, hitTool: "essay" });
       return NextResponse.json(
         {
           paywall: true,
-          error: `You've used your ${FREE_LIMIT} free scores. Paid access is coming soon — we've added you to the list and will email you when it's ready.`,
+          error: `You've used your ${FREE_LIMIT} free scores on this tool. The other Fledgy tools are still free to use.`,
         },
         { status: 402 }
       );
@@ -92,7 +104,20 @@ Give a free, surface-level review only (the full paid report goes deeper). Retur
       verdict: parsed.one_line_verdict,
     });
 
-    return NextResponse.json({ ...parsed, usesRemaining: usage.remaining });
+    // Free is a genuine glimpse — the honest score, the verdict, and the first
+    // concrete fix. The rest of the report is paid. Withheld server-side, so
+    // it can't be read out of the network tab.
+    const allTips = Array.isArray(parsed?.tips) ? parsed.tips : [];
+    const tips = entitled ? allTips : allTips.slice(0, 1);
+
+    return NextResponse.json({
+      ...parsed,
+      tips,
+      locked: !entitled,
+      lockedTipCount: entitled ? 0 : Math.max(0, allTips.length - tips.length),
+      entitled,
+      usesRemaining: usage.remaining,
+    });
   } catch (err) {
     console.error(err);
     return NextResponse.json(

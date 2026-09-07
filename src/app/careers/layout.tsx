@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Career Quiz — Find Your Direction, Switch, or Grow",
   description:
-    "Fledgy's career quiz (early access, free to try) gives you a personality and aptitude profile with matched directions and courses — for students, career changers, and professionals growing in their field.",
+    "Fledgy's free career quiz gives you a personality and aptitude profile and your career type — for students, career changers, and professionals growing in their field. Unlock the full report for your matched careers and action plan.",
   alternates: { canonical: "/careers" },
 };
 

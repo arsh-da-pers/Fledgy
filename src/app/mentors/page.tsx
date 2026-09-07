@@ -1,66 +1,111 @@
-"use client";
-
-import { useEffect, useState } from "react";
+import type { Metadata } from "next";
 import Mark from "@/components/Mark";
+import MentorApply from "@/components/MentorApply";
+import { MENTORS, BOOKING_EMAIL, initials, type Mentor } from "@/lib/mentors";
 
-type Role = "seeker" | "mentor";
+export const metadata: Metadata = {
+  title: "Fledgy Mentors — book 1:1 with recruiters & industry experts",
+  description:
+    "Book affordable 1:1 sessions with people who make hiring and admissions decisions. Real, personalized advice on your career, university applications, CV, and more.",
+};
+
+function bookingHref(m: Mentor): string {
+  if (m.bookingUrl && m.bookingUrl.trim().length > 0) return m.bookingUrl;
+  const to = m.email && m.email.trim().length > 0 ? m.email : BOOKING_EMAIL;
+  const subject = `Session request: ${m.name} (${m.title})`;
+  const body = `Hi ${m.name},
+
+I'd like to book a 1:1 session with you.
+
+My name:
+What I'd like help with:
+My availability (a few options):
+
+Thanks!`;
+  return `mailto:${to}?subject=${encodeURIComponent(
+    subject
+  )}&body=${encodeURIComponent(body)}`;
+}
+
+function MentorCard({ m }: { m: Mentor }) {
+  const external = !!(m.bookingUrl && m.bookingUrl.trim().length > 0);
+  const href = bookingHref(m);
+  return (
+    <div className="card-lift flex flex-col rounded-2xl border border-line bg-white p-5 shadow-sm sm:p-6">
+      <div className="flex items-center gap-4">
+        {m.photo ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={m.photo}
+            alt={m.name}
+            className="h-20 w-20 rounded-full object-cover"
+          />
+        ) : (
+          <div
+            className="flex h-20 w-20 items-center justify-center rounded-full text-2xl font-bold text-white"
+            style={{ backgroundColor: m.accent }}
+          >
+            {initials(m.name)}
+          </div>
+        )}
+        <div>
+          <p className="text-base font-semibold text-ink">{m.name}</p>
+          <p className="text-sm text-ink-muted">{m.title}</p>
+        </div>
+      </div>
+
+      <div className="mt-4 flex flex-wrap gap-1.5">
+        {m.areas.map((a) => (
+          <span
+            key={a}
+            className="rounded-full bg-cream px-2.5 py-1 text-xs font-medium text-ink-muted"
+          >
+            {a}
+          </span>
+        ))}
+      </div>
+
+      <p className="mt-4 flex-1 text-sm leading-relaxed text-ink-muted">
+        {m.blurb}
+      </p>
+
+      <div className="mt-5 flex items-center justify-between border-t border-cream pt-4">
+        <div className="leading-tight">
+          <span className="text-lg font-bold text-ink">{m.price}</span>
+          <span className="text-sm text-ink-faint"> · {m.sessionLength}</span>
+        </div>
+        <a
+          href={href}
+          {...(external
+            ? { target: "_blank", rel: "noopener noreferrer" }
+            : {})}
+          className="rounded-lg bg-brand-teal px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-teal-dark"
+        >
+          {external ? "Book a session →" : "Request a session →"}
+        </a>
+      </div>
+    </div>
+  );
+}
 
 export default function MentorsPage() {
-  const [email, setEmail] = useState("");
-  const [role, setRole] = useState<Role>("seeker");
-  const [name, setName] = useState("");
-  const [expertise, setExpertise] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [done, setDone] = useState(false);
-
-  useEffect(() => {
-    const saved = window.localStorage.getItem("fledgy_email");
-    if (saved) setEmail(saved);
-  }, []);
-
-  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
-  const valid =
-    emailValid && (role === "seeker" || expertise.trim().length > 1);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setSubmitting(true);
-    setError(null);
-    try {
-      window.localStorage.setItem("fledgy_email", email);
-      const res = await fetch("/api/mentors", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, role, name, expertise }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Something went wrong.");
-      setDone(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
-    } finally {
-      setSubmitting(false);
-    }
-  }
-
   return (
-    <main className="flex flex-1 flex-col items-center bg-[#fdf3e7]">
-      <div className="w-full max-w-2xl px-6 py-12">
+    <main className="flex flex-1 flex-col items-center bg-page">
+      <div className="w-full max-w-5xl px-5 py-10 sm:px-6 sm:py-12">
+        {/* Header */}
         <div className="flex items-start justify-between">
-          <span className="inline-block rounded-full bg-[#d7ece7] px-2.5 py-1 text-xs font-bold tracking-widest text-teal-800">
-            FLEDGY MENTORS · COMING SOON
+          <span className="inline-block rounded-full bg-brand-teal-tint px-2.5 py-1 text-xs font-bold tracking-widest text-brand-teal-dark">
+            FLEDGY MENTORS
           </span>
           <Mark size={40} opacity={0.85} />
         </div>
-        <h1 className="mt-3 text-3xl font-semibold text-[#2a2115]">
-          Get tips from recruiters &amp; industry experts
+        <h1 className="mt-3 max-w-2xl text-3xl font-semibold text-ink sm:text-4xl">
+          Book 1:1 with people who&apos;ve been there
         </h1>
-        <p className="mt-2 text-[#6b5c45]">
-          Book 1:1 sessions with people who actually make hiring and admissions
-          decisions. Real, personalized advice on your essays, CV, interviews,
-          and career — booked around their availability. Paid sessions,
-          launching soon.
+        <p className="mt-2 max-w-2xl text-ink-muted">
+          Real, honest advice from people who&apos;ve actually done it — a
+          recruiter, a pilot, a career psychologist. A focused 30-minute chat
+          about your career, uni plans, CV, or whatever&apos;s on your mind.
         </p>
 
         {/* How it works */}
@@ -84,116 +129,59 @@ export default function MentorsPage() {
           ].map((s) => (
             <div
               key={s.n}
-              className="rounded-xl border border-[#f0dfc4] bg-white p-4"
+              className="rounded-xl border border-line bg-white p-4"
             >
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-teal-700 text-sm font-bold text-white">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-teal text-sm font-bold text-white">
                 {s.n}
               </span>
-              <p className="mt-3 text-sm font-semibold text-[#2a2115]">{s.t}</p>
-              <p className="mt-1 text-sm text-[#6b5c45]">{s.d}</p>
+              <p className="mt-3 text-sm font-semibold text-ink">{s.t}</p>
+              <p className="mt-1 text-sm text-ink-muted">{s.d}</p>
             </div>
           ))}
         </div>
 
-        {/* Waitlist card */}
-        <div className="mt-8 rounded-2xl border border-[#e7d3bc] bg-white p-6 shadow-sm">
-          {done ? (
-            <div className="text-center">
-              <Mark size={44} opacity={0.9} className="mx-auto" />
-              <p className="mt-4 text-lg font-semibold text-[#2a2115]">
-                {role === "mentor"
-                  ? "Thanks for applying!"
-                  : "You're on the list!"}
-              </p>
-              <p className="mt-1 text-sm text-[#6b5c45]">
-                {role === "mentor"
-                  ? "We'll be in touch about mentoring on Fledgy."
-                  : "We'll email you the moment mentors go live."}
-              </p>
+        {/* Mentor grid — empty until each mentor has agreed to appear. */}
+        {MENTORS.length > 0 ? (
+          <>
+            <h2 className="mt-12 text-xl font-semibold text-ink">
+              Meet the mentors
+            </h2>
+            <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {MENTORS.map((m) => (
+                <MentorCard key={m.id} m={m} />
+              ))}
             </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <p className="text-sm font-semibold text-[#2a2115]">
-                Be the first to know
-              </p>
+          </>
+        ) : (
+          <div className="mt-12 rounded-2xl border border-cream-deep bg-cream p-6">
+            <h2 className="text-xl font-semibold text-ink">
+              Our first mentors are joining shortly
+            </h2>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-muted">
+              We&apos;re opening bookings with a small group — a recruiter, a
+              commercial pilot, and a career psychologist — at $29 for 30 minutes.
+              Want first pick of the slots? Tell us what you need help with below and
+              we&apos;ll come to you when it opens.
+            </p>
+          </div>
+        )}
 
-              <div className="grid gap-2 sm:grid-cols-2">
-                {[
-                  { value: "seeker", label: "I want mentoring" },
-                  { value: "mentor", label: "I want to mentor" },
-                ].map((r) => (
-                  <button
-                    key={r.value}
-                    type="button"
-                    onClick={() => setRole(r.value as Role)}
-                    className={`rounded-lg border px-4 py-3 text-center text-sm transition ${
-                      role === r.value
-                        ? "border-teal-700 bg-[#d7ece7] font-medium text-teal-900"
-                        : "border-[#f0dfc4] bg-white text-[#3a3629] hover:border-[#bcd8d1]"
-                    }`}
-                  >
-                    {r.label}
-                  </button>
-                ))}
-              </div>
-
-              {role === "mentor" && (
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <input
-                    className="rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-teal-700 focus:outline-none"
-                    placeholder="Your name (optional)"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                  <input
-                    className="rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-teal-700 focus:outline-none"
-                    placeholder="Your field (e.g. Tech recruiting)"
-                    value={expertise}
-                    onChange={(e) => setExpertise(e.target.value)}
-                  />
-                </div>
-              )}
-
-              <input
-                type="email"
-                className="w-full rounded-lg border border-[#f0dfc4] bg-white px-4 py-3 text-sm text-[#2a2115] placeholder-[#b0a186] focus:border-teal-700 focus:outline-none"
-                placeholder="Your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-
-              {error && <p className="text-xs text-red-600">{error}</p>}
-
-              <button
-                type="submit"
-                disabled={!valid || submitting}
-                className="w-full rounded-lg bg-teal-700 px-4 py-3 text-sm font-semibold text-white transition hover:bg-teal-800 disabled:opacity-40"
-              >
-                {submitting
-                  ? "Adding you…"
-                  : role === "mentor"
-                  ? "Apply to mentor"
-                  : "Notify me at launch"}
-              </button>
-              <p className="text-xs text-[#9c8b6f]">
-                Sessions will be paid. We&apos;ll only email you about Fledgy
-                Mentors.
-              </p>
-            </form>
-          )}
+        {/* Become a mentor */}
+        <div className="mt-12">
+          <MentorApply />
         </div>
 
+        {/* Cross-links */}
         <div className="mt-10 grid gap-3 sm:grid-cols-2">
           <a
             href="/careers"
-            className="rounded-lg border border-[#c9b98a] px-4 py-3 text-center text-sm font-semibold text-[#8a6d2f] hover:bg-[#faf3e3]"
+            className="rounded-lg border border-cream-deep px-4 py-3 text-center text-sm font-semibold text-brand-teal hover:bg-cream"
           >
             Try the career quiz →
           </a>
           <a
             href="/cv"
-            className="rounded-lg border border-teal-600 px-4 py-3 text-center text-sm font-semibold text-teal-700 hover:bg-teal-50"
+            className="rounded-lg border border-brand-teal px-4 py-3 text-center text-sm font-semibold text-brand-teal hover:bg-brand-teal-tint"
           >
             Score my CV →
           </a>

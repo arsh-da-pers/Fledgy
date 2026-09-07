@@ -30,7 +30,7 @@ export default function Logo({
       </svg>
       {showText && (
         <span
-          className="text-[#1C6B63]"
+          className="text-brand-teal"
           style={{ fontFamily: "var(--font-quicksand), sans-serif", fontWeight: 700 }}
         >
           Fledgy

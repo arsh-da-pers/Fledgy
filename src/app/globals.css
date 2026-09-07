@@ -1,17 +1,207 @@
 @import "tailwindcss";
 
-:root {
-  --background: #fdf3e7;
-  --foreground: #2a2115;
+/* ---------------------------------------------------------------------------
+   Fledgy brand tokens — from the Fledgy Brand Book.
+   Sunrise Orange #D9603F · Deep Teal #1C6B63 · Cream #F7EBDB · Ink #2B1F1A
+   Quicksand for everything; Dancing Script ONLY for the mark's f and the
+   tagline — never on body copy.
+   Use the semantic utilities below (bg-cream, text-ink, bg-brand-teal…)
+   rather than raw hex, so a future palette change stays one file.
+--------------------------------------------------------------------------- */
+
+@theme {
+  /* Core brand */
+  --color-brand-orange: #d9603f;
+  --color-brand-orange-dark: #be4e30;
+  --color-brand-orange-tint: #fbe4dc;
+
+  --color-brand-teal: #1c6b63;
+  --color-brand-teal-dark: #14514b;
+  --color-brand-teal-tint: #dcedea;
+
+  /* Surfaces — page is the lightest cream, cards sit on true brand cream */
+  --color-page: #fdf8f1;
+  --color-cream: #f7ebdb;
+  --color-cream-deep: #efdcc5;
+
+  /* Hairlines */
+  --color-line: #e7d6bd;
+  --color-line-soft: #f1e4d2;
+
+  /* Text */
+  --color-ink: #2b1f1a;
+  --color-ink-muted: #6b5c4e;
+  --color-ink-faint: #9a8b7b;
+
+  --font-sans: var(--font-quicksand), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  --font-script: var(--font-dancing), ui-serif, cursive;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+/* --------------------------------------------------------------------------
+   Mobile-first base. The audience skews phone (UAE/India), so these defaults
+   are tuned for small screens and scaled up, not the other way round.
+-------------------------------------------------------------------------- */
+
+html {
+  /* Stop iOS bumping font sizes in landscape. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  /* Respect the notch / home indicator on iPhone. */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* iOS Safari zooms the whole page when a focused input is under 16px. Every
+   form control is therefore locked to 16px on phones and allowed to drop to
+   14px only from `sm` up, where the rule no longer applies. This is the
+   single biggest mobile-usability win on the site. */
+input,
+select,
+textarea {
+  font-size: 16px;
+  font-family: inherit;
+}
+
+@media (min-width: 640px) {
+  input,
+  select,
+  textarea {
+    font-size: 0.875rem;
+  }
+}
+
+/* Thumb-sized hit areas. 44px is the Apple/WCAG minimum; the old buttons were
+   routinely under it on phones. */
+button,
+a[role="button"],
+input[type="submit"] {
+  min-height: 44px;
+  font-family: inherit;
+}
+
+/* Text links inside prose aren't tap targets in the same sense — forcing 44px
+   there wrecks line spacing. */
+:is(p, li) a {
+  min-height: 0;
+}
+
+/* Never let a long unbroken string (a pasted URL, a long email) push the
+   layout sideways on a narrow screen. */
+h1,
+h2,
+h3,
+p,
+li,
+pre {
+  overflow-wrap: break-word;
+}
+
+/* Visible, on-brand focus ring for keyboard users. */
+:focus-visible {
+  outline: 2px solid var(--color-brand-teal);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   A little polish. Everything here stays inside the brand palette — the point
+   is depth and warmth, not a new visual language.
+-------------------------------------------------------------------------- */
+
+/* Sunrise gradient text — for one accent word in a headline, never a whole
+   paragraph. Falls back to solid ink where background-clip isn't supported. */
+.sunrise-text {
+  color: var(--color-brand-orange);
+  background: linear-gradient(
+    100deg,
+    var(--color-brand-orange) 0%,
+    #cf6a4a 45%,
+    var(--color-brand-teal) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Warm light behind a hero or a feature card. Purely decorative, so it is
+   always aria-hidden at the markup level. */
+.glow-warm {
+  background: radial-gradient(
+      42rem 22rem at 12% -8%,
+      rgba(217, 96, 63, 0.16),
+      transparent 60%
+    ),
+    radial-gradient(34rem 20rem at 92% 4%, rgba(28, 107, 99, 0.14), transparent 62%);
+}
+
+/* Cards that answer to the cursor. Transform-only so it stays cheap, and the
+   reduced-motion block above already neutralises the transition. */
+.card-lift {
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+@media (hover: hover) {
+  .card-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px -12px rgba(43, 31, 26, 0.22);
+  }
+}
+
+/* A gradient hairline instead of a flat grey rule. */
+.rule-sunrise {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-brand-orange) 22%,
+    var(--color-brand-teal) 78%,
+    transparent
+  );
+  opacity: 0.55;
+}
+
+/* Content settling in on load. Deliberately small — 8px and 500ms. */
+@keyframes fledgy-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise-in {
+  animation: fledgy-rise 500ms ease-out both;
+}
+
+.rise-in-2 {
+  animation: fledgy-rise 500ms ease-out 80ms both;
+}
+
+.rise-in-3 {
+  animation: fledgy-rise 500ms ease-out 160ms both;
 }

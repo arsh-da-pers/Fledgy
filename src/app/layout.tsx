@@ -5,6 +5,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import RefCapture from "@/components/RefCapture";
+import Clarity from "@/components/Clarity";
 
 const dancingScript = Dancing_Script({
   subsets: ["latin"],
@@ -44,12 +45,13 @@ export default function RootLayout({
       lang="en"
       className={`h-full antialiased ${dancingScript.variable} ${quicksand.variable}`}
     >
-      <body className="min-h-full flex flex-col bg-[#fdf3e7] text-[#2a2115]">
+      <body className="min-h-full flex flex-col bg-page text-ink">
         <RefCapture />
         <Header />
         {children}
         <Footer />
         <Analytics />
+        <Clarity />
       </body>
     </html>
   );

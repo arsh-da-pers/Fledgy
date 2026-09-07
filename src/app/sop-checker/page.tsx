@@ -3,16 +3,16 @@ import ToolLanding from "@/components/ToolLanding";
 import PageFaq from "@/components/PageFaq";
 
 export const metadata: Metadata = {
-  title: "Free SOP Checker — Statement of Purpose Review & Score",
+  title: "Free SOP Review Online — Statement of Purpose Checker & Score",
   description:
-    "Check your statement of purpose (SOP) free. Get an instant score out of 100 with honest feedback for Master's, PhD, and grad-school applications.",
+    "Review your statement of purpose (SOP) online, free. Get an instant score out of 100 with honest feedback for Master's, PhD, and grad-school applications — before you submit.",
   alternates: { canonical: "/sop-checker" },
 };
 
 export default function SopChecker() {
   return (
-    <main className="flex flex-1 flex-col items-center bg-[#fdf3e7]">
-      <div className="w-full max-w-3xl px-6 py-12">
+    <main className="flex flex-1 flex-col items-center bg-page">
+      <div className="w-full max-w-3xl px-5 py-10 sm:px-6 sm:py-12">
         <ToolLanding
           pill="FREE · SOP CHECKER"
           h1="Free SOP Checker (Statement of Purpose)"

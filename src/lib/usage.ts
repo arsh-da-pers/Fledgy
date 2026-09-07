@@ -10,14 +10,26 @@
 
 import { kv } from "@vercel/kv";
 
-export const FREE_LIMIT = 1;
+// Free runs PER TOOL, per email. Deliberately generous: the free score is the
+// whole hook, and a visitor who can't get one useful result never comes back.
+// This used to be a single shared allowance of 1 across every tool, which meant
+// scoring an essay used up your only CV score too.
+export const FREE_LIMIT = 3;
+
+/** The tools that meter free usage separately. */
+export type MeteredTool =
+  | "essay"
+  | "cv"
+  | "careers"
+  | "cv_generate"
+  | "essay_rewrite";
 
 export type UsageCheck =
   | { allowed: true; count: number; remaining: number }
   | { allowed: false; count: number };
 
-function usageKey(email: string) {
-  return `fledgy:usage:${email.trim().toLowerCase()}`;
+function usageKey(email: string, tool: MeteredTool) {
+  return `fledgy:usage:${tool}:${email.trim().toLowerCase()}`;
 }
 
 // Extra free uses earned through referrals, per email.
@@ -34,11 +46,15 @@ export function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 }
 
-// Atomically checks the free-use cap for this email and, if there's room,
-// records a use. The effective limit is FREE_LIMIT plus any referral bonus.
-export async function checkAndRecordUsage(email: string): Promise<UsageCheck> {
+// Atomically checks this email's free-use cap FOR ONE TOOL and, if there's
+// room, records a use. The effective limit is FREE_LIMIT plus any referral
+// bonus. Each tool has its own allowance.
+export async function checkAndRecordUsage(
+  email: string,
+  tool: MeteredTool
+): Promise<UsageCheck> {
   try {
-    const key = usageKey(email);
+    const key = usageKey(email, tool);
     const current = (await kv.get<number>(key)) ?? 0;
     const bonus = (await kv.get<number>(bonusKey(email))) ?? 0;
     const limit = FREE_LIMIT + (Number.isFinite(bonus) ? bonus : 0);
