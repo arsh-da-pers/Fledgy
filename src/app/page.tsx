@@ -194,6 +194,21 @@ export default function Home() {
           </p>
         </div>
 
+        <div className="mt-12 rounded-xl border border-line bg-white p-6">
+          <h2 className="text-xl font-semibold text-ink">Got questions?</h2>
+          <p className="mt-1 text-sm leading-relaxed text-ink-muted">
+            Not sure which tool you need, stuck on a score you disagree with, or
+            wondering whether any of this is right for where you&apos;re
+            applying? Ask us. A person reads every message.
+          </p>
+          <a
+            href="mailto:hello@fledgy.guide"
+            className="mt-4 inline-flex items-center gap-2 rounded-lg border border-brand-teal px-4 py-2.5 text-sm font-semibold text-brand-teal transition hover:bg-brand-teal-tint"
+          >
+            hello@fledgy.guide
+          </a>
+        </div>
+
         <div className="mt-12 flex justify-center">
           <Mark size={44} opacity={0.9} />
         </div>
