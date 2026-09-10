@@ -5,22 +5,24 @@
 // and nothing useful is hidden behind an email wall. Payment is for the deep
 // work: the full report and the document written for you.
 //
-// THE LADDER, and why it's shaped this way:
+// THE LADDER lives in the *_CENTS constants below — deliberately not restated
+// here. This comment used to list the prices and every one of them went stale
+// the moment someone edited a constant, which is how the bundle came to
+// advertise a saving it no longer gave. Read the constants; they are the truth.
 //
-//   Essay report + rewrite     $15   2 rewrites
-//   Careers full report        $18   no document to rewrite
-//   CV report + written CV     $19   3 rewrites
-//   CV + Careers bundle        $25   the two most-bought together
-//   1:1 mentor session         $29   a real person, 30 minutes (see lib/mentors)
+// TWO RULES THE NUMBERS MUST KEEP, whatever they are:
 //
-// The mentor session must stay the most expensive thing on the site — it's the
-// only one that costs a human being their time. Everything digital sits below
-// it, AND the bundle exists so that buying two products ($19 + $18 = $37)
-// can't cost more than booking a person. Keep it that way.
+//  1. The $29 mentor session stays the most expensive thing on the site. It is
+//     the only one that costs a human being their time, and if a generated
+//     document ever matches it the human session reads as poor value.
 //
-// TO CHANGE A PRICE: edit priceCents AND both display strings together, or the
-// page will advertise one number and charge another. Every page, the checkout
-// and the Stripe line item all read from here.
+//  2. The bundle must cost MORE than either product it contains. It bundles
+//     the careers report and the written CV, so a bundle priced below the
+//     standalone careers report makes that report strictly dominated — more
+//     money for less — and nobody rational buys it.
+//
+// TO CHANGE A PRICE: edit one *_CENTS constant. Display strings and the
+// bundle's saving line are derived from it, so nothing can disagree.
 
 export type ProductId = "essay" | "cv" | "careers" | "cv_careers";
 
