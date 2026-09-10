@@ -167,7 +167,7 @@ export default function Home() {
               <ul className="mt-4 space-y-2.5 text-sm text-ink-muted">
                 <li className="flex gap-2">
                   <span className="text-ink-faint">○</span>
-                  <span>Polished, recruiter-ready CV design (PDF and Word)</span>
+                  <span>Polished, recruiter-ready CV design, as a typeset PDF</span>
                 </li>
                 <li className="flex gap-2">
                   <span className="text-ink-faint">○</span>
