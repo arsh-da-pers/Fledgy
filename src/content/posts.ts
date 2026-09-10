@@ -72,6 +72,74 @@ export const posts: Post[] = [
     ],
   },
   {
+    slug: "best-certifications-to-advance-your-career",
+    title: "Best Certifications to Advance Your Career (by Field)",
+    description:
+      "Which professional certifications are actually worth your time and money by field — tech, project management, data, marketing, HR, and finance — and how to pick one.",
+    date: "2026-09-06",
+    excerpt:
+      "Not every certification pays off. Here's how to tell which ones are worth the time and money, broken down by field, and how to put one to work once you have it.",
+    tags: ["certifications", "career growth", "working professionals"],
+    body: [
+      {
+        type: "p",
+        text: "A certification is a bet: weeks or months of study and a fee, in exchange for a credential you hope moves the needle on a promotion, a raise, or a career change. Some bets pay off fast. Others sit on a CV doing nothing because the field doesn't rate them or you picked one for the wrong reason. Here's how to tell the difference, field by field, and how to actually use one once you've earned it.",
+      },
+      { type: "h2", text: "When a certification is worth it — and when it isn't" },
+      {
+        type: "p",
+        text: "Certifications work best in three situations: the field has a widely recognised standard (accounting, project management, cloud platforms), you're changing fields and need a credible signal fast, or a specific role formally requires one. They work poorly as a substitute for experience, as a way to avoid the harder work of building a portfolio, or when you're chasing a credential nobody in your target industry actually asks about. Before you enrol, search a handful of real job postings in your target role and see whether the certification appears as a requirement or a plus — that's a better signal than any ranking article, including this one.",
+      },
+      { type: "h2", text: "By field: tech and IT" },
+      {
+        type: "ul",
+        items: [
+          "**Cloud** — AWS Certified Solutions Architect, Microsoft Azure Fundamentals/Administrator, or Google Cloud's Associate Cloud Engineer. Whichever cloud your target employers actually run.",
+          "**Security** — CompTIA Security+ for a first credential, CISSP once you have real experience behind you.",
+          "**Data** — Google Data Analytics Certificate or Microsoft's Power BI credentials for analysts; a portfolio of real projects still matters more than the badge itself.",
+        ],
+      },
+      { type: "h2", text: "By field: business, project management, and finance" },
+      {
+        type: "ul",
+        items: [
+          "**Project management** — PMP (Project Management Professional) is the recognised standard for experienced PMs; CAPM is the entry-level version if you don't yet meet PMP's experience requirement.",
+          "**Agile** — Certified ScrumMaster (CSM) or PMI-ACP, common in tech and product organisations.",
+          "**Finance** — CFA for investment and asset management; CPA (or your country's equivalent) for accounting; both are long, serious commitments that genuinely change what roles you're eligible for.",
+          "**General business** — a short, credible course in financial modelling or Excel/SQL fluency often does more for an early-career professional than a broad, generic \"business certificate.\"",
+        ],
+      },
+      { type: "h2", text: "By field: marketing and HR" },
+      {
+        type: "ul",
+        items: [
+          "**Marketing** — Google Analytics and Google Ads certifications (free, widely recognised), HubSpot's inbound and content marketing certificates.",
+          "**HR** — SHRM-CP or PHR for HR generalists and people managers, both well recognised by recruiters in the US and increasingly beyond it.",
+        ],
+      },
+      { type: "h2", text: "How to choose between two options" },
+      {
+        type: "p",
+        text: "When you're torn between certifications, weigh three things: how often it appears in real job postings for the role you want, how much study time it actually needs versus what you can realistically give it, and whether it's issued or recognised by a body employers in your field trust. A well-known, moderately impressive certification you finish is worth more than a prestigious one you abandon halfway through.",
+      },
+      { type: "h2", text: "Put it to work once you have it" },
+      {
+        type: "ul",
+        items: [
+          "Add it to your CV and LinkedIn headline the day you pass, not \"eventually.\"",
+          "Use it as a concrete reason in your next promotion conversation — a new skill is evidence you're already closer to the next level.",
+          "Apply what you learned to a real project at work within weeks, while it's fresh, so it becomes a story rather than just a line item.",
+          "If it's aimed at a career change, mention it explicitly in your cover letter and CV summary, since it's doing the work experience normally would.",
+        ],
+      },
+      { type: "h2", text: "Make sure it actually shows up on your CV" },
+      {
+        type: "p",
+        text: "A new certification only helps if it's positioned clearly — buried in a long skills list, it does nothing. If you're not sure where a new certification should sit or how to phrase it, Fledgy's [free CV scorer](/cv) rates your CV against real hiring norms and can generate a recruiter-ready rewrite. And if you're weighing which certification fits your longer-term direction in the first place, the [career quiz](/careers) can help narrow that down before you spend the time and money.",
+      },
+    ],
+  },
+  {
     slug: "how-to-ask-for-a-promotion",
     title: "How to Ask for a Promotion (and What to Do If the Answer Is Not Yet)",
     description:
