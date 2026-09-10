@@ -194,7 +194,7 @@ export default function CvPage() {
       <div className="w-full max-w-2xl px-5 py-10 sm:px-6 sm:py-12">
         <div className="flex items-start justify-between">
           <span className="inline-block rounded-full bg-brand-teal-tint px-2.5 py-1 text-xs font-bold tracking-widest text-brand-teal-dark">
-            FREE · CV CONSULTATION
+            {entitled ? "UNLOCKED · FULL REPORT" : "FREE · CV CONSULTATION"}
           </span>
           <Mark size={40} opacity={0.85} />
         </div>
@@ -202,15 +202,20 @@ export default function CvPage() {
           Score my CV
         </h1>
         <p className="mt-2 text-ink-muted">
-          Tell us where you&apos;re applying. We score for that country&apos;s
-          hiring culture, not just generic ATS keywords.
+          {entitled
+            ? "Tell us where you're applying. You'll get the full report for that country, and a CV written for it."
+            : "Tell us where you're applying. We score for that country's hiring culture, not just generic ATS keywords."}
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <input
             type="email"
             className="w-full rounded-lg border border-line bg-white px-4 py-3 text-sm text-ink placeholder-ink-faint focus:border-brand-teal focus:outline-none"
-            placeholder="Your email (so we can save your free scores)"
+            placeholder={
+              entitled
+                ? "The email you bought with"
+                : "Your email (so we can save your free scores)"
+            }
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -270,7 +275,11 @@ export default function CvPage() {
             disabled={loading}
             className="w-full rounded-lg bg-brand-teal px-4 py-3 text-sm font-semibold text-white transition hover:bg-brand-teal-dark disabled:opacity-50"
           >
-            {loading ? "Reading your CV…" : "Get my free score"}
+            {loading
+              ? "Reading your CV…"
+              : entitled
+                ? "Score my CV"
+                : "Get my free score"}
           </button>
         </form>
 
