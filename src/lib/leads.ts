@@ -1,7 +1,10 @@
 // Lead collection, backed by the same Vercel KV store used for usage limits.
 //
-// - Tool users (essay/CV/careers) are already tracked as `fledgy:usage:<email>`
-//   keys by the usage cap, so we recover their emails from those.
+// - Tool users (essay/CV/careers) are tracked by two key families we can scan:
+//   `fledgy:tools:<email>` (written by recordToolUse) and the usage-cap keys.
+//   The usage key changed shape in the Sept 2026 relaunch, from
+//   `fledgy:usage:<email>` to `fledgy:usage:<tool>:<email>`, so we take the
+//   email as the part after the LAST colon — that reads both shapes.
 // - Waitlist signups (e.g. Mentors) are added to the `fledgy:leads` set and get
 //   a detail hash at `fledgy:lead:<email>` (source, role, name, expertise).
 //
@@ -11,6 +14,7 @@ import { kv } from "@vercel/kv";
 
 const LEADS_SET = "fledgy:leads";
 const USAGE_PREFIX = "fledgy:usage:";
+const TOOLS_PREFIX = "fledgy:tools:";
 const leadHash = (email: string) => `fledgy:lead:${email.trim().toLowerCase()}`;
 const toolsKey = (email: string) => `fledgy:tools:${email.trim().toLowerCase()}`;
 const seenKey = (email: string) => `fledgy:leadseen:${email.trim().toLowerCase()}`;
@@ -74,11 +78,22 @@ export async function getAllLeads(): Promise<Lead[]> {
   } catch (err) {
     console.error("[fledgy:leads] smembers failed:", err);
   }
+  // Emails live at the end of both key families. Anything without an "@" is a
+  // key shape we don't recognise, so it's skipped rather than shown as a lead.
+  const addFromKey = (k: string) => {
+    const email = String(k).split(":").pop()?.trim().toLowerCase();
+    if (email && email.includes("@")) emails.add(email);
+  };
+
+  try {
+    const keys = await kv.keys(`${TOOLS_PREFIX}*`);
+    (keys || []).forEach(addFromKey);
+  } catch (err) {
+    console.error("[fledgy:leads] tools scan failed:", err);
+  }
   try {
     const keys = await kv.keys(`${USAGE_PREFIX}*`);
-    (keys || []).forEach((k) =>
-      emails.add(k.slice(USAGE_PREFIX.length).trim().toLowerCase())
-    );
+    (keys || []).forEach(addFromKey);
   } catch (err) {
     console.error("[fledgy:leads] keys scan failed:", err);
   }
