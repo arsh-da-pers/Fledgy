@@ -4,6 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import Mark from "@/components/Mark";
 import PageFaq from "@/components/PageFaq";
 import ReferralInvite from "@/components/ReferralInvite";
+import AnalysisLoader from "@/components/AnalysisLoader";
+import NeedHelp from "@/components/NeedHelp";
 import Paywall from "@/components/Paywall";
 import { CV_ITERATIONS } from "@/lib/products";
 import { printCv, estimatePages } from "@/lib/cvPdf";
@@ -272,6 +274,8 @@ export default function CvPage() {
           </button>
         </form>
 
+        {loading && <AnalysisLoader tool="cv" context={country} />}
+
         {error && paywall && (
           <div className="mt-6 rounded-lg border border-cream-deep bg-cream px-5 py-4">
             <p className="text-sm font-semibold text-ink">
@@ -289,6 +293,11 @@ export default function CvPage() {
 
         {result && (
           <div className="mt-8 card-lift rounded-2xl border border-line bg-white p-5 shadow-sm sm:p-6">
+            {!result.locked && (
+              <span className="mb-3 inline-block rounded-full bg-brand-teal-tint px-2.5 py-1 text-xs font-bold tracking-widest text-brand-teal-dark">
+                YOUR FULL CV REPORT
+              </span>
+            )}
             <div className="flex items-start justify-between">
               <div className="flex items-baseline gap-3">
                 <span className="text-4xl font-semibold text-brand-teal">
@@ -310,14 +319,21 @@ export default function CvPage() {
               ))}
             </ul>
             <p className="mt-5 text-xs text-ink-faint">
-              {result.locked
-                ? "That's your free score, verdict and two fixes."
-                : "Your full report."}
-              {typeof result.usesRemaining === "number" && (
+              {result.locked ? (
                 <>
-                  {" "}
-                  You have {result.usesRemaining} free score
-                  {result.usesRemaining === 1 ? "" : "s"} left.
+                  That&apos;s your free score, verdict and two fixes.
+                  {typeof result.usesRemaining === "number" && (
+                    <>
+                      {" "}
+                      You have {result.usesRemaining} free score
+                      {result.usesRemaining === 1 ? "" : "s"} left.
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  Every fix worth making, ranked by impact — strongest first.
+                  Yours to keep.
                 </>
               )}
             </p>
@@ -459,6 +475,8 @@ export default function CvPage() {
             </div>
           </div>
         )}
+
+        {(result || error) && <NeedHelp className="mt-5" />}
 
         <PageFaq
           title="About Fledgy's CV scorer"

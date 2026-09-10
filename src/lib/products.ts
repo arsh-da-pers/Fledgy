@@ -63,7 +63,7 @@ export type Product = {
  * TO TURN PAYMENTS ON: add STRIPE_SECRET_KEY for Production in Vercel, then
  * set this to true and deploy. That is the whole change.
  */
-export const PAYWALLS_ENABLED = false;
+export const PAYWALLS_ENABLED = true;
 
 /**
  * Master switch for pricing. While false, /api/checkout refuses to create a Stripe session
@@ -75,6 +75,22 @@ export const PRICE_CONFIRMED = true;
 
 export const CURRENCY = "usd";
 
+// Prices live here as cents and everything else is derived, because the one
+// way this file goes wrong is priceCents and priceDisplay disagreeing after a
+// hurried edit — then Stripe charges one number while the page promises another.
+const ESSAY_CENTS = 500;
+const CAREERS_CENTS = 1800;
+const CV_CENTS = 900;
+const BUNDLE_CENTS = 2000;
+
+/** "$9" / "$22.50" — trailing .00 dropped so whole dollars read cleanly. */
+const usd = (cents: number) =>
+  `$${(cents / 100).toFixed(2).replace(/\.00$/, "")}`;
+
+// Worked out rather than written by hand: a hardcoded "saves $12" quietly
+// becomes a lie the moment any of the three prices moves.
+const BUNDLE_SAVING = usd(CV_CENTS + CAREERS_CENTS - BUNDLE_CENTS);
+
 export const PRODUCTS: Record<ProductId, Product> = {
   essay: {
     id: "essay",
@@ -82,9 +98,9 @@ export const PRODUCTS: Record<ProductId, Product> = {
     tagline: "The full report, and your essay rewritten in your own voice",
     description:
       "A full report on your essay against what admissions readers actually look for, plus your essay rewritten — keeping your voice, not replacing it. Rewrite it up to 2 times.",
-    priceCents: 1500,
-    priceDisplay: "$15",
-    priceDisplayInr: "₹1,249",
+    priceCents: ESSAY_CENTS,
+    priceDisplay: usd(ESSAY_CENTS),
+    priceDisplayInr: "₹415",
     includes: [
       "The full report — structure, opening, evidence and ending, each with the specific fix",
       "Your essay rewritten in your own voice, not replaced with generic prose",
@@ -94,7 +110,7 @@ export const PRODUCTS: Record<ProductId, Product> = {
     iterations: 2,
     returnTo: "/essay",
     freeTier:
-      "Your score out of 100, an honest verdict, and your first fix — always free.",
+      "Your score out of 100, an honest verdict, and three real fixes — always free.",
     grants: [],
   },
 
@@ -104,8 +120,8 @@ export const PRODUCTS: Record<ProductId, Product> = {
     tagline: "Every career matched to you, and the plan to get there",
     description:
       "Your complete career report: every career matched to your personality and aptitude scores, why each one fits you specifically, and a concrete action plan.",
-    priceCents: 1800,
-    priceDisplay: "$18",
+    priceCents: CAREERS_CENTS,
+    priceDisplay: usd(CAREERS_CENTS),
     // $18 at the same ~₹83/$ rate used across the other rows.
     priceDisplayInr: "₹1,499",
     includes: [
@@ -127,9 +143,9 @@ export const PRODUCTS: Record<ProductId, Product> = {
     tagline: "The full report, and a CV written for you",
     description:
       "A section-by-section report on your CV for your target country, plus a complete CV rewritten and formatted the way that country's recruiters expect, downloadable as a polished PDF. Rewrite it up to 3 times.",
-    priceCents: 1900,
-    priceDisplay: "$19",
-    priceDisplayInr: "₹1,599",
+    priceCents: CV_CENTS,
+    priceDisplay: usd(CV_CENTS),
+    priceDisplayInr: "₹749",
     includes: [
       "A complete CV written for you, formatted for your target country",
       "Cross-cultural checks — photo, age, dates, length and tone, by country",
@@ -150,14 +166,14 @@ export const PRODUCTS: Record<ProductId, Product> = {
     tagline: "Work out the direction, then build the CV for it",
     description:
       "Your full career report and your CV written for you — the direction and the document together, for less than either plus the other.",
-    priceCents: 2500,
-    priceDisplay: "$25",
-    priceDisplayInr: "₹2,099",
+    priceCents: BUNDLE_CENTS,
+    priceDisplay: usd(BUNDLE_CENTS),
+    priceDisplayInr: "₹1,665",
     includes: [
       "Everything in the full career report — every matched career and your action plan",
       "Everything in the CV product — your CV written for your target country, as a polished PDF",
       "3 CV rewrites included",
-      "Saves $12 against buying the two separately",
+      `Saves ${BUNDLE_SAVING} against buying the two separately`,
     ],
     iterations: 3,
     returnTo: "/careers",
