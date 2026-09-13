@@ -2,7 +2,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createCheckoutSession, stripeConfigured } from "@/lib/stripe";
-import { isValidEmail } from "@/lib/usage";
+import { isValidEmail, referralCredits } from "@/lib/usage";
 import { getProduct, PRICE_CONFIRMED, CURRENCY } from "@/lib/products";
 
 export const runtime = "nodejs";
@@ -54,9 +54,17 @@ export async function POST(req: NextRequest) {
 
     const origin = siteOrigin(req);
 
+    // An earned referral discount is applied automatically — no code for the
+    // buyer to type, and nothing that can leak publicly. The credit is spent
+    // on grant, not here, so abandoning checkout doesn't lose it.
+    const coupon = process.env.STRIPE_REFERRAL_COUPON_ID;
+    const credits = coupon ? await referralCredits(email) : 0;
+    const couponId = credits > 0 ? coupon : undefined;
+
     const session = await createCheckoutSession({
       email,
       productId: product.id,
+      couponId,
       productName: product.name,
       productDescription: product.description,
       amountCents: product.priceCents,

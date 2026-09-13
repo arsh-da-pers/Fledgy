@@ -11,6 +11,7 @@
 
 import { kv } from "@vercel/kv";
 import { PAYWALLS_ENABLED, PRODUCTS, grantedBy, type ProductId } from "@/lib/products";
+import { creditReferrerOnPurchase, spendReferralCredit } from "@/lib/usage";
 
 export type Owned = {
   purchasedAt: string;
@@ -68,7 +69,8 @@ export async function hasProduct(email: string, product: ProductId): Promise<boo
 export async function grantPurchase(
   email: string,
   purchased: ProductId,
-  stripeSessionId: string
+  stripeSessionId: string,
+  opts: { usedReferralDiscount?: boolean } = {}
 ): Promise<Entitlements> {
   const alreadyApplied = await kv.get(sessionKey(stripeSessionId));
   const current = (await kv.get<Entitlements>(entKey(email))) ?? {};
@@ -88,6 +90,18 @@ export async function grantPurchase(
 
   await kv.set(entKey(email), next);
   await kv.set(sessionKey(stripeSessionId), email);
+
+  // Referral bookkeeping, after the entitlement is safely written. Both are
+  // best-effort and must never cost someone access they paid for.
+  //
+  // Whoever referred this buyer earns their discount now — on the purchase,
+  // not the signup, so a reward is always funded by revenue it brought in.
+  await creditReferrerOnPurchase(email);
+
+  // And if this buyer spent a discount of their own, retire it here rather
+  // than at checkout, so an abandoned session doesn't consume it.
+  if (opts.usedReferralDiscount) await spendReferralCredit(email);
+
   return next;
 }
 
