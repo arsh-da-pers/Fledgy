@@ -3,6 +3,68 @@ import type { Post } from "@/lib/blog";
 // Add new posts to the top of this array. Each post needs a unique `slug`.
 export const posts: Post[] = [
   {
+    slug: "how-to-answer-why-this-university",
+    title: "How to Answer \"Why This University?\" (Without Sounding Generic)",
+    description:
+      "How to answer \"why this university\" in your application or essay — how to research beyond the prospectus, a structure that avoids generic answers, and mistakes to avoid.",
+    date: "2026-09-13",
+    excerpt:
+      "\"Great reputation and beautiful campus\" could describe almost any university. Here's how to answer \"why this university?\" in a way that could only be about the one you're applying to.",
+    tags: ["applications", "university applications", "students"],
+    body: [
+      {
+        type: "p",
+        text: "\"Why this university?\" sounds like the easiest question on the application. It's also the one most applicants answer worst. The tell-tale signs are everywhere: \"excellent reputation,\" \"world-class faculty,\" \"beautiful campus\" — sentences that could be copy-pasted into an essay for almost any university on earth. Admissions readers see hundreds of these a season, and they can spot a generic answer in the first line. Here's how to write one that couldn't have been written for anywhere else.",
+      },
+      { type: "h2", text: "What this question is actually testing" },
+      {
+        type: "p",
+        text: "\"Why this university?\" isn't really asking you to flatter the institution. It's testing three things: whether you've done real research beyond the homepage, whether your goals genuinely line up with what this specific place offers, and whether you're likely to enrol if admitted. A vague answer fails all three at once — it suggests you haven't looked closely, and that this application is one of twenty identical ones you're sending out.",
+      },
+      { type: "h2", text: "Do the research before you write a word" },
+      {
+        type: "p",
+        text: "The single biggest difference between a strong answer and a weak one is specificity, and specificity only comes from actual research. Spend an hour on this before you draft anything:",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Read faculty pages, not just department overviews.** Find one or two professors whose research or teaching genuinely connects to what you want to study, and note exactly what draws you to their work.",
+          "**Look for things unique to this programme** — a specific course, a lab, a dual-degree option, a research centre, a study-abroad partnership, or a teaching format (project-based, cohort-based, co-op) that other universities don't offer in the same way.",
+          "**Check where graduates actually go.** Career outcomes, notable alumni in your field, or specific employer partnerships can be concrete evidence this university leads where you want to go.",
+          "**Note the campus culture facts that matter to you** — not \"vibrant community,\" but a specific society, tradition, or initiative you'd actually want to be part of.",
+          "**If you can, talk to a current student or alum.** A detail from a real conversation is something no other applicant will have.",
+        ],
+      },
+      { type: "h2", text: "A structure that avoids the generic-answer trap" },
+      {
+        type: "p",
+        text: "Once you have real material, structure matters less than most people think — but a simple shape works well: state what you want to study or achieve, name one or two specific things about this university that connect to it, and explain why that connection matters to your goals. The connection is the part people skip. Naming a professor means nothing if you don't say what about their work interests you and why.",
+      },
+      { type: "h2", text: "Common mistakes that give away a generic answer" },
+      {
+        type: "ul",
+        items: [
+          "Praising things true of most good universities — rankings, \"passionate faculty,\" \"diverse student body\" — without anything specific to this one.",
+          "Naming a professor or course you clearly haven't looked into beyond the title.",
+          "Focusing entirely on the university's prestige rather than your own fit and goals.",
+          "Writing an answer so interchangeable it could be reused for a rival university by swapping the name.",
+          "Ignoring the actual question being asked if the prompt is more specific than a generic \"why us\" (e.g., \"why this programme\" vs. \"why this city\").",
+        ],
+      },
+      { type: "h2", text: "A quick before-and-after" },
+      {
+        type: "quote",
+        text: "Generic: \"I want to attend this university because of its excellent reputation and strong academic programmes.\" Specific: \"I want to work with Professor X's lab on renewable materials research, and the university's joint engineering-business degree would let me pair that with the product-development skills I'd need to bring that research to market.\"",
+      },
+      { type: "h2", text: "Check your answer before you submit" },
+      {
+        type: "p",
+        text: "The hardest part of writing this section is judging whether it actually sounds specific to a reader who doesn't already know what you meant. Fledgy's [free essay scorer](/essay) gives your personal statement or application essay an honest score out of 100, with specific feedback on where an answer reads generic versus where it reads like it could only be about this university — so you know exactly what to sharpen before you submit.",
+      },
+    ],
+  },
+  {
     slug: "personal-statement-vs-sop",
     title:
       "Personal Statement vs SOP: What's the Difference? (And Which You Need)",
