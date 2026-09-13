@@ -10,11 +10,20 @@
 
 import { kv } from "@vercel/kv";
 
-// Free runs PER TOOL, per email. Deliberately generous: the free score is the
-// whole hook, and a visitor who can't get one useful result never comes back.
-// This used to be a single shared allowance of 1 across every tool, which meant
-// scoring an essay used up your only CV score too.
-export const FREE_LIMIT = 3;
+// Free runs PER TOOL, per email.
+//
+// Two, not one: the second run is usually where someone decides the tool is
+// consistent rather than a fluke, and a wall after a single score on a domain
+// nobody recognises reads as bait. Two also stops the free tier being used as
+// a coaching loop — re-scoring a revised CV over and over to watch the number
+// climb — which is what three allowed and what the token bill was paying for.
+//
+// Not one, also, because an email address costs nothing to invent: a hard
+// limit of one is defeated by typing a second address, so it would inconvenience
+// honest users far more than anyone determined.
+//
+// Referrals add to this — see creditReferral below.
+export const FREE_LIMIT = 2;
 
 /** The tools that meter free usage separately. */
 export type MeteredTool =
