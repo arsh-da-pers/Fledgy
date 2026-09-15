@@ -119,9 +119,7 @@ export default function Paywall({
           <>
             <div className="relative mt-6 flex flex-wrap items-baseline gap-x-2 gap-y-1">
               <span className="text-3xl font-semibold text-ink">{p.priceDisplay}</span>
-              <span className="text-sm text-ink-faint">
-                one-off · about {p.priceDisplayInr}
-              </span>
+              <span className="text-sm text-ink-faint">one-off</span>
             </div>
 
             {hasDiscount && (

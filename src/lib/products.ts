@@ -36,9 +36,6 @@ export type Product = {
   /** Smallest currency unit — 1900 = $19.00. */
   priceCents: number;
   priceDisplay: string;
-  /** Indicative rupee price for the India audience. DISPLAY ONLY — every
-   *  payment is taken in USD through Stripe until a rupee rail exists. */
-  priceDisplayInr: string;
   /** What the buyer gets, in their words. */
   includes: string[];
   /** How many times they can regenerate their document. 0 = nothing to rewrite. */
@@ -102,7 +99,6 @@ export const PRODUCTS: Record<ProductId, Product> = {
       "A full report on your essay against what admissions readers actually look for, plus your essay rewritten — keeping your voice, not replacing it. Rewrite it up to 2 times.",
     priceCents: ESSAY_CENTS,
     priceDisplay: usd(ESSAY_CENTS),
-    priceDisplayInr: "₹415",
     includes: [
       "The full report — structure, opening, evidence and ending, each with the specific fix",
       "Your essay rewritten in your own voice, not replaced with generic prose",
@@ -124,8 +120,6 @@ export const PRODUCTS: Record<ProductId, Product> = {
       "Your complete career report: every career matched to your personality and aptitude scores, why each one fits you specifically, and a concrete action plan.",
     priceCents: CAREERS_CENTS,
     priceDisplay: usd(CAREERS_CENTS),
-    // $18 at the same ~₹83/$ rate used across the other rows.
-    priceDisplayInr: "₹1,499",
     includes: [
       "Every matched career, not just the first one",
       "Why each fits your actual personality and aptitude scores",
@@ -147,7 +141,6 @@ export const PRODUCTS: Record<ProductId, Product> = {
       "A section-by-section report on your CV for your target country, plus a complete CV rewritten and formatted the way that country's recruiters expect, downloadable as a polished PDF. Rewrite it up to 3 times.",
     priceCents: CV_CENTS,
     priceDisplay: usd(CV_CENTS),
-    priceDisplayInr: "₹749",
     includes: [
       "A complete CV written for you, formatted for your target country",
       "Cross-cultural checks — photo, age, dates, length and tone, by country",
@@ -170,7 +163,6 @@ export const PRODUCTS: Record<ProductId, Product> = {
       "Your full career report and your CV written for you — the direction and the document together, for less than either plus the other.",
     priceCents: BUNDLE_CENTS,
     priceDisplay: usd(BUNDLE_CENTS),
-    priceDisplayInr: "₹1,665",
     includes: [
       "Everything in the full career report — every matched career and your action plan",
       "Everything in the CV product — your CV written for your target country, as a polished PDF",
