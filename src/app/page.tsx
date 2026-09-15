@@ -15,37 +15,20 @@ export default function Home() {
       />
 
       <div className="relative w-full max-w-3xl px-5 pb-20 pt-8 sm:px-6 sm:pb-28">
-        <p className="rise-in text-xs font-bold tracking-[0.16em] text-brand-orange">
-          FOR ANYONE APPLYING OUTSIDE THEIR OWN COUNTRY
-        </p>
-
-        <h1 className="rise-in mt-3 text-[2.5rem] font-semibold leading-[1.05] tracking-tight text-ink sm:text-5xl">
-          Your CV is written for the{" "}
-          <span className="sunrise-text">wrong country.</span>
+        <h1 className="rise-in text-[2.5rem] font-semibold leading-[1.05] tracking-tight text-ink sm:text-5xl">
+          Start your <span className="sunrise-text">journey.</span>
         </h1>
 
         <p className="rise-in-2 mt-5 max-w-xl text-base leading-relaxed text-ink-muted sm:text-lg">
-          A photo is expected in Dubai and a red flag in London. Two pages in
-          the UK, one in the US. Nobody tells you which rules apply where
-          you&apos;re applying — so you get a polite no and never find out why.
+          Work out which direction fits you, sharpen the essay that gets you in,
+          and build a CV that lands — wherever in the world you&apos;re applying,
+          not just the US or UK.
         </p>
 
         <p className="rise-in-2 mt-4 max-w-xl text-base leading-relaxed text-ink sm:text-lg">
-          Fledgy scores your CV against the hiring culture of the country
-          you&apos;re actually applying to, and tells you exactly what to change.
+          Honest feedback, not flattery. Three tools, one journey, every one free
+          to start.
         </p>
-
-        <div className="rise-in-3 mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <Link
-            href="/cv"
-            className="flex items-center justify-center rounded-xl bg-brand-teal px-6 py-3.5 text-base font-semibold text-white transition hover:bg-brand-teal-dark sm:text-sm"
-          >
-            Score my CV free →
-          </Link>
-          <span className="text-sm text-ink-faint">
-            No card. Takes about a minute.
-          </span>
-        </div>
 
         <div className="mt-10 flex items-center gap-4">
           <Mark size={40} opacity={0.9} />
@@ -53,21 +36,19 @@ export default function Home() {
           <Mark size={40} opacity={0.9} className="scale-x-[-1]" />
         </div>
 
-        {/* The brand line. Kept in Quicksand like the rest of the page — Arsh
-            does not want it set in Dancing Script. */}
+        {/* The brand line, in Quicksand — Arsh doesn't want it set in script. */}
         <p className="mt-6 text-center text-xl font-semibold tracking-tight text-brand-teal">
           Grow your wings.
         </p>
 
         <p className="mt-10 max-w-xl text-ink-muted">
-          Start with your CV — that&apos;s where most applications are lost. Then
-          sharpen the essay or personal statement that goes with it, or work out
-          which direction you should be aiming in at all. Free to try, every tool.
+          Start wherever you are. Not sure what you want yet? Begin with your
+          direction. Already applying? Go straight to the essay or the CV.
         </p>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-3">
           <Link
-            href="/cv"
+            href="/careers"
             className="card-lift rise-in group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white p-6 shadow-sm hover:border-brand-teal"
           >
             <Mark
@@ -75,18 +56,20 @@ export default function Home() {
               opacity={0.3}
               className="pointer-events-none absolute -right-3 -top-4"
             />
-            <span className="inline-block w-fit rounded-full bg-brand-teal-tint px-2.5 py-1 text-xs font-bold tracking-widest text-brand-teal-dark">
-              START HERE · FREE
+            <span className="inline-block w-fit rounded-full bg-cream px-2.5 py-1 text-xs font-bold tracking-widest text-brand-teal">
+              STEP 1 · FREE
             </span>
             <h2 className="mt-3 text-xl font-semibold text-ink">
-              Score my CV
+              Find your direction
             </h2>
             <p className="mt-2 text-sm text-ink-muted">
-              Pick your target country. Get a score plus the cultural norms
-              recruiters there actually expect, not generic ATS advice.
+              Choosing what to study, or weighing a career switch? A quick
+              personality and aptitude quiz reveals your career type and the
+              paths that fit you. Your career type is free; the full report unlocks the
+              matched careers and your plan.
             </p>
             <span className="mt-4 inline-block text-sm font-medium text-brand-teal group-hover:underline">
-              Try it free →
+              Take the quiz →
             </span>
           </Link>
 
@@ -100,7 +83,7 @@ export default function Home() {
               className="pointer-events-none absolute -right-3 -top-4"
             />
             <span className="inline-block w-fit rounded-full bg-brand-orange-tint px-2.5 py-1 text-xs font-bold tracking-widest text-brand-orange-dark">
-              ESSAY & SOP · FREE
+              STEP 2 · FREE
             </span>
             <h2 className="mt-3 text-xl font-semibold text-ink">
               Score my essay
@@ -115,7 +98,7 @@ export default function Home() {
           </Link>
 
           <Link
-            href="/careers"
+            href="/cv"
             className="card-lift rise-in-3 group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white p-6 shadow-sm hover:border-brand-teal"
           >
             <Mark
@@ -123,20 +106,18 @@ export default function Home() {
               opacity={0.3}
               className="pointer-events-none absolute -right-3 -top-4"
             />
-            <span className="inline-block w-fit rounded-full bg-cream px-2.5 py-1 text-xs font-bold tracking-widest text-brand-teal">
-              DIRECTION · FREE
+            <span className="inline-block w-fit rounded-full bg-brand-teal-tint px-2.5 py-1 text-xs font-bold tracking-widest text-brand-teal-dark">
+              STEP 3 · FREE
             </span>
             <h2 className="mt-3 text-xl font-semibold text-ink">
-              Find your direction
+              Score my CV
             </h2>
             <p className="mt-2 text-sm text-ink-muted">
-              Choosing what to study, or weighing a career switch? A quick
-              personality and aptitude quiz reveals your career type and the
-              paths that fit you. Your career type is free; the full report unlocks the
-              matched careers and your plan.
+              Pick your target country. Get a score plus the cultural norms
+              recruiters there actually expect, not generic ATS advice.
             </p>
             <span className="mt-4 inline-block text-sm font-medium text-brand-teal group-hover:underline">
-              Take the quiz →
+              Try it free →
             </span>
           </Link>
         </div>
