@@ -72,6 +72,62 @@ export const posts: Post[] = [
     ],
   },
   {
+    slug: "how-to-explain-a-career-gap-on-your-cv",
+    title: "How to Explain a Career Gap on Your CV (Without Apologising for It)",
+    description:
+      "How to explain a career gap on your CV — how to frame it, whether to address it in your cover letter, and what to say in an interview if it comes up.",
+    date: "2026-08-31",
+    excerpt:
+      "A gap on your CV isn't a red flag by itself — how you present it is. Here's how to frame it, whether to mention it upfront, and what to say if it comes up.",
+    tags: ["cv", "career gap", "job seekers", "career changers"],
+    body: [
+      {
+        type: "p",
+        text: "Redundancy, illness, caregiving, a failed business, burnout, travel, further study that didn't lead anywhere obvious — there are a hundred honest reasons for a gap in your work history, and almost none of them are the problem employers imagine. What actually costs candidates interviews isn't the gap itself; it's leaving it unexplained and hoping no one notices, or over-explaining it in a way that reads as an apology. Here's how to handle it well.",
+      },
+      { type: "h2", text: "Recruiters notice gaps less than you think — but they do notice silence" },
+      {
+        type: "p",
+        text: "A short gap, a few months, rarely raises an eyebrow. A longer one, six months or more, usually gets a second look — not because it's disqualifying, but because an unexplained blank space invites the reader to guess, and people tend to guess worse than the truth. A one-line explanation closes that gap before it becomes a question mark.",
+      },
+      { type: "h2", text: "Decide where it belongs" },
+      {
+        type: "ul",
+        items: [
+          "**On the CV itself** — for a gap tied to something concrete (parental leave, caregiving, study, illness, travel), a short line in the timeline is often enough: \"2023–2024: Career break — full-time caregiving.\" No lengthy justification needed.",
+          "**In the cover letter** — if the gap is relevant to the role or you want to frame it positively (a return-to-work programme, a deliberate career change), a sentence or two here works better than crowding the CV.",
+          "**Saved for the interview** — if it's more personal (burnout, a layoff you're still processing, a business that didn't work out), a brief, matter-of-fact line prepared for the interview is often the better call than putting it in writing at all.",
+        ],
+      },
+      { type: "h2", text: "Frame it as time used, not time lost" },
+      {
+        type: "p",
+        text: "Even an unplanned gap usually involved something: courses, volunteering, freelance projects, caregiving that built real organisational and crisis-management skills, or simply a clear-eyed reason for stepping back. Naming it briefly turns a blank space into a data point, without turning your CV into a confession. You don't owe a full account — you owe enough that the reader isn't left guessing.",
+      },
+      { type: "h2", text: "What to say in the interview" },
+      {
+        type: "p",
+        text: "Keep it short, factual, and forward-looking: what happened, in one sentence, and then what you're looking for now. \"I stepped back for eighteen months to care for a family member; I'm now looking to get back into a role like this one\" says everything a hiring manager needs and nothing they don't. Rehearse it so it comes out calm and brief — the biggest tell of an unresolved gap isn't the gap, it's a candidate who visibly dreads the question.",
+      },
+      { type: "h2", text: "Mistakes that make a gap look worse than it is" },
+      {
+        type: "ul",
+        items: [
+          "Leaving the timeline blank and hoping no one does the maths on the dates.",
+          "Fudging dates to hide a gap — inconsistencies are far more damaging than the gap itself if they're caught.",
+          "Over-explaining in writing what a single calm sentence in the interview would cover better.",
+          "Sounding apologetic or defensive, as if a gap needs forgiveness rather than a simple explanation.",
+          "Failing to show what you did with the time, even briefly, when there's something genuinely worth naming.",
+        ],
+      },
+      { type: "h2", text: "Get the rest of the CV working as hard as possible" },
+      {
+        type: "p",
+        text: "A well-handled gap stops being the story the moment the rest of your CV is strong. Fledgy's [free CV scorer](/cv) rates your CV against real hiring norms and can generate a recruiter-ready rewrite, so the roles either side of the gap — and everything else on the page — make the strongest possible case for you.",
+      },
+    ],
+  },
+  {
     slug: "how-to-ask-for-a-promotion",
     title: "How to Ask for a Promotion (and What to Do If the Answer Is Not Yet)",
     description:
