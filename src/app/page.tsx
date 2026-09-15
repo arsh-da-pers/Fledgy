@@ -53,10 +53,9 @@ export default function Home() {
           <Mark size={40} opacity={0.9} className="scale-x-[-1]" />
         </div>
 
-        {/* The brand line, in Dancing Script — which the brand book reserves for
-            the mark's f and the tagline. It was previously the h1, where a
-            slogan did none of the work a headline has to do. */}
-        <p className="mt-6 text-center font-script text-2xl text-brand-teal">
+        {/* The brand line. Kept in Quicksand like the rest of the page — Arsh
+            does not want it set in Dancing Script. */}
+        <p className="mt-6 text-center text-xl font-semibold tracking-tight text-brand-teal">
           Grow your wings.
         </p>
 
