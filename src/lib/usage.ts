@@ -39,18 +39,86 @@ export type UsageCheck =
   | { allowed: false; count: number };
 
 function usageKey(email: string, tool: MeteredTool) {
-  return `fledgy:usage:${tool}:${email.trim().toLowerCase()}`;
+  return `fledgy:usage:${tool}:${normaliseEmail(email)}`;
 }
 
 // Unused referral discounts, per email. (Key name kept as-is so credits
 // already earned aren't orphaned.)
 function bonusKey(email: string) {
-  return `fledgy:bonus:${email.trim().toLowerCase()}`;
+  return `fledgy:bonus:${normaliseEmail(email)}`;
 }
 
 // Marks who referred a given email, so each referred user only credits once.
 function referredByKey(email: string) {
-  return `fledgy:referredby:${email.trim().toLowerCase()}`;
+  return `fledgy:referredby:${normaliseEmail(email)}`;
+}
+
+/**
+ * Collapses the aliases of one mailbox into a single identity, so the free
+ * limit is per PERSON rather than per string.
+ *
+ * Gmail ignores dots entirely and everything after a "+", so
+ * arsh.kiran+2@gmail.com, arshkiran@gmail.com and ArshKiran@gmail.com are one
+ * inbox — but were three separate allowances here, which is the easiest way
+ * to farm free runs and what the leads dashboard was showing.
+ *
+ * Deliberately conservative about which trick applies where:
+ *  • "+tag" is stripped for every provider — it is a near-universal alias
+ *    convention and the base address always still reaches the person.
+ *  • dots are stripped ONLY for Gmail, where they provably don't matter.
+ *    Elsewhere they do: john.smith@acme.com and johnsmith@acme.com can be two
+ *    different colleagues, and merging them would deny a real person their
+ *    free runs.
+ *
+ * The result is always a deliverable address, so leads stay contactable.
+ */
+export function normaliseEmail(email: string): string {
+  const trimmed = email.trim().toLowerCase();
+  const at = trimmed.lastIndexOf("@");
+  if (at < 1) return trimmed;
+
+  let local = trimmed.slice(0, at);
+  const domain = trimmed.slice(at + 1);
+
+  const plus = local.indexOf("+");
+  if (plus > 0) local = local.slice(0, plus);
+
+  if (domain === "gmail.com" || domain === "googlemail.com") {
+    local = local.split(".").join("");
+  }
+
+  return local ? `${local}@${domain}` : trimmed;
+}
+
+// Throwaway inbox providers. Someone using one is not a lead — the address
+// stops working within the hour, so they can never be emailed their report,
+// and it is the other half of how a free limit gets farmed.
+//
+// Deliberately a short list of the big ones rather than an exhaustive one:
+// blocklists of this kind go stale, and every entry is a chance to reject a
+// real person. Anything not listed is allowed through — normaliseEmail plus
+// the free limit handles the rest.
+const THROWAWAY_DOMAINS = new Set([
+  "mailinator.com",
+  "guerrillamail.com",
+  "10minutemail.com",
+  "tempmail.com",
+  "temp-mail.org",
+  "yopmail.com",
+  "trashmail.com",
+  "sharklasers.com",
+  "getnada.com",
+  "dispostable.com",
+  "maildrop.cc",
+  "fakeinbox.com",
+  "throwawaymail.com",
+  "mohmal.com",
+  "emailondeck.com",
+]);
+
+export function isThrowawayEmail(email: string): boolean {
+  const domain = normaliseEmail(email).split("@")[1];
+  return domain ? THROWAWAY_DOMAINS.has(domain) : false;
 }
 
 export function isValidEmail(email: string) {
@@ -102,8 +170,10 @@ export async function checkAndRecordUsage(
  *  later link can't steal the credit. */
 export async function recordReferrer(referrer: string, newUser: string) {
   try {
-    const r = referrer.trim().toLowerCase();
-    const u = newUser.trim().toLowerCase();
+    const r = normaliseEmail(referrer);
+    const u = normaliseEmail(newUser);
+    // Compared after normalising, so someone can't refer themselves with a
+    // dotted or +tagged variant of their own address.
     if (!r || !u || r === u || !isValidEmail(r) || !isValidEmail(u)) return;
 
     const already = await kv.get(referredByKey(u));
@@ -120,7 +190,7 @@ export async function recordReferrer(referrer: string, newUser: string) {
  *  person paying out again. */
 export async function creditReferrerOnPurchase(buyerEmail: string) {
   try {
-    const u = buyerEmail.trim().toLowerCase();
+    const u = normaliseEmail(buyerEmail);
     if (!u || !isValidEmail(u)) return;
 
     const referrer = await kv.get<string>(referredByKey(u));

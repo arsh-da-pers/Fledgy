@@ -11,7 +11,11 @@
 
 import { kv } from "@vercel/kv";
 import { PAYWALLS_ENABLED, PRODUCTS, grantedBy, type ProductId } from "@/lib/products";
-import { creditReferrerOnPurchase, spendReferralCredit } from "@/lib/usage";
+import {
+  creditReferrerOnPurchase,
+  normaliseEmail,
+  spendReferralCredit,
+} from "@/lib/usage";
 
 export type Owned = {
   purchasedAt: string;
@@ -24,6 +28,14 @@ export type Owned = {
 export type Entitlements = Partial<Record<ProductId, Owned>>;
 
 function entKey(email: string) {
+  return `fledgy:ent:${normaliseEmail(email)}`;
+}
+
+// The pre-normalisation key shape. Entitlements written before emails were
+// collapsed to one identity per mailbox still live here, and losing someone
+// access to something they paid for is the worst outcome in this file — so
+// reads fall back to it and migrate what they find.
+function legacyEntKey(email: string) {
   return `fledgy:ent:${email.trim().toLowerCase()}`;
 }
 
@@ -36,6 +48,10 @@ function sessionKey(sessionId: string) {
 // The generated career report, parked so it can be revealed the moment the
 // buyer pays — nobody has to retake the quiz after paying.
 function reportKey(email: string) {
+  return `fledgy:report:${normaliseEmail(email)}`;
+}
+
+function legacyReportKey(email: string) {
   return `fledgy:report:${email.trim().toLowerCase()}`;
 }
 
@@ -44,7 +60,21 @@ const REPORT_TTL_SECONDS = 60 * 60 * 24 * 30; // 30 days
 export async function getEntitlements(email: string): Promise<Entitlements> {
   if (!email) return {};
   try {
-    return (await kv.get<Entitlements>(entKey(email))) ?? {};
+    const current = await kv.get<Entitlements>(entKey(email));
+    if (current) return current;
+
+    // Nothing under the normalised key — check the old shape before
+    // concluding this person hasn't paid.
+    const legacyKey = legacyEntKey(email);
+    if (legacyKey === entKey(email)) return {};
+
+    const legacy = await kv.get<Entitlements>(legacyKey);
+    if (!legacy) return {};
+
+    // Move it across so this only happens once per buyer.
+    await kv.set(entKey(email), legacy);
+    console.log("[fledgy:ent] migrated entitlement to normalised key for", email);
+    return legacy;
   } catch (err) {
     // Fail closed: no KV, no paid access.
     console.error("[fledgy:ent] KV unavailable, denying entitlements:", err);
@@ -201,7 +231,14 @@ export async function saveReport(
 
 export async function getReport(email: string): Promise<StoredReport | null> {
   try {
-    return (await kv.get<StoredReport>(reportKey(email))) ?? null;
+    const current = await kv.get<StoredReport>(reportKey(email));
+    if (current) return current;
+
+    // Same fallback as entitlements, so a report parked before normalisation
+    // is still revealed after payment.
+    const legacyKey = legacyReportKey(email);
+    if (legacyKey === reportKey(email)) return null;
+    return (await kv.get<StoredReport>(legacyKey)) ?? null;
   } catch (err) {
     console.error("[fledgy:report] could not read parked report:", err);
     return null;

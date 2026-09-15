@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { logFeedback } from "@/lib/logFeedback";
-import { checkAndRecordUsage, isValidEmail, FREE_LIMIT } from "@/lib/usage";
+import { checkAndRecordUsage, isValidEmail, isThrowawayEmail, FREE_LIMIT } from "@/lib/usage";
 import { recordToolUse } from "@/lib/leads";
 import { scorePersonality, TRAIT_LABELS, type Trait } from "@/lib/personalityItems";
 import { scoreAptitude } from "@/lib/aptitudeQuestions";
@@ -38,6 +38,16 @@ export async function POST(req: NextRequest) {
     if (!email || !isValidEmail(email)) {
       return NextResponse.json(
         { error: "Please enter a valid email so we can save your result." },
+        { status: 400 }
+      );
+    }
+
+    if (isThrowawayEmail(email)) {
+      return NextResponse.json(
+        {
+          error:
+            "That looks like a temporary email address. Please use one you can actually receive mail at — your results are saved to it.",
+        },
         { status: 400 }
       );
     }

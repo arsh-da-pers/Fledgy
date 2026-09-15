@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { logFeedback } from "@/lib/logFeedback";
 import { hasProduct } from "@/lib/entitlements";
 import { PAYWALLS_ENABLED } from "@/lib/products";
-import { checkAndRecordUsage, isValidEmail, FREE_LIMIT } from "@/lib/usage";
+import { checkAndRecordUsage, isValidEmail, isThrowawayEmail, FREE_LIMIT } from "@/lib/usage";
 import { recordToolUse } from "@/lib/leads";
 
 export const runtime = "nodejs";
@@ -21,6 +21,16 @@ export async function POST(req: NextRequest) {
     if (!email || !isValidEmail(email)) {
       return NextResponse.json(
         { error: "Please enter a valid email so we can save your free scores." },
+        { status: 400 }
+      );
+    }
+
+    if (isThrowawayEmail(email)) {
+      return NextResponse.json(
+        {
+          error:
+            "That looks like a temporary email address. Please use one you can actually receive mail at — your results are saved to it.",
+        },
         { status: 400 }
       );
     }
