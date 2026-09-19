@@ -285,12 +285,21 @@ export default function CvPage() {
 
         {loading && <AnalysisLoader tool="cv" context={country} />}
 
+        {/* Free runs used up. This is the most ready-to-buy someone ever is,
+            so it leads with the actual purchase — it used to say "You're on
+            the waitlist" and offer nothing but a referral link, which was
+            both untrue (payments are live) and a sale thrown away. The
+            referral discount stays underneath as the cheaper route. */}
         {error && paywall && (
-          <div className="mt-6 rounded-lg border border-cream-deep bg-cream px-5 py-4">
-            <p className="text-sm font-semibold text-ink">
-              You&apos;re on the waitlist
-            </p>
-            <p className="mt-1 text-sm text-ink">{error}</p>
+          <div className="mt-6">
+            <p className="mb-3 text-sm text-ink-muted">{error}</p>
+            <Paywall
+              product="cv"
+              bundle="cv_careers"
+              email={email}
+              heading="Unlock the full report instead"
+              subheading="Every fix we found in your CV, plus a complete CV written and formatted for your target country, as a polished PDF."
+            />
             <ReferralInvite email={email} />
           </div>
         )}

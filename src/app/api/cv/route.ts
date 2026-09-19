@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           paywall: true,
-          error: `You've used your ${FREE_LIMIT} free scores on this tool. The other Fledgy tools are still free to use.`,
+          error: `That's your ${FREE_LIMIT} free CV scores used.`,
         },
         { status: 402 }
       );
