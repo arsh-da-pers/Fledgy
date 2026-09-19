@@ -44,6 +44,19 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
     mainEntityOfPage: `https://fledgy.guide/blog/${post.slug}`,
   };
 
+  const faqLd =
+    post.faq && post.faq.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: post.faq.map((item) => ({
+            "@type": "Question",
+            name: item.q,
+            acceptedAnswer: { "@type": "Answer", text: item.a },
+          })),
+        }
+      : null;
+
   const formattedDate = new Date(post.date).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -65,6 +78,26 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
         <p className="mt-3 text-sm text-ink-faint">{formattedDate}</p>
 
         <PostBody body={post.body} />
+
+        {post.faq && post.faq.length > 0 && (
+          <section className="mt-12">
+            <h2 className="text-xl font-semibold leading-snug text-ink sm:text-2xl">
+              Frequently asked questions
+            </h2>
+            <div className="mt-6 space-y-6">
+              {post.faq.map((item) => (
+                <div key={item.q}>
+                  <h3 className="text-lg font-semibold text-ink sm:text-xl">
+                    {item.q}
+                  </h3>
+                  <p className="mt-2 text-base leading-relaxed text-ink-muted">
+                    {item.a}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         <div className="mt-12 rounded-xl border border-line bg-white p-6">
           <p className="text-[15px] font-semibold text-ink">
@@ -93,6 +126,12 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }}
         />
+        {faqLd && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+          />
+        )}
       </article>
     </main>
   );

@@ -65,6 +65,138 @@ export const posts: Post[] = [
     ],
   },
   {
+    slug: "career-change-cv",
+    title: "How to Write a CV for a Career Change (Step-by-Step Guide)",
+    description:
+      "How to write a CV for a career change: choosing a target role, translating transferable skills, handling gaps and pay cuts — plus a free AI score before you apply.",
+    date: "2026-09-19",
+    excerpt:
+      "Changing careers isn't a CV formatting problem — it's a translation problem. Here's how to rewrite your CV so a hiring manager in a new field can see, in ten seconds, why you belong there.",
+    tags: ["career change", "cv", "transferable skills", "job applications"],
+    body: [
+      {
+        type: "p",
+        text: "Most career-change CVs fail for the same reason: they describe a career the reader isn't hiring for. The experience is genuinely relevant, but it's written in the language of the old industry, so the hiring manager has to do the translating — and in a ten-second scan, they won't. This guide walks through how to rewrite your CV for a new field, step by step, including the parts people avoid: gaps, pay cuts, and how to explain why you're switching.",
+      },
+      { type: "h2", text: "The short answer" },
+      {
+        type: "p",
+        text: "To write a CV for a career change: pick **one** target role, open with a short positioning statement that names it, and then rewrite your existing experience in that field's language — leading with outcomes and transferable skills rather than job titles. Keep a reverse-chronological structure (recruiters and ATS systems expect it), and add one piece of concrete proof — a project, certification, or freelance piece — that shows you've already started doing the new work.",
+      },
+      { type: "h2", text: "Why a career-change CV is different" },
+      {
+        type: "p",
+        text: "A normal CV answers \"are you good at this job?\" A career-change CV has to answer a harder question first: \"why would we take you over someone who has already done this exact job?\" Hiring managers aren't hostile to switchers — they're risk-averse. Every line of your CV should reduce the perceived risk of hiring you, by showing that the skills transfer, that the motivation is considered rather than impulsive, and that you've already tested the new field in some small, real way.",
+      },
+      { type: "h2", text: "Step 1: Pick one target role before you touch the CV" },
+      {
+        type: "p",
+        text: "The single most common mistake is writing one broad CV for \"something in tech\" or \"anything in marketing.\" A CV aimed at everything reads as aimed at no one. Choose a specific job title, pull up five real job adverts for it, and highlight the requirements that repeat. Those repeated phrases are your brief: they tell you what to lead with, which keywords matter, and which parts of your history are now the main story instead of a footnote.",
+      },
+      {
+        type: "p",
+        text: "If you're still deciding between directions, do that work first — a CV can't fix an unresolved target. Fledgy's free [career quiz](/careers) maps your strengths and interests onto specific paths, so you're rewriting toward one role rather than hedging across three.",
+      },
+      { type: "h2", text: "Step 2: Replace your summary with a positioning statement" },
+      {
+        type: "p",
+        text: "The top third of the page decides whether the rest gets read. For a career changer, that space shouldn't be a generic profile — it should state where you're going, what you bring from where you've been, and why the two connect. Two or three lines, no adjectives you can't prove.",
+      },
+      {
+        type: "quote",
+        text: "Before: \"Hard-working and passionate professional with 6 years' experience, seeking a new challenge in a dynamic organisation.\" After: \"Operations lead moving into data analysis. Six years running supply-chain reporting for a 40-store retailer — built the SQL dashboards that cut stock-outs by 18%. Google Data Analytics certified; looking for an analyst role in retail or logistics.\"",
+      },
+      { type: "h2", text: "Step 3: Translate your experience into the new field's language" },
+      {
+        type: "p",
+        text: "This is the heart of a career-change CV. The work you did doesn't change; the vocabulary does. Take each bullet and ask what the equivalent activity is called in your target industry — the job adverts from Step 1 give you the exact words.",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Teacher → corporate training or customer success:** \"taught Year 10 physics\" becomes \"designed and delivered a 30-week curriculum to 120 learners, with termly assessment of outcomes.\"",
+          "**Retail or hospitality management → operations:** \"ran a shop floor\" becomes \"managed a 14-person team across rotas, stock forecasting and P&L for a £1.2m site.\"",
+          "**Military or public service → project management:** \"led a section\" becomes \"coordinated logistics and personnel for deployments of 30+, under fixed deadlines and audited compliance.\"",
+          "**Finance → product or analytics:** \"prepared monthly reports\" becomes \"built the reporting that leadership used to prioritise spend across five business lines.\"",
+          "**Admin or coordination → anything:** \"handled scheduling\" becomes \"was the single point of coordination between four departments and 60+ external suppliers.\"",
+        ],
+      },
+      {
+        type: "p",
+        text: "Rule of thumb: if a bullet only makes sense to someone from your old industry — internal system names, sector jargon, team codes — rewrite it or cut it.",
+      },
+      { type: "h2", text: "Step 4: Lead with evidence, not job titles" },
+      {
+        type: "p",
+        text: "Your old titles won't impress a new industry, but numbers cross industries intact. Every bullet should show an outcome: what changed, by how much, for whom. \"Responsible for customer complaints\" says nothing; \"cut complaint resolution time from 5 days to 36 hours across a 2,000-ticket backlog\" says you can improve a process — which is what you're actually being hired for.",
+      },
+      {
+        type: "p",
+        text: "Keep the structure reverse-chronological. A fully functional, skills-only CV hides your dates, and both recruiters and applicant tracking systems read that as evasion. The safer format for switchers is a hybrid: positioning statement, then a short \"relevant skills and projects\" block aimed at the new role, then your standard dated work history underneath.",
+      },
+      { type: "h2", text: "Step 5: Close the credibility gap with proof" },
+      {
+        type: "p",
+        text: "One piece of real evidence beats a paragraph of enthusiasm. It doesn't have to be big — a certification with a project attached, a freelance job, a volunteer piece, a public portfolio, an internal project you volunteered for at your current employer. Its job is to prove that you've already done a version of the new work, so the hiring manager isn't betting entirely on potential.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Put the proof **above** your unrelated work history, not buried at the bottom of the page.",
+          "Describe it as work, not study: what you built, the tools used, the result — not just the course name.",
+          "One or two strong items is enough. A list of ten half-finished certificates reads as browsing, not commitment.",
+        ],
+      },
+      { type: "h2", text: "Step 6: Handle gaps, pay cuts and the \"why\" honestly" },
+      {
+        type: "p",
+        text: "Career changes often come with a gap, a step down in seniority, or a lower salary band — and trying to disguise any of them usually costs more than explaining them. A single clear line in your positioning statement or cover letter (\"stepping into an analyst role to build on six years of reporting work\") answers the question before it becomes a doubt. For a gap, name it plainly and say what you did with it: retraining, caring responsibilities, a relocation, building the project above. Employers hire people with gaps every day. They hire far fewer people whose timeline looks like it's hiding something.",
+      },
+      { type: "h2", text: "What to cut" },
+      {
+        type: "ul",
+        items: [
+          "Old responsibilities that only matter in your previous industry — compress those roles to one or two lines.",
+          "Objective statements about what *you* want from the employer. The top of the CV is for what you offer.",
+          "Skills lists padded with Microsoft Word and \"team player.\" Keep the ones the job adverts actually asked for.",
+          "Anything over roughly 10–15 years old, unless it's directly relevant to the new target.",
+          "Clichés — \"passionate,\" \"dynamic,\" \"results-driven.\" Every switcher writes them, so they signal nothing.",
+        ],
+      },
+      { type: "h2", text: "Before you send it" },
+      {
+        type: "p",
+        text: "The hard part of a career-change CV is that you can't read it the way a stranger in the new industry will — you know all the context that's missing from the page. That's exactly what an outside read is for. Paste yours into Fledgy's free [CV checker](/cv) and you'll get an instant score out of 100 with specific feedback on what a hiring manager sees first, where the evidence is thin, and which lines still read as your old job rather than your next one. It's free to try, and a lot faster than waiting to learn from silence.",
+      },
+      {
+        type: "p",
+        text: "The bottom line: a career change isn't a formatting problem, it's a translation problem. Pick one target, say plainly where you're going, and rewrite your history in the language of the job you want — then check it against what the reader actually sees.",
+      },
+    ],
+    faq: [
+      {
+        q: "How far back should a career-change CV go?",
+        a: "Roughly 10 to 15 years, and only in detail where it's relevant to the new role. Recent and relevant experience should take the most space; older or unrelated jobs can be compressed into one line each with title, employer and dates. Keep the timeline complete — shortening entries is fine, deleting years creates unexplained gaps.",
+      },
+      {
+        q: "Should I use a functional (skills-based) CV for a career change?",
+        a: "Usually not on its own. Fully functional CVs hide dates and job order, which recruiters read as a red flag and many applicant tracking systems parse badly. A hybrid works better: a short positioning statement and a relevant-skills or projects block at the top, followed by a normal reverse-chronological work history underneath.",
+      },
+      {
+        q: "How do I explain why I'm changing careers on my CV?",
+        a: "In one line, near the top, framed as a direction rather than an escape. Name the target role and the thread that connects it to your existing experience — for example, \"operations lead moving into data analysis after six years building supply-chain reporting.\" Save the longer story for the cover letter and the interview.",
+      },
+      {
+        q: "Do I need a cover letter when changing careers?",
+        a: "Yes — it matters more for switchers than for anyone else. The CV shows that the skills transfer; the cover letter explains the decision, which is the part a hiring manager is quietly worried about. Keep it to three short paragraphs: why this field, what transfers with evidence, and what you've already done to prepare.",
+      },
+      {
+        q: "Will an applicant tracking system reject a career-change CV?",
+        a: "Not for changing careers, but it may score you low if the wording doesn't match the job advert. ATS matching is largely about keywords and clean structure, so mirror the exact terms used in the posting, use standard section headings, avoid tables, columns and text inside images, and submit as a normal .docx or PDF unless told otherwise.",
+      },
+    ],
+  },
+  {
     slug: "personal-statement-vs-sop",
     title:
       "Personal Statement vs SOP: What's the Difference? (And Which You Need)",
@@ -130,6 +262,130 @@ export const posts: Post[] = [
       {
         type: "p",
         text: "The bottom line: a personal statement and an SOP aren't interchangeable. Work out which your programme wants, put the weight where that document expects it, and pressure-test the draft before it's the version a committee reads.",
+      },
+    ],
+  },
+  {
+    slug: "how-to-explain-a-career-gap-on-your-cv",
+    title: "How to Explain a Career Gap on Your CV (Without Apologising for It)",
+    description:
+      "How to explain a career gap on your CV — how to frame it, whether to address it in your cover letter, and what to say in an interview if it comes up.",
+    date: "2026-08-31",
+    excerpt:
+      "A gap on your CV isn't a red flag by itself — how you present it is. Here's how to frame it, whether to mention it upfront, and what to say if it comes up.",
+    tags: ["cv", "career gap", "job seekers", "career changers"],
+    body: [
+      {
+        type: "p",
+        text: "Redundancy, illness, caregiving, a failed business, burnout, travel, further study that didn't lead anywhere obvious — there are a hundred honest reasons for a gap in your work history, and almost none of them are the problem employers imagine. What actually costs candidates interviews isn't the gap itself; it's leaving it unexplained and hoping no one notices, or over-explaining it in a way that reads as an apology. Here's how to handle it well.",
+      },
+      { type: "h2", text: "Recruiters notice gaps less than you think — but they do notice silence" },
+      {
+        type: "p",
+        text: "A short gap, a few months, rarely raises an eyebrow. A longer one, six months or more, usually gets a second look — not because it's disqualifying, but because an unexplained blank space invites the reader to guess, and people tend to guess worse than the truth. A one-line explanation closes that gap before it becomes a question mark.",
+      },
+      { type: "h2", text: "Decide where it belongs" },
+      {
+        type: "ul",
+        items: [
+          "**On the CV itself** — for a gap tied to something concrete (parental leave, caregiving, study, illness, travel), a short line in the timeline is often enough: \"2023–2024: Career break — full-time caregiving.\" No lengthy justification needed.",
+          "**In the cover letter** — if the gap is relevant to the role or you want to frame it positively (a return-to-work programme, a deliberate career change), a sentence or two here works better than crowding the CV.",
+          "**Saved for the interview** — if it's more personal (burnout, a layoff you're still processing, a business that didn't work out), a brief, matter-of-fact line prepared for the interview is often the better call than putting it in writing at all.",
+        ],
+      },
+      { type: "h2", text: "Frame it as time used, not time lost" },
+      {
+        type: "p",
+        text: "Even an unplanned gap usually involved something: courses, volunteering, freelance projects, caregiving that built real organisational and crisis-management skills, or simply a clear-eyed reason for stepping back. Naming it briefly turns a blank space into a data point, without turning your CV into a confession. You don't owe a full account — you owe enough that the reader isn't left guessing.",
+      },
+      { type: "h2", text: "What to say in the interview" },
+      {
+        type: "p",
+        text: "Keep it short, factual, and forward-looking: what happened, in one sentence, and then what you're looking for now. \"I stepped back for eighteen months to care for a family member; I'm now looking to get back into a role like this one\" says everything a hiring manager needs and nothing they don't. Rehearse it so it comes out calm and brief — the biggest tell of an unresolved gap isn't the gap, it's a candidate who visibly dreads the question.",
+      },
+      { type: "h2", text: "Mistakes that make a gap look worse than it is" },
+      {
+        type: "ul",
+        items: [
+          "Leaving the timeline blank and hoping no one does the maths on the dates.",
+          "Fudging dates to hide a gap — inconsistencies are far more damaging than the gap itself if they're caught.",
+          "Over-explaining in writing what a single calm sentence in the interview would cover better.",
+          "Sounding apologetic or defensive, as if a gap needs forgiveness rather than a simple explanation.",
+          "Failing to show what you did with the time, even briefly, when there's something genuinely worth naming.",
+        ],
+      },
+      { type: "h2", text: "Get the rest of the CV working as hard as possible" },
+      {
+        type: "p",
+        text: "A well-handled gap stops being the story the moment the rest of your CV is strong. Fledgy's [free CV scorer](/cv) rates your CV against real hiring norms and can generate a recruiter-ready rewrite, so the roles either side of the gap — and everything else on the page — make the strongest possible case for you.",
+      },
+    ],
+  },
+  {
+    slug: "best-certifications-to-advance-your-career",
+    title: "Best Certifications to Advance Your Career (by Field)",
+    description:
+      "Which professional certifications are actually worth your time and money by field — tech, project management, data, marketing, HR, and finance — and how to pick one.",
+    date: "2026-09-06",
+    excerpt:
+      "Not every certification pays off. Here's how to tell which ones are worth the time and money, broken down by field, and how to put one to work once you have it.",
+    tags: ["certifications", "career growth", "working professionals"],
+    body: [
+      {
+        type: "p",
+        text: "A certification is a bet: weeks or months of study and a fee, in exchange for a credential you hope moves the needle on a promotion, a raise, or a career change. Some bets pay off fast. Others sit on a CV doing nothing because the field doesn't rate them or you picked one for the wrong reason. Here's how to tell the difference, field by field, and how to actually use one once you've earned it.",
+      },
+      { type: "h2", text: "When a certification is worth it — and when it isn't" },
+      {
+        type: "p",
+        text: "Certifications work best in three situations: the field has a widely recognised standard (accounting, project management, cloud platforms), you're changing fields and need a credible signal fast, or a specific role formally requires one. They work poorly as a substitute for experience, as a way to avoid the harder work of building a portfolio, or when you're chasing a credential nobody in your target industry actually asks about. Before you enrol, search a handful of real job postings in your target role and see whether the certification appears as a requirement or a plus — that's a better signal than any ranking article, including this one.",
+      },
+      { type: "h2", text: "By field: tech and IT" },
+      {
+        type: "ul",
+        items: [
+          "**Cloud** — AWS Certified Solutions Architect, Microsoft Azure Fundamentals/Administrator, or Google Cloud's Associate Cloud Engineer. Whichever cloud your target employers actually run.",
+          "**Security** — CompTIA Security+ for a first credential, CISSP once you have real experience behind you.",
+          "**Data** — Google Data Analytics Certificate or Microsoft's Power BI credentials for analysts; a portfolio of real projects still matters more than the badge itself.",
+        ],
+      },
+      { type: "h2", text: "By field: business, project management, and finance" },
+      {
+        type: "ul",
+        items: [
+          "**Project management** — PMP (Project Management Professional) is the recognised standard for experienced PMs; CAPM is the entry-level version if you don't yet meet PMP's experience requirement.",
+          "**Agile** — Certified ScrumMaster (CSM) or PMI-ACP, common in tech and product organisations.",
+          "**Finance** — CFA for investment and asset management; CPA (or your country's equivalent) for accounting; both are long, serious commitments that genuinely change what roles you're eligible for.",
+          "**General business** — a short, credible course in financial modelling or Excel/SQL fluency often does more for an early-career professional than a broad, generic \"business certificate.\"",
+        ],
+      },
+      { type: "h2", text: "By field: marketing and HR" },
+      {
+        type: "ul",
+        items: [
+          "**Marketing** — Google Analytics and Google Ads certifications (free, widely recognised), HubSpot's inbound and content marketing certificates.",
+          "**HR** — SHRM-CP or PHR for HR generalists and people managers, both well recognised by recruiters in the US and increasingly beyond it.",
+        ],
+      },
+      { type: "h2", text: "How to choose between two options" },
+      {
+        type: "p",
+        text: "When you're torn between certifications, weigh three things: how often it appears in real job postings for the role you want, how much study time it actually needs versus what you can realistically give it, and whether it's issued or recognised by a body employers in your field trust. A well-known, moderately impressive certification you finish is worth more than a prestigious one you abandon halfway through.",
+      },
+      { type: "h2", text: "Put it to work once you have it" },
+      {
+        type: "ul",
+        items: [
+          "Add it to your CV and LinkedIn headline the day you pass, not \"eventually.\"",
+          "Use it as a concrete reason in your next promotion conversation — a new skill is evidence you're already closer to the next level.",
+          "Apply what you learned to a real project at work within weeks, while it's fresh, so it becomes a story rather than just a line item.",
+          "If it's aimed at a career change, mention it explicitly in your cover letter and CV summary, since it's doing the work experience normally would.",
+        ],
+      },
+      { type: "h2", text: "Make sure it actually shows up on your CV" },
+      {
+        type: "p",
+        text: "A new certification only helps if it's positioned clearly — buried in a long skills list, it does nothing. If you're not sure where a new certification should sit or how to phrase it, Fledgy's [free CV scorer](/cv) rates your CV against real hiring norms and can generate a recruiter-ready rewrite. And if you're weighing which certification fits your longer-term direction in the first place, the [career quiz](/careers) can help narrow that down before you spend the time and money.",
       },
     ],
   },

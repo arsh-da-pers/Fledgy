@@ -16,6 +16,8 @@ export type Post = {
   excerpt: string;
   tags: string[];
   body: Block[];
+  /** Optional Q&A pairs. Rendered after the body and emitted as FAQPage JSON-LD. */
+  faq?: { q: string; a: string }[];
 };
 
 export function getAllPosts(): Post[] {

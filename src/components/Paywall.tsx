@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Mark from "@/components/Mark";
 import { PRODUCTS, PRICE_CONFIRMED, type ProductId } from "@/lib/products";
 
@@ -27,6 +27,27 @@ export default function Paywall({
 }: Props) {
   const [busy, setBusy] = useState<ProductId | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [hasDiscount, setHasDiscount] = useState(false);
+
+  // Tell people the referral discount is waiting. Stripe applies it to the
+  // session automatically, so this is purely so they know before they click.
+  useEffect(() => {
+    if (!email || !email.includes("@")) return;
+    let live = true;
+    fetch("/api/entitlement", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    })
+      .then((r) => r.json())
+      .then((d) => {
+        if (live) setHasDiscount((d.referralCredits ?? 0) > 0);
+      })
+      .catch(() => {});
+    return () => {
+      live = false;
+    };
+  }, [email]);
 
   const p = PRODUCTS[product];
   const b = bundle ? PRODUCTS[bundle] : null;
@@ -98,10 +119,14 @@ export default function Paywall({
           <>
             <div className="relative mt-6 flex flex-wrap items-baseline gap-x-2 gap-y-1">
               <span className="text-3xl font-semibold text-ink">{p.priceDisplay}</span>
-              <span className="text-sm text-ink-faint">
-                one-off · about {p.priceDisplayInr}
-              </span>
+              <span className="text-sm text-ink-faint">one-off</span>
             </div>
+
+            {hasDiscount && (
+              <p className="relative mt-2 rounded-lg bg-brand-teal-tint px-3.5 py-2.5 text-sm font-semibold leading-relaxed text-brand-teal">
+                🎁 Your 20% referral discount is applied at checkout
+              </p>
+            )}
 
             <button
               type="button"

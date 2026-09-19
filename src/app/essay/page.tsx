@@ -240,12 +240,17 @@ export default function EssayPage() {
 
         {loading && <AnalysisLoader tool="essay" />}
 
+        {/* See the note on the CV page — the limit is a buying moment, not a
+            waitlist. */}
         {error && paywall && (
-          <div className="mt-6 rounded-lg border border-cream-deep bg-cream px-5 py-4">
-            <p className="text-sm font-semibold text-ink">
-              You&apos;re on the waitlist
-            </p>
-            <p className="mt-1 text-sm text-ink">{error}</p>
+          <div className="mt-6">
+            <p className="mb-3 text-sm text-ink-muted">{error}</p>
+            <Paywall
+              product="essay"
+              email={email}
+              heading="Unlock the full report instead"
+              subheading="Every fix we found, plus your essay rewritten in your own voice — not replaced with generic prose."
+            />
             <ReferralInvite email={email} />
           </div>
         )}
