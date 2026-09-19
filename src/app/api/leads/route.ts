@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAllLeads } from "@/lib/leads";
+import { getAllLeads, getInquiries } from "@/lib/leads";
 
 export const runtime = "nodejs";
 
@@ -22,6 +22,23 @@ export async function GET(req: NextRequest) {
   }
 
   const leads = await getAllLeads();
+  const inquiries = await getInquiries();
+
+  if (req.nextUrl.searchParams.get("format") === "inquiries-csv") {
+    const cols = ["at", "mentorLabel", "name", "email", "message"] as const;
+    const rows = [
+      cols.join(","),
+      ...inquiries.map((i) =>
+        cols.map((c) => csvCell((i as Record<string, unknown>)[c])).join(",")
+      ),
+    ];
+    return new NextResponse(rows.join("\n"), {
+      headers: {
+        "Content-Type": "text/csv; charset=utf-8",
+        "Content-Disposition": 'attachment; filename="fledgy-mentor-inquiries.csv"',
+      },
+    });
+  }
 
   if (req.nextUrl.searchParams.get("format") === "csv") {
     const cols = ["email", "source", "role", "name", "expertise", "tools", "firstSeen"] as const;
@@ -39,5 +56,5 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  return NextResponse.json({ count: leads.length, leads });
+  return NextResponse.json({ count: leads.length, leads, inquiries });
 }

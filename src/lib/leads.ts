@@ -13,6 +13,9 @@
 import { kv } from "@vercel/kv";
 
 const LEADS_SET = "fledgy:leads";
+const INQUIRIES_LIST = "fledgy:inquiries";
+// Enquiries are kept newest-first and capped, so the list can't grow forever.
+const INQUIRY_CAP = 500;
 const USAGE_PREFIX = "fledgy:usage:";
 const TOOLS_PREFIX = "fledgy:tools:";
 const leadHash = (email: string) => `fledgy:lead:${email.trim().toLowerCase()}`;
@@ -24,6 +27,18 @@ export type LeadDetails = {
   role?: string; // "seeker" | "mentor"
   name?: string;
   expertise?: string;
+};
+
+// A session enquiry from the mentors page. Stored in its own list rather than
+// on the lead hash: one person can enquire more than once, and each enquiry —
+// which mentor, what they asked — is the traction signal we're watching.
+export type Inquiry = {
+  email: string;
+  mentorId: string;
+  mentorLabel: string; // includes the mentor's real name, for forwarding
+  message?: string;
+  name?: string;
+  at: string; // ISO timestamp
 };
 
 export type Lead = {
@@ -67,6 +82,35 @@ export async function recordLead(email: string, details: LeadDetails = {}) {
     }
   } catch (err) {
     console.error("[fledgy:leads] could not record lead:", err);
+  }
+}
+
+export async function recordInquiry(inquiry: Inquiry) {
+  try {
+    await kv.lpush(INQUIRIES_LIST, JSON.stringify(inquiry));
+    await kv.ltrim(INQUIRIES_LIST, 0, INQUIRY_CAP - 1);
+  } catch (err) {
+    console.error("[fledgy:leads] could not record inquiry:", err);
+  }
+}
+
+// Newest first. Fails open with an empty list so the dashboard still renders.
+export async function getInquiries(): Promise<Inquiry[]> {
+  try {
+    const raw = (await kv.lrange<string | Inquiry>(INQUIRIES_LIST, 0, INQUIRY_CAP - 1)) || [];
+    return raw
+      .map((r) => {
+        if (typeof r !== "string") return r as Inquiry;
+        try {
+          return JSON.parse(r) as Inquiry;
+        } catch {
+          return null;
+        }
+      })
+      .filter((i): i is Inquiry => !!i && !!i.email);
+  } catch (err) {
+    console.error("[fledgy:leads] could not read inquiries:", err);
+    return [];
   }
 }
 

@@ -1,92 +1,14 @@
 import type { Metadata } from "next";
 import Mark from "@/components/Mark";
 import MentorApply from "@/components/MentorApply";
-import { MENTORS, BOOKING_EMAIL, initials, type Mentor } from "@/lib/mentors";
+import MentorGrid from "@/components/MentorGrid";
+import { MENTORS, toPublic } from "@/lib/mentors";
 
 export const metadata: Metadata = {
   title: "Fledgy Mentors — book 1:1 with recruiters & industry experts",
   description:
     "Book affordable 1:1 sessions with people who make hiring and admissions decisions. Real, personalized advice on your career, university applications, CV, and more.",
 };
-
-function bookingHref(m: Mentor): string {
-  if (m.bookingUrl && m.bookingUrl.trim().length > 0) return m.bookingUrl;
-  const to = m.email && m.email.trim().length > 0 ? m.email : BOOKING_EMAIL;
-  const subject = `Session request: ${m.name} (${m.title})`;
-  const body = `Hi ${m.name},
-
-I'd like to book a 1:1 session with you.
-
-My name:
-What I'd like help with:
-My availability (a few options):
-
-Thanks!`;
-  return `mailto:${to}?subject=${encodeURIComponent(
-    subject
-  )}&body=${encodeURIComponent(body)}`;
-}
-
-function MentorCard({ m }: { m: Mentor }) {
-  const external = !!(m.bookingUrl && m.bookingUrl.trim().length > 0);
-  const href = bookingHref(m);
-  return (
-    <div className="card-lift flex flex-col rounded-2xl border border-line bg-white p-5 shadow-sm sm:p-6">
-      <div className="flex items-center gap-4">
-        {m.photo ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={m.photo}
-            alt={m.name}
-            className="h-20 w-20 rounded-full object-cover"
-          />
-        ) : (
-          <div
-            className="flex h-20 w-20 items-center justify-center rounded-full text-2xl font-bold text-white"
-            style={{ backgroundColor: m.accent }}
-          >
-            {initials(m.name)}
-          </div>
-        )}
-        <div>
-          <p className="text-base font-semibold text-ink">{m.name}</p>
-          <p className="text-sm text-ink-muted">{m.title}</p>
-        </div>
-      </div>
-
-      <div className="mt-4 flex flex-wrap gap-1.5">
-        {m.areas.map((a) => (
-          <span
-            key={a}
-            className="rounded-full bg-cream px-2.5 py-1 text-xs font-medium text-ink-muted"
-          >
-            {a}
-          </span>
-        ))}
-      </div>
-
-      <p className="mt-4 flex-1 text-sm leading-relaxed text-ink-muted">
-        {m.blurb}
-      </p>
-
-      <div className="mt-5 flex items-center justify-between border-t border-cream pt-4">
-        <div className="leading-tight">
-          <span className="text-lg font-bold text-ink">{m.price}</span>
-          <span className="text-sm text-ink-faint"> · {m.sessionLength}</span>
-        </div>
-        <a
-          href={href}
-          {...(external
-            ? { target: "_blank", rel: "noopener noreferrer" }
-            : {})}
-          className="rounded-lg bg-brand-teal px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-teal-dark"
-        >
-          {external ? "Book a session →" : "Request a session →"}
-        </a>
-      </div>
-    </div>
-  );
-}
 
 export default function MentorsPage() {
   return (
@@ -113,18 +35,18 @@ export default function MentorsPage() {
           {[
             {
               n: "1",
-              t: "Browse mentors",
+              t: "Pick a mentor",
               d: "Recruiters, hiring managers, and specialists across fields.",
             },
             {
               n: "2",
-              t: "Pick a time",
-              d: "Book a slot that fits both your schedules.",
+              t: "Send a request",
+              d: "Tell us what you need and when you're free. It comes to Fledgy.",
             },
             {
               n: "3",
-              t: "Get real tips",
-              d: "Honest, personalized guidance in a focused session.",
+              t: "Get introduced",
+              d: "We come back with times and introduce you to your mentor.",
             },
           ].map((s) => (
             <div
@@ -140,17 +62,25 @@ export default function MentorsPage() {
           ))}
         </div>
 
-        {/* Mentor grid — empty until each mentor has agreed to appear. */}
+        {/* Mentor grid. Names are held back during the soft launch — the note
+            below is why people are told that up front rather than left to
+            wonder what's being hidden. */}
         {MENTORS.length > 0 ? (
           <>
-            <h2 className="mt-12 text-xl font-semibold text-ink">
-              Meet the mentors
-            </h2>
-            <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {MENTORS.map((m) => (
-                <MentorCard key={m.id} m={m} />
-              ))}
+            <div className="mt-12 flex flex-wrap items-end justify-between gap-2">
+              <h2 className="text-xl font-semibold text-ink">
+                Meet the mentors
+              </h2>
+              <p className="text-xs text-ink-faint">
+                Introductions happen when you book
+              </p>
             </div>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-muted">
+              We introduce our mentors by what they&apos;ve actually done, not by
+              their name — so you choose on experience. Send a request and
+              we&apos;ll come back with times and a proper introduction.
+            </p>
+            <MentorGrid mentors={MENTORS.map(toPublic)} />
           </>
         ) : (
           <div className="mt-12 rounded-2xl border border-cream-deep bg-cream p-6">
