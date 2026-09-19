@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Mark from "@/components/Mark";
 import MentorApply from "@/components/MentorApply";
 import MentorGrid from "@/components/MentorGrid";
-import { MENTORS, toPublic } from "@/lib/mentors";
+import { MENTORS, BOOKING_EMAIL, toPublic } from "@/lib/mentors";
 
 export const metadata: Metadata = {
   title: "Fledgy Mentors — book 1:1 with recruiters & industry experts",
@@ -92,6 +92,30 @@ export default function MentorsPage() {
               commercial pilot, and a career psychologist — at $29 for 30 minutes.
               Want first pick of the slots? Tell us what you need help with below and
               we&apos;ll come to you when it opens.
+            </p>
+          </div>
+        )}
+
+        {/* More coming. Deliberately vague about which fields: naming one we
+            haven't actually signed is a promise to whoever turns up for it. */}
+        {MENTORS.length > 0 && (
+          <div className="mt-8 rounded-2xl border border-dashed border-cream-deep bg-cream p-6 text-center">
+            <p className="text-base font-semibold text-ink">
+              More mentors coming soon
+            </p>
+            <p className="mx-auto mt-1.5 max-w-xl text-sm leading-relaxed text-ink-muted">
+              We&apos;re adding people a few at a time, so every session is with
+              someone who has actually done the thing. Want a field we
+              don&apos;t cover yet?{" "}
+              <a
+                href={`mailto:${BOOKING_EMAIL}?subject=${encodeURIComponent(
+                  "Mentor request"
+                )}`}
+                className="font-semibold text-brand-teal hover:underline"
+              >
+                Tell us who you need
+              </a>{" "}
+              and we&apos;ll go and find them.
             </p>
           </div>
         )}
