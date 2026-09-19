@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(
           {
             paywall: true,
-            error: `You've used your ${FREE_LIMIT} free essay rewrites. More coming soon.`,
+            error: `You've used your ${FREE_LIMIT} free essay rewrite${FREE_LIMIT === 1 ? "" : "s"}.`,
           },
           { status: 402 }
         );

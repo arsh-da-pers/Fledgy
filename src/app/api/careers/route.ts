@@ -101,7 +101,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           paywall: true,
-          error: `That's your ${FREE_LIMIT} free runs of the career quiz used.`,
+          error: `That's your ${FREE_LIMIT} free run${FREE_LIMIT === 1 ? "" : "s"} of the career quiz used.`,
         },
         { status: 402 }
       );

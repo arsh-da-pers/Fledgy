@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           paywall: true,
-          error: `That's your ${FREE_LIMIT} free CV scores used.`,
+          error: `That's your ${FREE_LIMIT} free CV score${FREE_LIMIT === 1 ? "" : "s"} used.`,
         },
         { status: 402 }
       );

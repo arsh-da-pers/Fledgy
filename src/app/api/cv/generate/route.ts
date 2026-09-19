@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(
           {
             paywall: true,
-            error: `You've used your ${FREE_LIMIT} free CV rewrites. More coming soon.`,
+            error: `You've used your ${FREE_LIMIT} free CV rewrite${FREE_LIMIT === 1 ? "" : "s"}.`,
           },
           { status: 402 }
         );

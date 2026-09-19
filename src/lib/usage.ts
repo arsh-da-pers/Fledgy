@@ -10,21 +10,20 @@
 
 import { kv } from "@vercel/kv";
 
-// Free runs PER TOOL, per email.
+// Free runs PER TOOL, per email. One each: a person gets a single free go at
+// the CV scorer, a single one at the essay scorer and a single one at the
+// career quiz, so trying a second tool is still free but a second run of the
+// same tool is not.
 //
-// Two, not one: the second run is usually where someone decides the tool is
-// consistent rather than a fluke, and a wall after a single score on a domain
-// nobody recognises reads as bait. Two also stops the free tier being used as
-// a coaching loop — re-scoring a revised CV over and over to watch the number
-// climb — which is what three allowed and what the token bill was paying for.
+// Arsh's call, made after seeing repeat free usage on the leads dashboard.
+// The known trade-off: an email address costs nothing to invent, so a limit
+// of one is the easiest to sidestep by typing a second address — which is
+// what normaliseEmail() below is for, collapsing a mailbox's aliases into one
+// identity so at least the cheap version of that doesn't work.
 //
-// Not one, also, because an email address costs nothing to invent: a hard
-// limit of one is defeated by typing a second address, so it would inconvenience
-// honest users far more than anyone determined.
-//
-// Referrals no longer raise this — they earn a discount instead, which costs
+// Referrals don't raise this — they earn a discount instead, which costs
 // margin rather than tokens. See the referral section below.
-export const FREE_LIMIT = 2;
+export const FREE_LIMIT = 1;
 
 /** The tools that meter free usage separately. */
 export type MeteredTool =
