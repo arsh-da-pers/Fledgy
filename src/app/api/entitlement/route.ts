@@ -5,7 +5,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { getEntitlements, getReport } from "@/lib/entitlements";
-import { isValidEmail } from "@/lib/usage";
+import { isValidEmail, referralCredits } from "@/lib/usage";
 import { PAYWALLS_ENABLED, PRODUCTS, isProductId, type ProductId } from "@/lib/products";
 
 export const runtime = "nodejs";
@@ -16,14 +16,26 @@ export async function POST(req: NextRequest) {
     const { email, product, includeReport } = await req.json();
 
     if (!email || !isValidEmail(email)) {
-      return NextResponse.json({ entitled: false, iterationsLeft: 0, owned: [] });
+      return NextResponse.json({
+        entitled: false,
+        iterationsLeft: 0,
+        owned: [],
+        referralCredits: 0,
+      });
     }
+
+    // Earned referral discounts, so the paywall can say the discount is
+    // waiting. A discount nobody knows about converts nobody.
+    const credits = process.env.STRIPE_REFERRAL_COUPON_ID
+      ? await referralCredits(email)
+      : 0;
 
     // Paywalls off: report full access so no page renders a paywall.
     if (!PAYWALLS_ENABLED) {
       const target = isProductId(product) ? product : null;
       return NextResponse.json({
         entitled: true,
+        referralCredits: credits,
         owned: Object.keys(PRODUCTS),
         iterationsLeft: target ? PRODUCTS[target].iterations : 0,
         iterationsTotal: target ? PRODUCTS[target].iterations : 0,
@@ -48,6 +60,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       entitled: target ? Boolean(entry) : ownedIds.length > 0,
+      referralCredits: credits,
       owned: ownedIds,
       iterationsLeft,
       iterationsTotal: target ? PRODUCTS[target].iterations : 0,

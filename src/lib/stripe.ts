@@ -106,18 +106,27 @@ export async function createCheckoutSession(opts: {
   currency: string;
   successUrl: string;
   cancelUrl: string;
+  /** Stripe coupon id to apply automatically (the referral discount). */
+  couponId?: string;
 }): Promise<CheckoutSession> {
   return stripeRequest<CheckoutSession>("/checkout/sessions", "POST", {
     mode: "payment",
     customer_email: opts.email,
     success_url: opts.successUrl,
     cancel_url: opts.cancelUrl,
-    // Lets you run a founding-cohort discount code without a code change.
-    allow_promotion_codes: true,
+    // Stripe rejects a session that sets BOTH `discounts` and
+    // `allow_promotion_codes`, so it is one or the other: an automatic
+    // referral discount, or the manual promo-code box.
+    ...(opts.couponId
+      ? { discounts: [{ coupon: opts.couponId }] }
+      : { allow_promotion_codes: true }),
     client_reference_id: opts.email.trim().toLowerCase(),
     metadata: {
       email: opts.email.trim().toLowerCase(),
       product: opts.productId,
+      // Read back on grant so the credit is only spent if the purchase
+      // actually completed — an abandoned checkout must not burn it.
+      referral_discount: opts.couponId ? "1" : "0",
     },
     line_items: [
       {

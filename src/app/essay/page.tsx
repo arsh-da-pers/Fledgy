@@ -6,6 +6,8 @@ import PageFaq from "@/components/PageFaq";
 import Paywall from "@/components/Paywall";
 import { ESSAY_ITERATIONS } from "@/lib/products";
 import ReferralInvite from "@/components/ReferralInvite";
+import AnalysisLoader from "@/components/AnalysisLoader";
+import NeedHelp from "@/components/NeedHelp";
 import { fireReferral } from "@/lib/referClient";
 import { uploadAndExtractText } from "@/lib/uploadAndExtract";
 import { track } from "@vercel/analytics";
@@ -148,7 +150,7 @@ export default function EssayPage() {
       <div className="w-full max-w-2xl px-5 py-10 sm:px-6 sm:py-12">
         <div className="flex items-start justify-between">
           <span className="inline-block rounded-full bg-brand-orange-tint px-2.5 py-1 text-xs font-bold tracking-widest text-brand-orange-dark">
-            FREE · UNIVERSITY ESSAY HUB
+            {entitled ? "UNLOCKED · FULL REPORT" : "FREE · UNIVERSITY ESSAY HUB"}
           </span>
           <Mark size={40} opacity={0.85} />
         </div>
@@ -156,15 +158,20 @@ export default function EssayPage() {
           Score my essay
         </h1>
         <p className="mt-2 text-ink-muted">
-          Paste your essay below. This free score is deliberately surface
-          level: honest, not padded.
+          {entitled
+            ? "Paste your essay below. You'll get the full report — every fix worth making, ranked strongest first."
+            : "Paste your essay below. Your score, an honest verdict and three real fixes are free — blunt, not padded."}
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <input
             type="email"
             className="w-full rounded-lg border border-line bg-white px-4 py-3 text-sm text-ink placeholder-ink-faint focus:border-brand-orange focus:outline-none"
-            placeholder="Your email (so we can save your free scores)"
+            placeholder={
+              entitled
+                ? "The email you bought with"
+                : "Your email (so we can save your free scores)"
+            }
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -223,16 +230,27 @@ export default function EssayPage() {
             disabled={loading}
             className="w-full rounded-lg bg-brand-orange px-4 py-3 text-sm font-semibold text-white transition hover:bg-brand-orange disabled:opacity-50"
           >
-            {loading ? "Reading your essay…" : "Get my free score"}
+            {loading
+              ? "Reading your essay…"
+              : entitled
+                ? "Score my essay"
+                : "Get my free score"}
           </button>
         </form>
 
+        {loading && <AnalysisLoader tool="essay" />}
+
+        {/* See the note on the CV page — the limit is a buying moment, not a
+            waitlist. */}
         {error && paywall && (
-          <div className="mt-6 rounded-lg border border-cream-deep bg-cream px-5 py-4">
-            <p className="text-sm font-semibold text-ink">
-              You&apos;re on the waitlist
-            </p>
-            <p className="mt-1 text-sm text-ink">{error}</p>
+          <div className="mt-6">
+            <p className="mb-3 text-sm text-ink-muted">{error}</p>
+            <Paywall
+              product="essay"
+              email={email}
+              heading="Unlock the full report instead"
+              subheading="Every fix we found, plus your essay rewritten in your own voice — not replaced with generic prose."
+            />
             <ReferralInvite email={email} />
           </div>
         )}
@@ -244,6 +262,11 @@ export default function EssayPage() {
 
         {result && (
           <div className="mt-8 card-lift rounded-2xl border border-line bg-white p-5 shadow-sm sm:p-6">
+            {!result.locked && (
+              <span className="mb-3 inline-block rounded-full bg-brand-orange-tint px-2.5 py-1 text-xs font-bold tracking-widest text-brand-orange-dark">
+                YOUR FULL ESSAY REPORT
+              </span>
+            )}
             <div className="flex items-start justify-between">
               <div className="flex items-baseline gap-3">
                 <span className="text-4xl font-semibold text-brand-orange">
@@ -265,14 +288,21 @@ export default function EssayPage() {
               ))}
             </ul>
             <p className="mt-5 text-xs text-ink-faint">
-              {result.locked
-                ? "That's your free score, verdict and first fix."
-                : "Your full report."}
-              {typeof result.usesRemaining === "number" && (
+              {result.locked ? (
                 <>
-                  {" "}
-                  You have {result.usesRemaining} free score
-                  {result.usesRemaining === 1 ? "" : "s"} left on this tool.
+                  That&apos;s your free score, verdict and three fixes.
+                  {typeof result.usesRemaining === "number" && (
+                    <>
+                      {" "}
+                      You have {result.usesRemaining} free score
+                      {result.usesRemaining === 1 ? "" : "s"} left on this tool.
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  Every fix worth making, ranked by impact — strongest first.
+                  Yours to keep.
                 </>
               )}
             </p>
@@ -327,7 +357,7 @@ export default function EssayPage() {
                   product="essay"
                   email={email}
                   heading="Want the rest of the report, and your essay rewritten?"
-                  subheading="Your score, verdict and first fix are free and always will be. Unlocking gives you every fix, plus your essay rewritten in your own voice."
+                  subheading="Your score, verdict and three real fixes are free and always will be. Unlocking adds the highest-impact fixes — the ones that actually move the needle — plus your essay rewritten in your own voice."
                   teaser={
                     result.lockedTipCount
                       ? `${result.lockedTipCount} more fixes found in your essay`
@@ -339,6 +369,8 @@ export default function EssayPage() {
           </div>
         )}
 
+        {(result || error) && <NeedHelp className="mt-5" />}
+
         <PageFaq
           title="About Fledgy's essay scorer"
           intro={[
@@ -348,7 +380,7 @@ export default function EssayPage() {
           faqs={[
             {
               q: "Is the essay scorer free?",
-              a: "Yes. Fledgy gives you free essay scores so you can improve your personal statement before you apply. The free score is deliberately surface-level and honest — a fuller paid report with section-by-section breakdowns is coming later.",
+              a: "Yes. Your score out of 100, a blunt verdict and three real fixes are free, and always will be. The full report — every fix worth making, ranked strongest first, plus your essay rewritten in your own voice — is a paid upgrade.",
             },
             {
               q: "What kinds of essays can I score?",

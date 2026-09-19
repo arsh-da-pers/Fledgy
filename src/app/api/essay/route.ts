@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { logFeedback } from "@/lib/logFeedback";
 import { hasProduct } from "@/lib/entitlements";
 import { PAYWALLS_ENABLED } from "@/lib/products";
-import { checkAndRecordUsage, isValidEmail, FREE_LIMIT } from "@/lib/usage";
+import { checkAndRecordUsage, isValidEmail, isThrowawayEmail, FREE_LIMIT } from "@/lib/usage";
 import { recordToolUse } from "@/lib/leads";
 
 export const runtime = "nodejs";
@@ -21,6 +21,16 @@ export async function POST(req: NextRequest) {
     if (!email || !isValidEmail(email)) {
       return NextResponse.json(
         { error: "Please enter a valid email so we can save your free scores." },
+        { status: 400 }
+      );
+    }
+
+    if (isThrowawayEmail(email)) {
+      return NextResponse.json(
+        {
+          error:
+            "That looks like a temporary email address. Please use one you can actually receive mail at — your results are saved to it.",
+        },
         { status: 400 }
       );
     }
@@ -48,7 +58,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           paywall: true,
-          error: `You've used your ${FREE_LIMIT} free scores on this tool. The other Fledgy tools are still free to use.`,
+          error: `That's your ${FREE_LIMIT} free essay score${FREE_LIMIT === 1 ? "" : "s"} used.`,
         },
         { status: 402 }
       );
@@ -78,16 +88,29 @@ Essay:
 ${essay}
 """
 
-Give a free, surface-level review only (the full paid report goes deeper). Return ONLY valid JSON, no other text, in this exact shape:
+Judge the essay on these, and score honestly:
+1. OPENING. Does the first line earn the second? Generic throat-clearing, a dictionary definition, or a quote that isn't theirs is a weakness, not a style choice.
+2. SPECIFICITY AND EVIDENCE. Concrete, particular detail only this person could have written beats any amount of eloquent generality. Penalise claims about themselves with nothing behind them.
+3. STRUCTURE. Does it go somewhere, or circle? Reward a shape the reader can follow; flag paragraphs that could be reordered without anyone noticing.
+4. VOICE. It should sound like a person, not an applicant performing. Flag borrowed admissions-essay cadence and inflated vocabulary.
+5. ENDING. Does it land, or trail off into a restatement of the opening?
+6. READERS OUTSIDE THE US AND UK. Where the essay assumes an American frame that its actual target reader won't share, say so.
+
+Give the FULL review — every fix worth making. The server decides how much of it the reader has paid to see, so never hold back here and never mention free, paid, or unlocking.
+
+ORDER THE TIPS BY IMPACT, STRONGEST FIRST. tips[0] must be the single change that would most improve this essay's chances; the last entry is the least significant. This ordering is load-bearing, so weigh it properly rather than listing them in the order you happened to notice them.
+
+Return ONLY valid JSON, no other text, in this exact shape:
 {
   "score": <integer 0-100, honest, not inflated>,
-  "tips": ["<short, specific, surface-level tip>", "<tip 2>", "<tip 3>"],
+  "tips": ["<the single highest-impact fix>", "<the next highest>", "<...>", "<...>", "<...>", "<the least significant fix>"],
   "one_line_verdict": "<one blunt sentence on where this essay stands>"
-}`;
+}
+Give 7 or 8 tips, each short and specific enough to act on.`;
 
     const msg = await anthropic.messages.create({
       model: "claude-sonnet-4-5",
-      max_tokens: 700,
+      max_tokens: 1400,
       messages: [{ role: "user", content: prompt }],
     });
 
@@ -104,11 +127,17 @@ Give a free, surface-level review only (the full paid report goes deeper). Retur
       verdict: parsed.one_line_verdict,
     });
 
-    // Free is a genuine glimpse — the honest score, the verdict, and the first
-    // concrete fix. The rest of the report is paid. Withheld server-side, so
-    // it can't be read out of the network tab.
-    const allTips = Array.isArray(parsed?.tips) ? parsed.tips : [];
-    const tips = entitled ? allTips : allTips.slice(0, 1);
+    // Free is a genuine glimpse: the honest score, the verdict, and three real
+    // fixes — but the LEAST significant three. The model ranks tips strongest
+    // first, so the free tier serves from the end of that list and the fixes
+    // that would move the needle most are what unlocking buys. This matches
+    // /api/cv and /api/careers; essay used to take slice(0, 1), which handed
+    // out the single BEST fix and left the weak ones behind the paywall.
+    // Sliced server-side, so the withheld ones can't be read out of the
+    // network tab.
+    const allTips: string[] = Array.isArray(parsed?.tips) ? parsed.tips : [];
+    const FREE_TIPS = 3;
+    const tips = entitled ? allTips : allTips.slice(-FREE_TIPS);
 
     return NextResponse.json({
       ...parsed,

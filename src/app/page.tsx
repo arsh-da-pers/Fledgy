@@ -15,25 +15,53 @@ export default function Home() {
       />
 
       <div className="relative w-full max-w-3xl px-5 pb-20 pt-8 sm:px-6 sm:pb-28">
-        <h1 className="rise-in text-[2.5rem] font-semibold leading-[1.05] tracking-tight text-ink sm:text-5xl">
-          Grow your <span className="sunrise-text">wings.</span>
+        {/* Brand line stays the headline's first line; the value line sits
+            underneath it. Both live in the h1 so the words that describe what
+            Fledgy does are what search engines read, while "Grow your wings."
+            keeps visual primacy as the brand line. */}
+        <h1 className="rise-in text-ink">
+          <span className="block text-[2.5rem] font-semibold leading-[1.05] tracking-tight sm:text-5xl">
+            Grow your <span className="sunrise-text">wings.</span>
+          </span>
+          <span className="mt-3 block text-xl font-semibold leading-snug tracking-tight text-ink-muted sm:text-2xl">
+            Figure out what&apos;s next — and get ready for it.
+          </span>
         </h1>
+
         <p className="rise-in-2 mt-5 max-w-xl text-base leading-relaxed text-ink-muted sm:text-lg">
-          Honest, AI-powered feedback on your essay, CV, and career, built for
-          students, applicants, job seekers, and professionals applying from
-          anywhere in the world, not just the US or UK.
+          Discover career paths that fit you, strengthen your CV, and get
+          smarter feedback on your university applications.
         </p>
 
-        <div className="mt-8 flex items-center gap-4">
+        <div className="rise-in-2 mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <Link
+            href="/careers"
+            className="flex items-center justify-center rounded-xl bg-brand-teal px-6 py-3.5 text-base font-semibold text-white transition hover:bg-brand-teal-dark sm:text-sm"
+          >
+            Explore my career →
+          </Link>
+          <Link
+            href="/cv"
+            className="flex items-center justify-center rounded-xl border border-brand-teal px-6 py-3.5 text-base font-semibold text-brand-teal transition hover:bg-brand-teal-tint sm:text-sm"
+          >
+            Check my CV →
+          </Link>
+        </div>
+
+        <p className="mt-4 text-sm text-ink-faint">
+          Free to start. No card.
+        </p>
+
+        <div className="mt-12 flex items-center gap-4">
           <Mark size={40} opacity={0.9} />
           <hr className="rule-sunrise flex-1" />
           <Mark size={40} opacity={0.9} className="scale-x-[-1]" />
         </div>
 
-        <p className="mt-8 max-w-xl text-ink-muted">
-          Fledgy is with you at every step: finding your direction, sharpening
-          your essay, and shaping a CV that lands, wherever in the world
-          you&apos;re applying. Three tools, one journey, all free to start.
+        <p className="mt-10 max-w-xl text-ink-muted">
+          Start wherever you are. Not sure what you want yet? Begin with your
+          direction. Already applying? Go straight to your CV or your
+          application essay.
         </p>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-3">
@@ -47,7 +75,7 @@ export default function Home() {
               className="pointer-events-none absolute -right-3 -top-4"
             />
             <span className="inline-block w-fit rounded-full bg-cream px-2.5 py-1 text-xs font-bold tracking-widest text-brand-teal">
-              STEP 1 · FREE
+              CAREER DIRECTION · FREE
             </span>
             <h2 className="mt-3 text-xl font-semibold text-ink">
               Find your direction
@@ -64,32 +92,8 @@ export default function Home() {
           </Link>
 
           <Link
-            href="/essay"
-            className="card-lift rise-in-2 group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white p-6 shadow-sm hover:border-brand-orange"
-          >
-            <Mark
-              size={54}
-              opacity={0.3}
-              className="pointer-events-none absolute -right-3 -top-4"
-            />
-            <span className="inline-block w-fit rounded-full bg-brand-orange-tint px-2.5 py-1 text-xs font-bold tracking-widest text-brand-orange-dark">
-              STEP 2 · FREE
-            </span>
-            <h2 className="mt-3 text-xl font-semibold text-ink">
-              Score my essay
-            </h2>
-            <p className="mt-2 text-sm text-ink-muted">
-              Paste your personal statement or application essay. Get an honest
-              score out of 100 and real, specific feedback, not flattery.
-            </p>
-            <span className="mt-4 inline-block text-sm font-medium text-brand-orange group-hover:underline">
-              Try it free →
-            </span>
-          </Link>
-
-          <Link
             href="/cv"
-            className="card-lift rise-in group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white p-6 shadow-sm hover:border-brand-teal"
+            className="card-lift rise-in-2 group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white p-6 shadow-sm hover:border-brand-teal"
           >
             <Mark
               size={54}
@@ -97,7 +101,7 @@ export default function Home() {
               className="pointer-events-none absolute -right-3 -top-4"
             />
             <span className="inline-block w-fit rounded-full bg-brand-teal-tint px-2.5 py-1 text-xs font-bold tracking-widest text-brand-teal-dark">
-              STEP 3 · FREE
+              YOUR CV · FREE
             </span>
             <h2 className="mt-3 text-xl font-semibold text-ink">
               Score my CV
@@ -107,6 +111,30 @@ export default function Home() {
               recruiters there actually expect, not generic ATS advice.
             </p>
             <span className="mt-4 inline-block text-sm font-medium text-brand-teal group-hover:underline">
+              Try it free →
+            </span>
+          </Link>
+
+          <Link
+            href="/essay"
+            className="card-lift rise-in-3 group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white p-6 shadow-sm hover:border-brand-orange"
+          >
+            <Mark
+              size={54}
+              opacity={0.3}
+              className="pointer-events-none absolute -right-3 -top-4"
+            />
+            <span className="inline-block w-fit rounded-full bg-brand-orange-tint px-2.5 py-1 text-xs font-bold tracking-widest text-brand-orange-dark">
+              ESSAY & SOP · FREE
+            </span>
+            <h2 className="mt-3 text-xl font-semibold text-ink">
+              Score my essay
+            </h2>
+            <p className="mt-2 text-sm text-ink-muted">
+              Paste your personal statement or application essay. Get an honest
+              score out of 100 and real, specific feedback, not flattery.
+            </p>
+            <span className="mt-4 inline-block text-sm font-medium text-brand-orange group-hover:underline">
               Try it free →
             </span>
           </Link>
@@ -167,7 +195,7 @@ export default function Home() {
               <ul className="mt-4 space-y-2.5 text-sm text-ink-muted">
                 <li className="flex gap-2">
                   <span className="text-ink-faint">○</span>
-                  <span>Polished, recruiter-ready CV design (PDF and Word)</span>
+                  <span>Polished, recruiter-ready CV design, as a typeset PDF</span>
                 </li>
                 <li className="flex gap-2">
                   <span className="text-ink-faint">○</span>
@@ -192,6 +220,21 @@ export default function Home() {
             &ldquo;Talent is everywhere. Opportunity isn&apos;t. Fledgy closes
             that gap.&rdquo;
           </p>
+        </div>
+
+        <div className="mt-12 rounded-xl border border-line bg-white p-6">
+          <h2 className="text-xl font-semibold text-ink">Got questions?</h2>
+          <p className="mt-1 text-sm leading-relaxed text-ink-muted">
+            Not sure which tool you need, stuck on a score you disagree with, or
+            wondering whether any of this is right for where you&apos;re
+            applying? Ask us. A person reads every message.
+          </p>
+          <a
+            href="mailto:hello@fledgy.guide"
+            className="mt-4 inline-flex items-center gap-2 rounded-lg border border-brand-teal px-4 py-2.5 text-sm font-semibold text-brand-teal transition hover:bg-brand-teal-tint"
+          >
+            hello@fledgy.guide
+          </a>
         </div>
 
         <div className="mt-12 flex justify-center">

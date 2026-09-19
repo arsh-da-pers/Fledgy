@@ -2,7 +2,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createCheckoutSession, stripeConfigured } from "@/lib/stripe";
-import { isValidEmail } from "@/lib/usage";
+import { isValidEmail, referralCredits } from "@/lib/usage";
 import { getProduct, PRICE_CONFIRMED, CURRENCY } from "@/lib/products";
 
 export const runtime = "nodejs";
@@ -54,17 +54,48 @@ export async function POST(req: NextRequest) {
 
     const origin = siteOrigin(req);
 
-    const session = await createCheckoutSession({
-      email,
-      productId: product.id,
-      productName: product.name,
-      productDescription: product.description,
-      amountCents: product.priceCents,
-      currency: CURRENCY,
-      // Stripe substitutes {CHECKOUT_SESSION_ID} when it builds the redirect.
-      successUrl: `${origin}/unlock?session_id={CHECKOUT_SESSION_ID}`,
-      cancelUrl: `${origin}${product.returnTo}?checkout=cancelled`,
-    });
+    // An earned referral discount is applied automatically — no code for the
+    // buyer to type, and nothing that can leak publicly. The credit is spent
+    // on grant, not here, so abandoning checkout doesn't lose it.
+    const coupon = process.env.STRIPE_REFERRAL_COUPON_ID;
+    const credits = coupon ? await referralCredits(email) : 0;
+    const couponId = credits > 0 ? coupon : undefined;
+
+    // A misconfigured coupon must never cost a sale. If Stripe rejects the
+    // discount — wrong id, deleted coupon, or one created in the other mode —
+    // fall back to an undiscounted session rather than failing the purchase.
+    // The buyer keeps their credit, since credits are only spent on grant.
+    let session;
+    try {
+      session = await createCheckoutSession({
+        email,
+        productId: product.id,
+        couponId,
+        productName: product.name,
+        productDescription: product.description,
+        amountCents: product.priceCents,
+        currency: CURRENCY,
+        // Stripe substitutes {CHECKOUT_SESSION_ID} when building the redirect.
+        successUrl: `${origin}/unlock?session_id={CHECKOUT_SESSION_ID}`,
+        cancelUrl: `${origin}${product.returnTo}?checkout=cancelled`,
+      });
+    } catch (err) {
+      if (!couponId) throw err;
+      console.error(
+        "[fledgy:checkout] coupon rejected, retrying without a discount:",
+        err
+      );
+      session = await createCheckoutSession({
+        email,
+        productId: product.id,
+        amountCents: product.priceCents,
+        currency: CURRENCY,
+        productName: product.name,
+        productDescription: product.description,
+        successUrl: `${origin}/unlock?session_id={CHECKOUT_SESSION_ID}`,
+        cancelUrl: `${origin}${product.returnTo}?checkout=cancelled`,
+      });
+    }
 
     if (!session.url) {
       return NextResponse.json(

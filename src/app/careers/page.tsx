@@ -477,10 +477,18 @@ export default function CareersPage() {
               </div>
             ))}
 
+            {/* See the note on the CV page — the limit is a buying moment, not
+                a waitlist. */}
             {error && paywall && (
-              <div className="rounded-lg border border-cream-deep bg-cream px-5 py-4">
-                <p className="text-sm font-semibold text-ink">You&apos;re on the waitlist</p>
-                <p className="mt-1 text-sm text-ink">{error}</p>
+              <div>
+                <p className="mb-3 text-sm text-ink-muted">{error}</p>
+                <Paywall
+                  product="careers"
+                  bundle="cv_careers"
+                  email={email}
+                  heading="Unlock your full report instead"
+                  subheading="Every career matched to your scores, why each one fits you specifically, and the action plan to get there."
+                />
                 <ReferralInvite email={email} />
               </div>
             )}

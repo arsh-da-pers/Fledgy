@@ -58,7 +58,9 @@ async function unlock(sessionId: string | undefined, next: string): Promise<Outc
       return { ok: false, message: "That payment didn't name a known product.", next };
     }
 
-    await grantPurchase(email, purchased, session.id);
+    await grantPurchase(email, purchased, session.id, {
+      usedReferralDiscount: session.metadata?.referral_discount === "1",
+    });
 
     const product = getProduct(purchased);
     return {

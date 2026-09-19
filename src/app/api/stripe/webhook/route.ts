@@ -85,7 +85,9 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    await grantPurchase(email, purchased, session.id);
+    await grantPurchase(email, purchased, session.id, {
+      usedReferralDiscount: session.metadata?.referral_discount === "1",
+    });
     console.log("[fledgy:webhook] granted", purchased, "to", email);
   } catch (err) {
     // Returning 500 makes Stripe retry, which is what we want if KV was down.
