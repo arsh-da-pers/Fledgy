@@ -61,18 +61,41 @@ export async function POST(req: NextRequest) {
     const credits = coupon ? await referralCredits(email) : 0;
     const couponId = credits > 0 ? coupon : undefined;
 
-    const session = await createCheckoutSession({
-      email,
-      productId: product.id,
-      couponId,
-      productName: product.name,
-      productDescription: product.description,
-      amountCents: product.priceCents,
-      currency: CURRENCY,
-      // Stripe substitutes {CHECKOUT_SESSION_ID} when it builds the redirect.
-      successUrl: `${origin}/unlock?session_id={CHECKOUT_SESSION_ID}`,
-      cancelUrl: `${origin}${product.returnTo}?checkout=cancelled`,
-    });
+    // A misconfigured coupon must never cost a sale. If Stripe rejects the
+    // discount — wrong id, deleted coupon, or one created in the other mode —
+    // fall back to an undiscounted session rather than failing the purchase.
+    // The buyer keeps their credit, since credits are only spent on grant.
+    let session;
+    try {
+      session = await createCheckoutSession({
+        email,
+        productId: product.id,
+        couponId,
+        productName: product.name,
+        productDescription: product.description,
+        amountCents: product.priceCents,
+        currency: CURRENCY,
+        // Stripe substitutes {CHECKOUT_SESSION_ID} when building the redirect.
+        successUrl: `${origin}/unlock?session_id={CHECKOUT_SESSION_ID}`,
+        cancelUrl: `${origin}${product.returnTo}?checkout=cancelled`,
+      });
+    } catch (err) {
+      if (!couponId) throw err;
+      console.error(
+        "[fledgy:checkout] coupon rejected, retrying without a discount:",
+        err
+      );
+      session = await createCheckoutSession({
+        email,
+        productId: product.id,
+        amountCents: product.priceCents,
+        currency: CURRENCY,
+        productName: product.name,
+        productDescription: product.description,
+        successUrl: `${origin}/unlock?session_id={CHECKOUT_SESSION_ID}`,
+        cancelUrl: `${origin}${product.returnTo}?checkout=cancelled`,
+      });
+    }
 
     if (!session.url) {
       return NextResponse.json(
