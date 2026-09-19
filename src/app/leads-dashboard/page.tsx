@@ -2,6 +2,15 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+type Inquiry = {
+  email: string;
+  mentorId: string;
+  mentorLabel: string;
+  message?: string;
+  name?: string;
+  at: string;
+};
+
 type Lead = {
   email: string;
   source?: string;
@@ -33,6 +42,7 @@ export default function LeadsDashboard() {
   const [key, setKey] = useState("");
   const [keyInput, setKeyInput] = useState("");
   const [leads, setLeads] = useState<Lead[] | null>(null);
+  const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
@@ -61,6 +71,7 @@ export default function LeadsDashboard() {
       }
       const data = await res.json();
       setLeads(Array.isArray(data.leads) ? data.leads : []);
+      setInquiries(Array.isArray(data.inquiries) ? data.inquiries : []);
       setUpdatedAt(new Date());
     } catch {
       setError("Could not load leads. Try again.");
@@ -89,6 +100,7 @@ export default function LeadsDashboard() {
     setKey("");
     setKeyInput("");
     setLeads(null);
+    setInquiries([]);
   }
 
   // Gate: ask for the key if we don't have one.
@@ -142,6 +154,14 @@ export default function LeadsDashboard() {
     (l) => l.source === "mentors" && l.role === "mentor"
   );
 
+  const realInquiries = inquiries.filter((i) => !isTest(i.email));
+  // Which mentor people actually ask for — the whole point of listing a few
+  // anonymously before putting more up.
+  const byMentor = new Map<string, number>();
+  realInquiries.forEach((i) =>
+    byMentor.set(i.mentorLabel, (byMentor.get(i.mentorLabel) || 0) + 1)
+  );
+
   const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
   const newThisWeek = real.filter((l) => {
     const t = l.firstSeen ? Date.parse(l.firstSeen) : NaN;
@@ -154,6 +174,7 @@ export default function LeadsDashboard() {
     { label: "Tool users", value: tool.length },
     { label: "Mentor waitlist", value: seekers.length },
     { label: "Mentor applicants", value: experts.length },
+    { label: "Mentor enquiries", value: realInquiries.length },
   ];
 
   const toolUsage: Record<"essay" | "cv" | "careers", number> = {
@@ -218,7 +239,7 @@ export default function LeadsDashboard() {
 
         {!error && (
           <>
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
               {tiles.map((t) => (
                 <div
                   key={t.label}
@@ -246,6 +267,65 @@ export default function LeadsDashboard() {
               ))}
               <span className="text-ink-faint">(recorded from now on)</span>
             </div>
+
+            {realInquiries.length > 0 && (
+              <div className="mt-6">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h2 className="text-sm font-semibold text-ink">
+                    Mentor enquiries
+                  </h2>
+                  <a
+                    href={`/api/leads?key=${encodeURIComponent(
+                      key
+                    )}&format=inquiries-csv`}
+                    className="text-xs font-medium text-brand-orange hover:underline"
+                  >
+                    Export enquiries CSV
+                  </a>
+                </div>
+                <div className="mt-2 flex flex-wrap gap-2 text-xs">
+                  {Array.from(byMentor.entries()).map(([label, n]) => (
+                    <span
+                      key={label}
+                      className="rounded-full border border-line bg-white px-3 py-1 text-ink-muted"
+                    >
+                      {label}: <b className="text-ink">{n}</b>
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-3 space-y-2">
+                  {realInquiries.map((i, idx) => (
+                    <div
+                      key={`${i.email}-${i.at}-${idx}`}
+                      className="rounded-xl border border-line bg-white p-4"
+                    >
+                      <div className="flex flex-wrap items-baseline justify-between gap-2">
+                        <p className="text-sm font-semibold text-ink">
+                          {i.mentorLabel}
+                        </p>
+                        <p className="text-xs text-ink-faint">
+                          {formatDate(i.at)}
+                        </p>
+                      </div>
+                      <p className="mt-1 text-xs text-ink-muted">
+                        {i.name ? `${i.name} · ` : ""}
+                        <a
+                          href={`mailto:${i.email}`}
+                          className="text-brand-teal hover:underline"
+                        >
+                          {i.email}
+                        </a>
+                      </p>
+                      {i.message && (
+                        <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-ink-muted">
+                          {i.message}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <label className="mt-4 flex items-center gap-2 text-xs text-ink-faint">
               <input

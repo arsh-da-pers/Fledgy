@@ -12,7 +12,7 @@
 //
 // TWO RULES THE NUMBERS MUST KEEP, whatever they are:
 //
-//  1. The $29 mentor session stays the most expensive thing on the site. It is
+//  1. The mentor session stays the most expensive thing on the site. It is
 //     the only one that costs a human being their time, and if a generated
 //     document ever matches it the human session reads as poor value.
 //
@@ -81,6 +81,10 @@ const ESSAY_CENTS = 500;
 const CAREERS_CENTS = 1800;
 const CV_CENTS = 900;
 const BUNDLE_CENTS = 2000;
+// A 1:1 mentor session. It isn't a Stripe product — payment is arranged when
+// the session is confirmed — but the price belongs here with the others so the
+// ladder can be read, and enforced, in one place.
+const MENTOR_CENTS = 2900;
 
 /** "$9" / "$22.50" — trailing .00 dropped so whole dollars read cleanly. */
 const usd = (cents: number) =>
@@ -89,6 +93,30 @@ const usd = (cents: number) =>
 // Worked out rather than written by hand: a hardcoded "saves $12" quietly
 // becomes a lie the moment any of the three prices moves.
 const BUNDLE_SAVING = usd(CV_CENTS + CAREERS_CENTS - BUNDLE_CENTS);
+
+/** The mentor session price, in cents and as the string every page shows. */
+export const MENTOR_PRICE_CENTS = MENTOR_CENTS;
+export const MENTOR_PRICE = usd(MENTOR_CENTS);
+
+/**
+ * Rule 1, checked rather than trusted: the mentor session must stay the
+ * priciest thing on the site. A generated document that matches or beats a
+ * human's time makes that human session read as poor value. This throws at
+ * import time — on a Vercel build, before anyone sees the page — so a bad
+ * price can't ship quietly.
+ */
+const DEAREST_PRODUCT = Math.max(
+  ESSAY_CENTS,
+  CAREERS_CENTS,
+  CV_CENTS,
+  BUNDLE_CENTS
+);
+if (MENTOR_CENTS <= DEAREST_PRODUCT) {
+  throw new Error(
+    `Pricing rule broken: the mentor session (${usd(MENTOR_CENTS)}) must cost ` +
+      `more than every product on the site (dearest is ${usd(DEAREST_PRODUCT)}).`
+  );
+}
 
 export const PRODUCTS: Record<ProductId, Product> = {
   essay: {
