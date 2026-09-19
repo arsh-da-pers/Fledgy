@@ -16,7 +16,12 @@
 //  • `published: false` hides a mentor without deleting them. Only publish
 //    someone who has agreed to their photo and bio being on fledgy.guide.
 //  • Flip SHOW_MENTOR_NAMES to true to reveal names everywhere in one edit.
-//  • Photos live in /public/mentors/.
+//  • Photos live in /public/mentors/ and are named m1/m2/m3 ON PURPOSE. A file
+//    called hasna.jpg hands out the name this page is built to withhold —
+//    it shows up in the <img src>, in Next's preload <link>, and in View
+//    Source. Same reason the `id` is m2 and not "hasna": it is serialised into
+//    the page so the form can post it. Keep both opaque; the mapping from an
+//    id to a real person stays in this file, server-side.
 
 import { MENTOR_PRICE } from "@/lib/products";
 import type { PublicMentor } from "@/lib/mentorsPublic";
@@ -30,7 +35,7 @@ export type Mentor = {
   sessionLength: string;
   price?: string; // per-mentor override; otherwise the site-wide MENTOR_PRICE
   email?: string; // internal routing only — never rendered, never sent to the browser
-  photo?: string; // e.g. "/mentors/arshkiran.jpg"
+  photo?: string; // e.g. "/mentors/m1.jpg" — keep the filename opaque
   accent: string; // avatar fallback background (used only if no photo)
   published: boolean;
 };
@@ -49,7 +54,7 @@ export const DEFAULT_PRICE = MENTOR_PRICE;
 
 const ALL_MENTORS: Mentor[] = [
   {
-    id: "arshkiran",
+    id: "m1",
     name: "Arshkiran",
     title: "Business Psychologist & Career Mentor",
     areas: ["Career direction", "University applications", "CV · LinkedIn · interviews"],
@@ -57,12 +62,12 @@ const ALL_MENTORS: Mentor[] = [
       "I'm a psychologist at heart — BA in Psychology, then an MSc in Business Psychology from Manchester. Over the years I've mentored 600+ students, taught, and helped people land jobs across the UK, the Gulf and beyond. I've also hired across startups and big corporates and sat in the room where the yes/no actually happens, so I know what gets a CV noticed and what quietly gets it passed over. Come to me for honest, down-to-earth help with your CV, interviews, LinkedIn, uni applications, or just figuring out your next move — and because it's all rooted in psychology, we'll get into why people (and hiring managers) really think the way they do. ✨",
     sessionLength: "30 min",
     email: "arshkiran@fledgy.guide",
-    photo: "/mentors/arshkiran.jpg",
+    photo: "/mentors/m1.jpg",
     accent: "#0f766e",
     published: true,
   },
   {
-    id: "hasna",
+    id: "m2",
     name: "Hasna",
     title: "Recruiter · Tech, Fintech & Crypto",
     areas: ["CV feedback", "Interview prep", "LinkedIn & job search"],
@@ -70,12 +75,12 @@ const ALL_MENTORS: Mentor[] = [
       "I've spent 4+ years hiring across tech, fintech, crypto and corporate roles, all over the world. I've read thousands of CVs and interviewed people from just about everywhere, so I know what actually makes someone stand out — and what quietly gets them skipped. No fluff, no gatekeeping: just real interview tips, honest CV feedback, LinkedIn help, and career advice that actually makes sense. Whether it's your first job, a career switch, or chasing your next big role, I'll help you work smarter, not harder. ✨",
     sessionLength: "30 min",
     email: "", // enquiries route to BOOKING_EMAIL until Hasna has an address
-    photo: "/mentors/hasna.jpg",
+    photo: "/mentors/m2.jpg",
     accent: "#b45309",
     published: true,
   },
   {
-    id: "ajit",
+    id: "m3",
     name: "Ajit",
     title: "Commercial Pilot",
     areas: ["Aviation careers", "Flight school & licenses", "Interviews & sim prep"],
@@ -83,7 +88,7 @@ const ALL_MENTORS: Mentor[] = [
       "I've been flying since 2015, so I've been through every stage of this — from wide-eyed cadet to the flight deck. Aviation is brutal to break into: it's long, expensive, and full of steps nobody really explains. So whether you're weighing up flight school, slogging through licenses and ratings, prepping for airline interviews and sim checks, or just wondering if the cockpit is really for you, I'll give it to you straight — what's worth your money, what it's actually like, and how to land that first seat. No sugar-coating, no gatekeeping. ✈️",
     sessionLength: "30 min",
     email: "hello@fledgy.guide",
-    photo: "/mentors/ajit.jpg",
+    photo: "/mentors/m3.jpg",
     accent: "#1d4ed8",
     published: true,
   },
