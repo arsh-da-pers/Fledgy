@@ -2,13 +2,40 @@
 
 import { useEffect, useState } from "react";
 import { track } from "@vercel/analytics";
-import { initials, type PublicMentor } from "@/lib/mentors";
+// Deliberately NOT "@/lib/mentors" — that module holds the mentors' real
+// names and emails, and importing it here would bundle them into the browser.
+import { initials, type PublicMentor } from "@/lib/mentorsPublic";
 
 // The mentor cards, plus the enquiry form they open.
 //
 // Cards carry no name and no email — a request goes to Fledgy, which forwards
 // it. Everything the browser receives is already stripped server-side by
 // toPublic(), so there is nothing identifying to scrape here.
+
+// Mentors sit in the UAE, so slots are asked for in UAE time (GST, UTC+4).
+// Most of the people asking are in India or elsewhere in the Gulf, and "give me
+// times" without a timezone is how a session gets booked 90 minutes wrong — so
+// we say which zone, and work out what that is where they are.
+const UAE_OFFSET_MIN = 4 * 60;
+
+function timezoneHint(): string {
+  try {
+    // getTimezoneOffset() counts minutes BEHIND UTC, so flip the sign.
+    const here = -new Date().getTimezoneOffset();
+    const diff = here - UAE_OFFSET_MIN;
+    if (diff === 0) return "You're on UAE time.";
+    const ahead = diff > 0;
+    const mins = Math.abs(diff);
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    const span = [h > 0 ? `${h}h` : "", m > 0 ? `${m}m` : ""]
+      .filter(Boolean)
+      .join(" ");
+    return `Your clock is ${span} ${ahead ? "ahead of" : "behind"} UAE time.`;
+  } catch {
+    return "";
+  }
+}
 
 function Avatar({ m }: { m: PublicMentor }) {
   if (m.photo) {
@@ -96,10 +123,13 @@ function InquiryForm({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+  const [tzHint, setTzHint] = useState("");
 
   useEffect(() => {
     const saved = window.localStorage.getItem("fledgy_email");
     if (saved) setEmail(saved);
+    // Read the clock on the client only — the server's zone isn't theirs.
+    setTzHint(timezoneHint());
   }, []);
 
   useEffect(() => {
@@ -179,6 +209,10 @@ function InquiryForm({
                 <p className="mt-0.5 text-sm text-ink-muted">
                   {mentor.title} · {mentor.price} for {mentor.sessionLength}
                 </p>
+                <p className="mt-0.5 text-xs text-ink-faint">
+                  Nothing is charged now — we&apos;ll confirm a time and how to
+                  pay by email.
+                </p>
               </div>
             </div>
 
@@ -199,13 +233,27 @@ function InquiryForm({
               />
             </div>
 
-            <textarea
-              className="h-28 w-full rounded-lg border border-line bg-white px-4 py-3 text-sm text-ink placeholder-ink-faint focus:border-brand-teal focus:outline-none"
-              placeholder="What would you like help with? Add a couple of times that suit you."
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              required
-            />
+            <div>
+              <label
+                htmlFor="mentor-inquiry-message"
+                className="text-sm font-medium text-ink"
+              >
+                What would you like help with?
+              </label>
+              <textarea
+                id="mentor-inquiry-message"
+                className="mt-1.5 h-28 w-full rounded-lg border border-line bg-white px-4 py-3 text-sm text-ink placeholder-ink-faint focus:border-brand-teal focus:outline-none"
+                placeholder="A line or two — and two or three times that suit you, in UAE time."
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                required
+              />
+              <p className="mt-1.5 text-xs text-ink-faint">
+                Please give your slots in <b className="text-ink-muted">UAE
+                time (GST, UTC+4)</b> — that&apos;s where your mentor is.
+                {tzHint ? ` ${tzHint}` : ""}
+              </p>
+            </div>
 
             {error && <p className="text-xs text-red-600">{error}</p>}
 

@@ -41,7 +41,7 @@ export default function MentorsPage() {
             {
               n: "2",
               t: "Send a request",
-              d: "Tell us what you need and when you're free. It comes to Fledgy.",
+              d: "Tell us what you need and when you're free, in UAE time. It comes to Fledgy.",
             },
             {
               n: "3",

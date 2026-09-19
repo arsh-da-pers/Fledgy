@@ -86,6 +86,7 @@ export async function POST(req: NextRequest) {
           "",
           text,
           "",
+          "Any times above were asked for in UAE time (GST, UTC+4).",
           "Reply to the student yourself, or forward this on.",
         ].join("\n")
       );

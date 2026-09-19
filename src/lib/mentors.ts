@@ -18,6 +18,9 @@
 //  • Flip SHOW_MENTOR_NAMES to true to reveal names everywhere in one edit.
 //  • Photos live in /public/mentors/.
 
+import { MENTOR_PRICE } from "@/lib/products";
+import type { PublicMentor } from "@/lib/mentorsPublic";
+
 export type Mentor = {
   id: string;
   name: string; // internal — only rendered if SHOW_MENTOR_NAMES is true
@@ -25,7 +28,7 @@ export type Mentor = {
   areas: string[];
   blurb: string;
   sessionLength: string;
-  price: string; // e.g. "$29"
+  price?: string; // per-mentor override; otherwise the site-wide MENTOR_PRICE
   email?: string; // internal routing only — never rendered, never sent to the browser
   photo?: string; // e.g. "/mentors/arshkiran.jpg"
   accent: string; // avatar fallback background (used only if no photo)
@@ -38,8 +41,11 @@ export const BOOKING_EMAIL = "arshkiran@fledgy.guide";
 // Names stay off the cards during the soft launch. One edit reveals them.
 export const SHOW_MENTOR_NAMES = false;
 
-// Flat launch price for a 1:1 session. Change per-mentor in the array if needed.
-export const DEFAULT_PRICE = "$29";
+// The price shown on every card. It is NOT written here — it comes from
+// products.ts, where the ladder lives and where the rule that a mentor session
+// stays the dearest thing on the site is enforced. Set `price` on a mentor only
+// to override them individually.
+export const DEFAULT_PRICE = MENTOR_PRICE;
 
 const ALL_MENTORS: Mentor[] = [
   {
@@ -50,7 +56,6 @@ const ALL_MENTORS: Mentor[] = [
     blurb:
       "I'm a psychologist at heart — BA in Psychology, then an MSc in Business Psychology from Manchester. Over the years I've mentored 600+ students, taught, and helped people land jobs across the UK, the Gulf and beyond. I've also hired across startups and big corporates and sat in the room where the yes/no actually happens, so I know what gets a CV noticed and what quietly gets it passed over. Come to me for honest, down-to-earth help with your CV, interviews, LinkedIn, uni applications, or just figuring out your next move — and because it's all rooted in psychology, we'll get into why people (and hiring managers) really think the way they do. ✨",
     sessionLength: "30 min",
-    price: "$29",
     email: "arshkiran@fledgy.guide",
     photo: "/mentors/arshkiran.jpg",
     accent: "#0f766e",
@@ -64,7 +69,6 @@ const ALL_MENTORS: Mentor[] = [
     blurb:
       "I've spent 4+ years hiring across tech, fintech, crypto and corporate roles, all over the world. I've read thousands of CVs and interviewed people from just about everywhere, so I know what actually makes someone stand out — and what quietly gets them skipped. No fluff, no gatekeeping: just real interview tips, honest CV feedback, LinkedIn help, and career advice that actually makes sense. Whether it's your first job, a career switch, or chasing your next big role, I'll help you work smarter, not harder. ✨",
     sessionLength: "30 min",
-    price: "$29",
     email: "", // enquiries route to BOOKING_EMAIL until Hasna has an address
     photo: "/mentors/hasna.jpg",
     accent: "#b45309",
@@ -78,7 +82,6 @@ const ALL_MENTORS: Mentor[] = [
     blurb:
       "I've been flying since 2015, so I've been through every stage of this — from wide-eyed cadet to the flight deck. Aviation is brutal to break into: it's long, expensive, and full of steps nobody really explains. So whether you're weighing up flight school, slogging through licenses and ratings, prepping for airline interviews and sim checks, or just wondering if the cockpit is really for you, I'll give it to you straight — what's worth your money, what it's actually like, and how to land that first seat. No sugar-coating, no gatekeeping. ✈️",
     sessionLength: "30 min",
-    price: "$29",
     email: "hello@fledgy.guide",
     photo: "/mentors/ajit.jpg",
     accent: "#1d4ed8",
@@ -88,15 +91,28 @@ const ALL_MENTORS: Mentor[] = [
 
 export const MENTORS: Mentor[] = ALL_MENTORS.filter((m) => m.published);
 
-// What the browser is allowed to see. The mentor's email never leaves the
-// server, so no scraper gets a mailing list out of this page.
-export type PublicMentor = Omit<Mentor, "email" | "name" | "published"> & {
-  name?: string;
-};
+export function priceOf(m: Mentor): string {
+  return m.price || DEFAULT_PRICE;
+}
 
+// What the browser is allowed to see: the shape in mentorsPublic.ts, and
+// nothing else. The name and email never leave the server, so no scraper gets
+// a mailing list — or a way around Fledgy — out of this page.
+// Written as an allow-list, not as "everything except email and name": a field
+// added to Mentor later (a phone number, a rate, a calendar link) then stays
+// server-side by default instead of leaking the moment someone adds it.
 export function toPublic(m: Mentor): PublicMentor {
-  const { email: _email, name, published: _published, ...rest } = m;
-  return SHOW_MENTOR_NAMES ? { ...rest, name } : rest;
+  const pub: PublicMentor = {
+    id: m.id,
+    title: m.title,
+    areas: m.areas,
+    blurb: m.blurb,
+    sessionLength: m.sessionLength,
+    price: priceOf(m),
+    photo: m.photo,
+    accent: m.accent,
+  };
+  return SHOW_MENTOR_NAMES ? { ...pub, name: m.name } : pub;
 }
 
 // The label used for a mentor in enquiry emails and on the leads dashboard.
@@ -107,13 +123,4 @@ export function mentorById(id: string): Mentor | undefined {
 
 export function mentorLabel(m: Mentor): string {
   return `${m.name} — ${m.title}`;
-}
-
-export function initials(name: string): string {
-  return name
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((w) => w[0]?.toUpperCase() ?? "")
-    .join("");
 }
