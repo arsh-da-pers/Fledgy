@@ -3,6 +3,68 @@ import type { Post } from "@/lib/blog";
 // Add new posts to the top of this array. Each post needs a unique `slug`.
 export const posts: Post[] = [
   {
+    slug: "how-to-answer-why-this-university",
+    title: "How to Answer \"Why This University?\" (Without Sounding Generic)",
+    description:
+      "How to answer \"why this university\" in your application or essay — how to research beyond the prospectus, a structure that avoids generic answers, and mistakes to avoid.",
+    date: "2026-09-13",
+    excerpt:
+      "\"Great reputation and beautiful campus\" could describe almost any university. Here's how to answer \"why this university?\" in a way that could only be about the one you're applying to.",
+    tags: ["applications", "university applications", "students"],
+    body: [
+      {
+        type: "p",
+        text: "\"Why this university?\" sounds like the easiest question on the application. It's also the one most applicants answer worst. The tell-tale signs are everywhere: \"excellent reputation,\" \"world-class faculty,\" \"beautiful campus\" — sentences that could be copy-pasted into an essay for almost any university on earth. Admissions readers see hundreds of these a season, and they can spot a generic answer in the first line. Here's how to write one that couldn't have been written for anywhere else.",
+      },
+      { type: "h2", text: "What this question is actually testing" },
+      {
+        type: "p",
+        text: "\"Why this university?\" isn't really asking you to flatter the institution. It's testing three things: whether you've done real research beyond the homepage, whether your goals genuinely line up with what this specific place offers, and whether you're likely to enrol if admitted. A vague answer fails all three at once — it suggests you haven't looked closely, and that this application is one of twenty identical ones you're sending out.",
+      },
+      { type: "h2", text: "Do the research before you write a word" },
+      {
+        type: "p",
+        text: "The single biggest difference between a strong answer and a weak one is specificity, and specificity only comes from actual research. Spend an hour on this before you draft anything:",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Read faculty pages, not just department overviews.** Find one or two professors whose research or teaching genuinely connects to what you want to study, and note exactly what draws you to their work.",
+          "**Look for things unique to this programme** — a specific course, a lab, a dual-degree option, a research centre, a study-abroad partnership, or a teaching format (project-based, cohort-based, co-op) that other universities don't offer in the same way.",
+          "**Check where graduates actually go.** Career outcomes, notable alumni in your field, or specific employer partnerships can be concrete evidence this university leads where you want to go.",
+          "**Note the campus culture facts that matter to you** — not \"vibrant community,\" but a specific society, tradition, or initiative you'd actually want to be part of.",
+          "**If you can, talk to a current student or alum.** A detail from a real conversation is something no other applicant will have.",
+        ],
+      },
+      { type: "h2", text: "A structure that avoids the generic-answer trap" },
+      {
+        type: "p",
+        text: "Once you have real material, structure matters less than most people think — but a simple shape works well: state what you want to study or achieve, name one or two specific things about this university that connect to it, and explain why that connection matters to your goals. The connection is the part people skip. Naming a professor means nothing if you don't say what about their work interests you and why.",
+      },
+      { type: "h2", text: "Common mistakes that give away a generic answer" },
+      {
+        type: "ul",
+        items: [
+          "Praising things true of most good universities — rankings, \"passionate faculty,\" \"diverse student body\" — without anything specific to this one.",
+          "Naming a professor or course you clearly haven't looked into beyond the title.",
+          "Focusing entirely on the university's prestige rather than your own fit and goals.",
+          "Writing an answer so interchangeable it could be reused for a rival university by swapping the name.",
+          "Ignoring the actual question being asked if the prompt is more specific than a generic \"why us\" (e.g., \"why this programme\" vs. \"why this city\").",
+        ],
+      },
+      { type: "h2", text: "A quick before-and-after" },
+      {
+        type: "quote",
+        text: "Generic: \"I want to attend this university because of its excellent reputation and strong academic programmes.\" Specific: \"I want to work with Professor X's lab on renewable materials research, and the university's joint engineering-business degree would let me pair that with the product-development skills I'd need to bring that research to market.\"",
+      },
+      { type: "h2", text: "Check your answer before you submit" },
+      {
+        type: "p",
+        text: "The hardest part of writing this section is judging whether it actually sounds specific to a reader who doesn't already know what you meant. Fledgy's [free essay scorer](/essay) gives your personal statement or application essay an honest score out of 100, with specific feedback on where an answer reads generic versus where it reads like it could only be about this university — so you know exactly what to sharpen before you submit.",
+      },
+    ],
+  },
+  {
     slug: "career-change-cv",
     title: "How to Write a CV for a Career Change (Step-by-Step Guide)",
     description:
@@ -200,6 +262,130 @@ export const posts: Post[] = [
       {
         type: "p",
         text: "The bottom line: a personal statement and an SOP aren't interchangeable. Work out which your programme wants, put the weight where that document expects it, and pressure-test the draft before it's the version a committee reads.",
+      },
+    ],
+  },
+  {
+    slug: "how-to-explain-a-career-gap-on-your-cv",
+    title: "How to Explain a Career Gap on Your CV (Without Apologising for It)",
+    description:
+      "How to explain a career gap on your CV — how to frame it, whether to address it in your cover letter, and what to say in an interview if it comes up.",
+    date: "2026-08-31",
+    excerpt:
+      "A gap on your CV isn't a red flag by itself — how you present it is. Here's how to frame it, whether to mention it upfront, and what to say if it comes up.",
+    tags: ["cv", "career gap", "job seekers", "career changers"],
+    body: [
+      {
+        type: "p",
+        text: "Redundancy, illness, caregiving, a failed business, burnout, travel, further study that didn't lead anywhere obvious — there are a hundred honest reasons for a gap in your work history, and almost none of them are the problem employers imagine. What actually costs candidates interviews isn't the gap itself; it's leaving it unexplained and hoping no one notices, or over-explaining it in a way that reads as an apology. Here's how to handle it well.",
+      },
+      { type: "h2", text: "Recruiters notice gaps less than you think — but they do notice silence" },
+      {
+        type: "p",
+        text: "A short gap, a few months, rarely raises an eyebrow. A longer one, six months or more, usually gets a second look — not because it's disqualifying, but because an unexplained blank space invites the reader to guess, and people tend to guess worse than the truth. A one-line explanation closes that gap before it becomes a question mark.",
+      },
+      { type: "h2", text: "Decide where it belongs" },
+      {
+        type: "ul",
+        items: [
+          "**On the CV itself** — for a gap tied to something concrete (parental leave, caregiving, study, illness, travel), a short line in the timeline is often enough: \"2023–2024: Career break — full-time caregiving.\" No lengthy justification needed.",
+          "**In the cover letter** — if the gap is relevant to the role or you want to frame it positively (a return-to-work programme, a deliberate career change), a sentence or two here works better than crowding the CV.",
+          "**Saved for the interview** — if it's more personal (burnout, a layoff you're still processing, a business that didn't work out), a brief, matter-of-fact line prepared for the interview is often the better call than putting it in writing at all.",
+        ],
+      },
+      { type: "h2", text: "Frame it as time used, not time lost" },
+      {
+        type: "p",
+        text: "Even an unplanned gap usually involved something: courses, volunteering, freelance projects, caregiving that built real organisational and crisis-management skills, or simply a clear-eyed reason for stepping back. Naming it briefly turns a blank space into a data point, without turning your CV into a confession. You don't owe a full account — you owe enough that the reader isn't left guessing.",
+      },
+      { type: "h2", text: "What to say in the interview" },
+      {
+        type: "p",
+        text: "Keep it short, factual, and forward-looking: what happened, in one sentence, and then what you're looking for now. \"I stepped back for eighteen months to care for a family member; I'm now looking to get back into a role like this one\" says everything a hiring manager needs and nothing they don't. Rehearse it so it comes out calm and brief — the biggest tell of an unresolved gap isn't the gap, it's a candidate who visibly dreads the question.",
+      },
+      { type: "h2", text: "Mistakes that make a gap look worse than it is" },
+      {
+        type: "ul",
+        items: [
+          "Leaving the timeline blank and hoping no one does the maths on the dates.",
+          "Fudging dates to hide a gap — inconsistencies are far more damaging than the gap itself if they're caught.",
+          "Over-explaining in writing what a single calm sentence in the interview would cover better.",
+          "Sounding apologetic or defensive, as if a gap needs forgiveness rather than a simple explanation.",
+          "Failing to show what you did with the time, even briefly, when there's something genuinely worth naming.",
+        ],
+      },
+      { type: "h2", text: "Get the rest of the CV working as hard as possible" },
+      {
+        type: "p",
+        text: "A well-handled gap stops being the story the moment the rest of your CV is strong. Fledgy's [free CV scorer](/cv) rates your CV against real hiring norms and can generate a recruiter-ready rewrite, so the roles either side of the gap — and everything else on the page — make the strongest possible case for you.",
+      },
+    ],
+  },
+  {
+    slug: "best-certifications-to-advance-your-career",
+    title: "Best Certifications to Advance Your Career (by Field)",
+    description:
+      "Which professional certifications are actually worth your time and money by field — tech, project management, data, marketing, HR, and finance — and how to pick one.",
+    date: "2026-09-06",
+    excerpt:
+      "Not every certification pays off. Here's how to tell which ones are worth the time and money, broken down by field, and how to put one to work once you have it.",
+    tags: ["certifications", "career growth", "working professionals"],
+    body: [
+      {
+        type: "p",
+        text: "A certification is a bet: weeks or months of study and a fee, in exchange for a credential you hope moves the needle on a promotion, a raise, or a career change. Some bets pay off fast. Others sit on a CV doing nothing because the field doesn't rate them or you picked one for the wrong reason. Here's how to tell the difference, field by field, and how to actually use one once you've earned it.",
+      },
+      { type: "h2", text: "When a certification is worth it — and when it isn't" },
+      {
+        type: "p",
+        text: "Certifications work best in three situations: the field has a widely recognised standard (accounting, project management, cloud platforms), you're changing fields and need a credible signal fast, or a specific role formally requires one. They work poorly as a substitute for experience, as a way to avoid the harder work of building a portfolio, or when you're chasing a credential nobody in your target industry actually asks about. Before you enrol, search a handful of real job postings in your target role and see whether the certification appears as a requirement or a plus — that's a better signal than any ranking article, including this one.",
+      },
+      { type: "h2", text: "By field: tech and IT" },
+      {
+        type: "ul",
+        items: [
+          "**Cloud** — AWS Certified Solutions Architect, Microsoft Azure Fundamentals/Administrator, or Google Cloud's Associate Cloud Engineer. Whichever cloud your target employers actually run.",
+          "**Security** — CompTIA Security+ for a first credential, CISSP once you have real experience behind you.",
+          "**Data** — Google Data Analytics Certificate or Microsoft's Power BI credentials for analysts; a portfolio of real projects still matters more than the badge itself.",
+        ],
+      },
+      { type: "h2", text: "By field: business, project management, and finance" },
+      {
+        type: "ul",
+        items: [
+          "**Project management** — PMP (Project Management Professional) is the recognised standard for experienced PMs; CAPM is the entry-level version if you don't yet meet PMP's experience requirement.",
+          "**Agile** — Certified ScrumMaster (CSM) or PMI-ACP, common in tech and product organisations.",
+          "**Finance** — CFA for investment and asset management; CPA (or your country's equivalent) for accounting; both are long, serious commitments that genuinely change what roles you're eligible for.",
+          "**General business** — a short, credible course in financial modelling or Excel/SQL fluency often does more for an early-career professional than a broad, generic \"business certificate.\"",
+        ],
+      },
+      { type: "h2", text: "By field: marketing and HR" },
+      {
+        type: "ul",
+        items: [
+          "**Marketing** — Google Analytics and Google Ads certifications (free, widely recognised), HubSpot's inbound and content marketing certificates.",
+          "**HR** — SHRM-CP or PHR for HR generalists and people managers, both well recognised by recruiters in the US and increasingly beyond it.",
+        ],
+      },
+      { type: "h2", text: "How to choose between two options" },
+      {
+        type: "p",
+        text: "When you're torn between certifications, weigh three things: how often it appears in real job postings for the role you want, how much study time it actually needs versus what you can realistically give it, and whether it's issued or recognised by a body employers in your field trust. A well-known, moderately impressive certification you finish is worth more than a prestigious one you abandon halfway through.",
+      },
+      { type: "h2", text: "Put it to work once you have it" },
+      {
+        type: "ul",
+        items: [
+          "Add it to your CV and LinkedIn headline the day you pass, not \"eventually.\"",
+          "Use it as a concrete reason in your next promotion conversation — a new skill is evidence you're already closer to the next level.",
+          "Apply what you learned to a real project at work within weeks, while it's fresh, so it becomes a story rather than just a line item.",
+          "If it's aimed at a career change, mention it explicitly in your cover letter and CV summary, since it's doing the work experience normally would.",
+        ],
+      },
+      { type: "h2", text: "Make sure it actually shows up on your CV" },
+      {
+        type: "p",
+        text: "A new certification only helps if it's positioned clearly — buried in a long skills list, it does nothing. If you're not sure where a new certification should sit or how to phrase it, Fledgy's [free CV scorer](/cv) rates your CV against real hiring norms and can generate a recruiter-ready rewrite. And if you're weighing which certification fits your longer-term direction in the first place, the [career quiz](/careers) can help narrow that down before you spend the time and money.",
       },
     ],
   },
