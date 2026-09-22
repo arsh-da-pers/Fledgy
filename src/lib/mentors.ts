@@ -28,7 +28,8 @@ import type { PublicMentor } from "@/lib/mentorsPublic";
 
 export type Mentor = {
   id: string;
-  name: string; // internal — only rendered if SHOW_MENTOR_NAMES is true
+  name?: string; // internal — only rendered if SHOW_MENTOR_NAMES is true. Optional:
+  // a mentor can be listed with no name held in the codebase at all.
   title: string; // the public heading on the card while names are hidden
   areas: string[];
   blurb: string;
@@ -92,6 +93,18 @@ const ALL_MENTORS: Mentor[] = [
     accent: "#1d4ed8",
     published: true,
   },
+  {
+    id: "m4",
+    title: "Marketing Manager · Premium Fashion",
+    areas: ["Marketing careers", "Brand, copy & tone of voice", "Non-linear career paths"],
+    blurb:
+      "I started working at 18, and 15 years later my career has been through retail, consulting, research, teaching, hospitality and now fashion. Not a conventional path — but it's exactly what shaped how I approach marketing: understand people, figure things out fast, and remember there's rarely only one way to get somewhere. Today I'm a Trade & Partner Marketing Manager for international premium fashion brands across Europe and Asia, sitting somewhere between brand gatekeeper and growth partner. I've built copy and tone-of-voice systems from scratch, run influencer and activation strategy without fancy analytics tools, and learned what makes communication land instead of getting ignored. Less jargon, more what actually works and why. Come to me to work out where you fit in marketing, or how to navigate a career that isn't a straight line. ✨",
+    sessionLength: "30 min",
+    email: "", // no address yet — enquiries fall back to BOOKING_EMAIL, which is fine
+    photo: "/mentors/m4.jpg", // TODO: drop the file in at EXACTLY this path
+    accent: "#9d174d",
+    published: true,
+  },
 ];
 
 export const MENTORS: Mentor[] = ALL_MENTORS.filter((m) => m.published);
@@ -126,6 +139,9 @@ export function mentorById(id: string): Mentor | undefined {
   return ALL_MENTORS.find((m) => m.id === id);
 }
 
+// How a mentor is named in enquiry emails and on the leads dashboard. Falls
+// back to the role when no name is stored — the titles are distinct, so an
+// enquiry is still unambiguous without one.
 export function mentorLabel(m: Mentor): string {
-  return `${m.name} — ${m.title}`;
+  return m.name ? `${m.name} — ${m.title}` : m.title;
 }
