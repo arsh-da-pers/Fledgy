@@ -3,6 +3,77 @@ import type { Post } from "@/lib/blog";
 // Add new posts to the top of this array. Each post needs a unique `slug`.
 export const posts: Post[] = [
   {
+    slug: "how-to-write-a-linkedin-summary",
+    title: "How to Write a LinkedIn Summary That Gets Noticed",
+    description:
+      "How to write a LinkedIn summary (About section) that gets noticed by recruiters and hiring managers — a structure that works, real before/after examples, and mistakes to avoid.",
+    date: "2026-09-27",
+    excerpt:
+      "Most LinkedIn summaries get skipped after the first line. Here's a structure that earns the click to \"see more\" — and gives recruiters a reason to reach out.",
+    tags: ["linkedin", "career growth", "working professionals", "job search"],
+    body: [
+      {
+        type: "p",
+        text: "Your LinkedIn \"About\" section is one of the most under-used pieces of real estate in your career. Recruiters search it, hiring managers skim it before a call, and colleagues read it when they're deciding whether to introduce you to someone. Yet most people either leave it blank, paste in their CV summary word for word, or write three paragraphs of vague self-praise nobody finishes reading. Here's how to write one that actually earns attention — whether you're job hunting now or just want to be found for the next opportunity.",
+      },
+      { type: "h2", text: "What the About section is actually for" },
+      {
+        type: "p",
+        text: "LinkedIn truncates your About section after roughly two to three lines on desktop, fewer on mobile, before showing a \"see more\" link. That means your opening line has to work as a standalone pitch — most readers never click through past it. Think of the summary less as a biography and more as the answer to a specific question: if someone has ten seconds, why should they care who you are and what you've done? Everything after the fold is there for the smaller number of people who do click through.",
+      },
+      { type: "h2", text: "A structure that works" },
+      {
+        type: "p",
+        text: "There's no single correct format, but a simple shape covers most cases well:",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Opening line** — who you are and what you do, specific enough to mean something. Not a job title alone (\"Marketing Manager\") but what that title actually involves and for whom.",
+          "**Proof** — two or three concrete outcomes with numbers where you have them. This is the part that separates you from everyone else with the same job title.",
+          "**Specialisation** — the niche or angle you're known for, so the reader knows exactly what to think of you for, rather than a generic list of skills.",
+          "**A soft close** — what you're currently focused on, open to, or interested in next. This is what turns a passive profile into one that generates messages.",
+        ],
+      },
+      { type: "h2", text: "Front-load the first two lines" },
+      {
+        type: "p",
+        text: "Because of the truncation cutoff, the biggest single fix most people need is moving their best line to the top. \"I am a dedicated professional with over 8 years of experience\" wastes the only guaranteed real estate you get. Lead instead with the thing that would make a stranger want to read on: the specific problem you solve, the result you're known for, or the niche you occupy. Save the scene-setting for after the fold — if it survives the cut at all.",
+      },
+      { type: "h2", text: "Write it for search, not just for humans" },
+      {
+        type: "p",
+        text: "Recruiters don't only read profiles they stumble onto — many find you by searching LinkedIn Recruiter for specific job titles, skills, tools, and industry terms. If your summary never uses the words a recruiter would actually type in, you can be a perfect match and still never surface. Weave in the exact job titles, tools, certifications, and industry terms relevant to the roles you want, in natural sentences rather than a stuffed keyword list at the bottom. The goal is to read normally to a human while still containing the terms a search would look for.",
+      },
+      { type: "h2", text: "Common mistakes that make people skip past it" },
+      {
+        type: "ul",
+        items: [
+          "Writing in the third person (\"Jane is a results-driven leader...\") — it reads like a press release, not a person, and most readers find it slightly off-putting.",
+          "Listing adjectives with no proof: \"passionate,\" \"driven,\" \"strategic thinker\" mean nothing without a specific example attached.",
+          "Copy-pasting your CV summary verbatim — LinkedIn is a different format read by a different kind of reader, often earlier in the process and more casually.",
+          "Burying the interesting part in paragraph four, after several lines of career history nobody clicked through to see.",
+          "Leaving it blank or one line long, which reads as disengaged even if your experience section is strong.",
+        ],
+      },
+      { type: "h2", text: "A quick before-and-after" },
+      {
+        type: "quote",
+        text: "Before: \"Jane is a dedicated marketing professional with a passion for driving results and building brands. She has extensive experience across multiple industries and enjoys collaborating with cross-functional teams.\" After: \"I help mid-size SaaS companies turn a stalled content pipeline into a pipeline of qualified leads. In the last two years I've grown organic traffic 3x for two B2B startups and built the content function from a one-person team into four. Right now I'm focused on lifecycle and retention marketing — and open to conversations about senior content or lifecycle roles.\"",
+      },
+      { type: "h2", text: "Keep it current as you grow" },
+      {
+        type: "p",
+        text: "A summary written for your last job search quietly goes stale. Revisit it whenever you take on a new kind of project, hit a milestone worth naming, or start angling toward a different next step — the same way you'd update a CV before applying somewhere new. If you're not sure what that next step should be, Fledgy's [career quiz](/careers) can help map out directions that fit your strengths, so your summary points somewhere specific rather than everywhere at once.",
+      },
+      { type: "h2", text: "Make sure the rest of your story matches" },
+      {
+        type: "p",
+        text: "A strong LinkedIn summary and a weak CV send mixed signals the moment someone checks both. Fledgy's [free CV scorer](/cv) rates your CV against real hiring norms and can generate a recruiter-ready rewrite, so the positioning you've worked out for LinkedIn carries through to the document that actually gets you the interview.",
+      },
+    ],
+  },
+  {
     slug: "how-to-answer-why-this-university",
     title: "How to Answer \"Why This University?\" (Without Sounding Generic)",
     description:
