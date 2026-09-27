@@ -38,12 +38,18 @@ function timezoneHint(): string {
 }
 
 function Avatar({ m }: { m: PublicMentor }) {
-  if (m.photo) {
+  // A missing photo file would otherwise render the browser's broken-image
+  // icon on a page selling 1:1 sessions. If it fails to load we fall back to
+  // the plain accent circle, which looks deliberate rather than broken.
+  const [failed, setFailed] = useState(false);
+
+  if (m.photo && !failed) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img
         src={m.photo}
         alt={m.name ? m.name : `Fledgy mentor — ${m.title}`}
+        onError={() => setFailed(true)}
         className="h-20 w-20 shrink-0 rounded-full object-cover"
       />
     );
