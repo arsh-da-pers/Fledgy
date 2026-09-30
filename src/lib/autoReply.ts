@@ -25,6 +25,7 @@ import { normaliseEmail } from "@/lib/usage";
 import { INSTAGRAM_URL, LINKEDIN_URL, TOOLS, referralLink } from "@/lib/social";
 import type { ToolKey } from "@/lib/social";
 import { isUnsubscribed, unsubscribeUrl } from "@/lib/unsubscribe";
+import { MENTOR_PRICE } from "@/lib/products";
 
 const REPLY_TO = "hello@fledgy.guide";
 const MARK = "https://fledgy.guide/fledgy-mark.png";
@@ -189,9 +190,16 @@ const COOLDOWN_SECONDS = 3600;
 // limit already caps runs per tool, so this cannot be pumped.
 const TOOL_COOLDOWN_SECONDS = 90 * 24 * 3600;
 
+// ttlSeconds of 0 means "claim forever" — used by the one-off campaign, where
+// re-running the backfill must never re-mail anyone. Passing ex: 0 to Redis is
+// an error, so the option is omitted entirely in that case.
 async function claimOnce(key: string, ttlSeconds: number): Promise<boolean> {
   try {
-    const ok = await kv.set(key, "1", { nx: true, ex: ttlSeconds });
+    const ok = await kv.set(
+      key,
+      "1",
+      ttlSeconds > 0 ? { nx: true, ex: ttlSeconds } : { nx: true }
+    );
     return ok === "OK";
   } catch (err) {
     // Fails OPEN, like the usage limits: a KV blip should cost us a duplicate
@@ -334,6 +342,115 @@ export async function sendToolThankYou(email: string, tool: ToolKey): Promise<bo
     });
   } catch (err) {
     console.error("[fledgy:autoreply] tool thank-you failed", err);
+    return false;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// The one-off re-engagement mail for people who used Fledgy BEFORE the mentors
+// launch and the homepage rebuild.
+//
+// Deliberately NOT the tool thank-you: that one opens "You just used Score my
+// CV", which is false for someone whose last visit was weeks ago. Also
+// promotional, so same rules — unsubscribe honoured, opt-out link, and the
+// List-Unsubscribe header.
+// ---------------------------------------------------------------------------
+
+function whatsNew(email: string, name: string | undefined, unsubUrl: string | null): Reply {
+  const hi = name ? `Hi ${name},` : "Hi,";
+  const link = referralLink(email);
+  const socials = [
+    `<a href="${INSTAGRAM_URL}" style="color:${TEAL};font-weight:600;">Instagram</a>`,
+    LINKEDIN_URL
+      ? `<a href="${LINKEDIN_URL}" style="color:${TEAL};font-weight:600;">LinkedIn</a>`
+      : "",
+  ]
+    .filter(Boolean)
+    .join(" &nbsp;·&nbsp; ");
+
+  return {
+    subject: "You can now book a real person on Fledgy",
+    text: [
+      hi,
+      "",
+      "You used Fledgy a while back — thank you. Two things have changed since then.",
+      "",
+      `1. You can book a 1:1 session with a real person (${MENTOR_PRICE}). A recruiter who has read thousands of CVs, a commercial pilot who came up through flight school, a marketing manager with a deliberately non-linear career, and a business psychologist who has mentored 600+ people.`,
+      "   https://fledgy.guide/mentors",
+      "",
+      "2. The three tools are still free to start, and they have had a lot of work since you last used them:",
+      `   ${TOOLS.cv.name} — ${TOOLS.cv.href}`,
+      `   ${TOOLS.essay.name} — ${TOOLS.essay.href}`,
+      `   ${TOOLS.careers.name} — ${TOOLS.careers.href}`,
+      "",
+      "If Fledgy was useful, sharing it is the thing that helps most:",
+      `   ${link}`,
+      "When a friend buys anything, you get 20% off your next purchase — they get the tools free either way.",
+      "",
+      [INSTAGRAM_URL, LINKEDIN_URL].filter(Boolean).join("   "),
+      "",
+      "Thanks for being early.",
+      "",
+      "— Arshkiran, Fledgy",
+      "fledgy.guide",
+      ...(unsubUrl ? ["", `Don't want these? Unsubscribe: ${unsubUrl}`] : []),
+    ].join("\n"),
+    html: shell(
+      "You can now book a real person",
+      [
+        p(esc(hi)),
+        p("You used Fledgy a while back — thank you. Two things have changed since then."),
+        `<div style="margin:16px 0 20px;padding:16px;background:#ffffff;border-left:3px solid ${ORANGE};border-radius:6px;">
+           <p style="margin:0 0 8px;font-size:15px;font-weight:700;color:${INK};">1 · Book a mentor — ${esc(MENTOR_PRICE)}</p>
+           <p style="margin:0 0 10px;font-size:14px;line-height:1.6;color:${BODY};">
+             A recruiter who has read thousands of CVs. A commercial pilot who came up
+             through flight school. A marketing manager with a deliberately non-linear
+             career. A business psychologist who has mentored 600+ people.
+           </p>
+           <a href="https://fledgy.guide/mentors" style="font-size:14px;color:${TEAL};font-weight:600;">Meet the mentors →</a>
+         </div>`,
+        p("<strong style=\"color:" + INK + "\">2 · The tools are still free to start</strong> — and they have had a lot of work since you last used them:"),
+        `<div style="margin:12px 0 20px;padding:16px;background:#ffffff;border-radius:8px;font-size:15px;line-height:2;">
+           <a href="${TOOLS.cv.href}" style="color:${TEAL};font-weight:600;text-decoration:none;">${esc(TOOLS.cv.name)} →</a><br />
+           <a href="${TOOLS.essay.href}" style="color:${TEAL};font-weight:600;text-decoration:none;">${esc(TOOLS.essay.name)} →</a><br />
+           <a href="${TOOLS.careers.href}" style="color:${TEAL};font-weight:600;text-decoration:none;">${esc(TOOLS.careers.name)} →</a>
+         </div>`,
+        p(`If Fledgy was useful, sharing it helps most. This link is your referral code — when a friend buys anything, <strong style="color:${INK};">you get 20% off</strong> your next purchase, and they get the tools free either way.`),
+        `<p style="margin:0 0 12px;font-size:14px;"><a href="${link}" style="color:${TEAL};font-weight:600;word-break:break-all;">${esc(link)}</a></p>`,
+        p(`Follow along: ${socials}`),
+        p("Thanks for being early. — Arshkiran"),
+      ].join(""),
+      unsubUrl
+        ? `<p style="margin:10px 0 0;font-size:11px;line-height:1.6;color:#8A7A6E;">
+             You're getting this because you used Fledgy.
+             <a href="${unsubUrl}" style="color:#8A7A6E;">Unsubscribe</a>.
+           </p>`
+        : ""
+    ),
+  };
+}
+
+/** One re-engagement mail per address, ever. Returns false if skipped. */
+export async function sendWhatsNew(email: string, name?: string): Promise<boolean> {
+  try {
+    if (await isUnsubscribed(email)) return false;
+    // No TTL: this campaign must never go to the same person twice, even if
+    // the backfill is re-run months later.
+    const key = `fledgy:backfill:whatsnew:${normaliseEmail(email)}`;
+    if (!(await claimOnce(key, 0))) return false;
+
+    const unsubUrl = await unsubscribeUrl(email);
+    const reply = whatsNew(email, name, unsubUrl);
+    return await sendEmail({
+      to: email,
+      subject: reply.subject,
+      text: reply.text,
+      html: reply.html,
+      replyTo: REPLY_TO,
+      ...(unsubUrl ? { listUnsubscribe: unsubUrl } : {}),
+    });
+  } catch (err) {
+    console.error("[fledgy:backfill] send failed", err);
     return false;
   }
 }
