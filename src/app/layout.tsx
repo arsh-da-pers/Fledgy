@@ -30,6 +30,24 @@ export const metadata: Metadata = {
   description:
     "Honest feedback on your essay, CV, and career direction — for students, applicants and professionals applying anywhere in the world, not just the US or UK. Country-specific advice, free to start.",
   alternates: { canonical: "/" },
+  // Without these, every share of fledgy.guide — a directory listing, a tweet,
+  // a LinkedIn post, a WhatsApp forward — renders as a bare URL with no title
+  // or blurb. No `images` key yet: pointing at a file that doesn't exist is
+  // worse than omitting it, so add one here once /og.jpg is deployed.
+  openGraph: {
+    type: "website",
+    siteName: "Fledgy",
+    url: "https://fledgy.guide",
+    title: "Fledgy · Honest Feedback on Your Essay, CV & Career",
+    description:
+      "Score your CV, your application essay and your career direction in 60 seconds. Free to start, no card. Built for people applying and job-hunting anywhere in the world, not just the US and UK.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Fledgy · Honest Feedback on Your Essay, CV & Career",
+    description:
+      "Score your CV, your application essay and your career direction in 60 seconds. Free to start, no card.",
+  },
   verification: {
     google: "EMa9Nxzi4MesmPEZV3OjqD1mlghN3K6Oc2XvNmoPsZc",
   },

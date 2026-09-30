@@ -1,8 +1,15 @@
 import Link from "next/link";
 import HeroArt from "@/components/HeroArt";
 import Mark from "@/components/Mark";
+import { MENTORS, toPublic } from "@/lib/mentors";
+import { MENTOR_PRICE } from "@/lib/products";
 
 export default function Home() {
+  // This page is a server component, so importing "@/lib/mentors" is safe —
+  // but toPublic() still strips names and emails, so nothing reaches the
+  // browser bundle that the soft launch means to withhold.
+  const mentors = MENTORS.map(toPublic);
+
   return (
     <main className="relative flex flex-1 flex-col items-center overflow-hidden bg-page">
       <div className="w-full">
@@ -143,6 +150,62 @@ export default function Home() {
             <span className="mt-4 inline-block text-sm font-medium text-brand-orange group-hover:underline">
               Try it free →
             </span>
+          </Link>
+        </div>
+
+        {/* Mentors is the dearest thing on the site and the only one with a
+            human on the other end, so it gets its own band rather than a
+            fourth card in the grid of AI tools. Names stay hidden during the
+            soft launch — the cards lead with face and role, which is exactly
+            what the launch is testing. */}
+        <div className="mt-14 rounded-2xl border border-line bg-white p-6 shadow-sm sm:p-8">
+          <span className="inline-block rounded-full bg-cream px-2.5 py-1 text-xs font-bold tracking-widest text-brand-teal">
+            1:1 MENTORING · {MENTOR_PRICE}
+          </span>
+          <h2 className="mt-3 text-xl font-semibold text-ink sm:text-2xl">
+            Or talk to someone who&apos;s actually done it
+          </h2>
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-muted">
+            A score takes 60 seconds. Some questions need a person — a recruiter
+            who has read thousands of CVs, a pilot who came up through flight
+            school, a psychologist who has mentored 600+ people.
+          </p>
+
+          <div className="mt-6 flex items-center -space-x-3">
+            {mentors.map((m) =>
+              m.photo ? (
+                <img
+                  key={m.id}
+                  src={m.photo}
+                  alt=""
+                  className="h-12 w-12 rounded-full border-2 border-white object-cover"
+                />
+              ) : (
+                <div
+                  key={m.id}
+                  className="h-12 w-12 rounded-full border-2 border-white"
+                  style={{ backgroundColor: m.accent }}
+                />
+              )
+            )}
+          </div>
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            {mentors.map((m) => (
+              <span
+                key={m.id}
+                className="rounded-full bg-cream px-2.5 py-1 text-xs font-medium text-ink-muted"
+              >
+                {m.title}
+              </span>
+            ))}
+          </div>
+
+          <Link
+            href="/mentors"
+            className="mt-6 inline-flex items-center justify-center rounded-xl border border-brand-teal px-5 py-3 text-sm font-semibold text-brand-teal transition hover:bg-brand-teal-tint"
+          >
+            Meet the mentors →
           </Link>
         </div>
 
