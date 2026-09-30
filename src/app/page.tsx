@@ -21,10 +21,12 @@ export default function Home() {
             So the h1 now leads with what Fledgy DOES rather than the brand
             promise ("Grow your wings." is demoted to an eyebrow, keeping the
             brand visible without spending the first screen on it), and all
-            three tools get a CTA above the fold. /essay is the most-used tool
-            (47 views vs 25 for careers) yet had no entry point until the card
-            grid, well past the average scroll depth — it is the primary CTA
-            now. The old "Start wherever you are" paragraph and its rule sat
+            three tools get a CTA above the fold — previously only careers and
+            CV did, and none of them appeared until well past the average
+            scroll depth. The CV tool leads because it is the one tool that
+            serves students and working professionals equally; Fledgy is not a
+            student-only product and the old copy ("applicants") implied it
+            was. The old "Start wherever you are" paragraph and its rule sat
             between the hero and the cards, pushing the cards out of reach on
             mobile; both are gone so the tools sit directly under the fold. */}
         <p className="rise-in text-xs font-bold tracking-[0.2em] text-brand-orange">
@@ -32,35 +34,35 @@ export default function Home() {
         </p>
 
         <h1 className="rise-in mt-3 block text-[2.25rem] font-semibold leading-[1.1] tracking-tight text-ink sm:text-5xl">
-          An honest score on your{" "}
-          <span className="sunrise-text">essay, CV or career</span> — in 60
-          seconds.
+          Honest feedback on your CV, your application, and{" "}
+          <span className="sunrise-text">your next move</span>.
         </h1>
 
         <p className="rise-in-2 mt-4 max-w-xl text-base leading-relaxed text-ink-muted sm:text-lg">
-          Not flattery, and not generic ATS advice. Specific, usable feedback
-          built for applicants outside the US and UK.
+          Applying to university, switching careers, or job-hunting — get
+          specific, usable feedback in 60 seconds. Not flattery, and not advice
+          written only for the US and UK.
         </p>
 
         <div className="rise-in-2 mt-7 flex flex-col gap-3">
           <Link
-            href="/essay"
-            className="flex items-center justify-center rounded-xl bg-brand-orange px-6 py-4 text-base font-semibold text-white transition hover:bg-brand-orange-dark"
+            href="/cv"
+            className="flex items-center justify-center rounded-xl bg-brand-teal px-6 py-4 text-base font-semibold text-white transition hover:bg-brand-teal-dark"
           >
-            Score my essay →
+            Score my CV →
           </Link>
           <div className="flex flex-col gap-3 sm:flex-row">
             <Link
-              href="/cv"
-              className="flex flex-1 items-center justify-center rounded-xl bg-brand-teal px-6 py-3.5 text-base font-semibold text-white transition hover:bg-brand-teal-dark sm:text-sm"
-            >
-              Score my CV →
-            </Link>
-            <Link
               href="/careers"
-              className="flex flex-1 items-center justify-center rounded-xl border border-brand-teal px-6 py-3.5 text-base font-semibold text-brand-teal transition hover:bg-brand-teal-tint sm:text-sm"
+              className="flex flex-1 items-center justify-center rounded-xl bg-brand-orange px-6 py-3.5 text-base font-semibold text-white transition hover:bg-brand-orange-dark sm:text-sm"
             >
               Find my direction →
+            </Link>
+            <Link
+              href="/essay"
+              className="flex flex-1 items-center justify-center rounded-xl border border-brand-teal px-6 py-3.5 text-base font-semibold text-brand-teal transition hover:bg-brand-teal-tint sm:text-sm"
+            >
+              Score my essay →
             </Link>
           </div>
         </div>
