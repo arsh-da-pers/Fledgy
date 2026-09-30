@@ -16,14 +16,23 @@
 const DEFAULT_FROM = "Fledgy <hello@fledgy.guide>";
 const DEFAULT_TO = "arshkiran@fledgy.guide";
 
-export async function sendNotification(subject: string, body: string) {
+export type Mail = {
+  to: string;
+  subject: string;
+  text: string;
+  html?: string;
+  replyTo?: string;
+};
+
+// The one place that talks to Resend. Returns true only on a confirmed send,
+// so callers can log honestly, but NEVER throws: an email must not fail the
+// request a person is waiting on.
+export async function sendEmail(mail: Mail): Promise<boolean> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    // No mailer configured — the log line is the notification.
-    console.log("[fledgy:notify] (no RESEND_API_KEY)", subject, body);
-    return;
+    console.log("[fledgy:mail] (no RESEND_API_KEY)", mail.to, mail.subject);
+    return false;
   }
-
   try {
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -33,15 +42,29 @@ export async function sendNotification(subject: string, body: string) {
       },
       body: JSON.stringify({
         from: process.env.NOTIFY_FROM || DEFAULT_FROM,
-        to: [process.env.NOTIFY_TO || DEFAULT_TO],
-        subject,
-        text: body,
+        to: [mail.to],
+        subject: mail.subject,
+        text: mail.text,
+        ...(mail.html ? { html: mail.html } : {}),
+        // Replies go to a human, not into the void.
+        ...(mail.replyTo ? { reply_to: [mail.replyTo] } : {}),
       }),
     });
     if (!res.ok) {
-      console.error("[fledgy:notify] send failed", res.status, await res.text());
+      console.error("[fledgy:mail] send failed", res.status, await res.text());
+      return false;
     }
+    return true;
   } catch (err) {
-    console.error("[fledgy:notify] send threw", err);
+    console.error("[fledgy:mail] send threw", err);
+    return false;
   }
+}
+
+export async function sendNotification(subject: string, body: string) {
+  await sendEmail({
+    to: process.env.NOTIFY_TO || DEFAULT_TO,
+    subject,
+    text: body,
+  });
 }
