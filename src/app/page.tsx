@@ -15,56 +15,61 @@ export default function Home() {
       />
 
       <div className="relative w-full max-w-3xl px-5 pb-20 pt-8 sm:px-6 sm:pb-28">
-        {/* Brand line stays the headline's first line; the value line sits
-            underneath it. Both live in the h1 so the words that describe what
-            Fledgy does are what search engines read, while "Grow your wings."
-            keeps visual primacy as the brand line. */}
-        <h1 className="rise-in text-ink">
-          <span className="block text-[2.5rem] font-semibold leading-[1.05] tracking-tight sm:text-5xl">
-            Grow your <span className="sunrise-text">wings.</span>
-          </span>
-          <span className="mt-3 block text-xl font-semibold leading-snug tracking-tight text-ink-muted sm:text-2xl">
-            Figure out what&apos;s next — and get ready for it.
-          </span>
-        </h1>
-
-        <p className="rise-in-2 mt-5 max-w-xl text-base leading-relaxed text-ink-muted sm:text-lg">
-          Discover career paths that fit you, strengthen your CV, and get
-          smarter feedback on your university applications.
+        {/* Clarity, 30 days to 2026-09-30: 800 sessions entered on this page
+            and 795 exited from it, at 21s active time and 36.76% scroll depth,
+            with 89% arriving inside the Instagram/Facebook in-app browser.
+            So the h1 now leads with what Fledgy DOES rather than the brand
+            promise ("Grow your wings." is demoted to an eyebrow, keeping the
+            brand visible without spending the first screen on it), and all
+            three tools get a CTA above the fold. /essay is the most-used tool
+            (47 views vs 25 for careers) yet had no entry point until the card
+            grid, well past the average scroll depth — it is the primary CTA
+            now. The old "Start wherever you are" paragraph and its rule sat
+            between the hero and the cards, pushing the cards out of reach on
+            mobile; both are gone so the tools sit directly under the fold. */}
+        <p className="rise-in text-xs font-bold tracking-[0.2em] text-brand-orange">
+          FLEDGY · GROW YOUR WINGS.
         </p>
 
-        <div className="rise-in-2 mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <h1 className="rise-in mt-3 block text-[2.25rem] font-semibold leading-[1.1] tracking-tight text-ink sm:text-5xl">
+          An honest score on your{" "}
+          <span className="sunrise-text">essay, CV or career</span> — in 60
+          seconds.
+        </h1>
+
+        <p className="rise-in-2 mt-4 max-w-xl text-base leading-relaxed text-ink-muted sm:text-lg">
+          Not flattery, and not generic ATS advice. Specific, usable feedback
+          built for applicants outside the US and UK.
+        </p>
+
+        <div className="rise-in-2 mt-7 flex flex-col gap-3">
           <Link
-            href="/careers"
-            className="flex items-center justify-center rounded-xl bg-brand-teal px-6 py-3.5 text-base font-semibold text-white transition hover:bg-brand-teal-dark sm:text-sm"
+            href="/essay"
+            className="flex items-center justify-center rounded-xl bg-brand-orange px-6 py-4 text-base font-semibold text-white transition hover:bg-brand-orange-dark"
           >
-            Explore my career →
+            Score my essay →
           </Link>
-          <Link
-            href="/cv"
-            className="flex items-center justify-center rounded-xl border border-brand-teal px-6 py-3.5 text-base font-semibold text-brand-teal transition hover:bg-brand-teal-tint sm:text-sm"
-          >
-            Check my CV →
-          </Link>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Link
+              href="/cv"
+              className="flex flex-1 items-center justify-center rounded-xl bg-brand-teal px-6 py-3.5 text-base font-semibold text-white transition hover:bg-brand-teal-dark sm:text-sm"
+            >
+              Score my CV →
+            </Link>
+            <Link
+              href="/careers"
+              className="flex flex-1 items-center justify-center rounded-xl border border-brand-teal px-6 py-3.5 text-base font-semibold text-brand-teal transition hover:bg-brand-teal-tint sm:text-sm"
+            >
+              Find my direction →
+            </Link>
+          </div>
         </div>
 
         <p className="mt-4 text-sm text-ink-faint">
-          Free to start. No card.
+          Free to start. No card. Paste your text or upload a PDF.
         </p>
 
-        <div className="mt-12 flex items-center gap-4">
-          <Mark size={40} opacity={0.9} />
-          <hr className="rule-sunrise flex-1" />
-          <Mark size={40} opacity={0.9} className="scale-x-[-1]" />
-        </div>
-
-        <p className="mt-10 max-w-xl text-ink-muted">
-          Start wherever you are. Not sure what you want yet? Begin with your
-          direction. Already applying? Go straight to your CV or your
-          application essay.
-        </p>
-
-        <div className="mt-8 grid gap-4 sm:grid-cols-3">
+        <div className="mt-10 grid gap-4 sm:grid-cols-3">
           <Link
             href="/careers"
             className="card-lift rise-in group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white p-6 shadow-sm hover:border-brand-teal"
