@@ -33,15 +33,14 @@ export default function Home() {
           FLEDGY · GROW YOUR WINGS.
         </p>
 
-        <h1 className="rise-in mt-3 block text-[2.25rem] font-semibold leading-[1.1] tracking-tight text-ink sm:text-5xl">
+        <h1 className="rise-in mt-3 block text-[2rem] font-semibold leading-[1.1] tracking-tight text-ink sm:text-5xl">
           Honest feedback on your CV, your application, and{" "}
           <span className="sunrise-text">your next move</span>.
         </h1>
 
         <p className="rise-in-2 mt-4 max-w-xl text-base leading-relaxed text-ink-muted sm:text-lg">
-          Applying to university, switching careers, or job-hunting — get
-          specific, usable feedback in 60 seconds. Not flattery, and not advice
-          written only for the US and UK.
+          University applications, career switches, job hunts — specific
+          feedback in 60 seconds. Not flattery, and not US/UK-only advice.
         </p>
 
         <div className="rise-in-2 mt-7 flex flex-col gap-3">
