@@ -60,6 +60,14 @@ export const metadata: Metadata = {
   },
   verification: {
     google: "EMa9Nxzi4MesmPEZV3OjqD1mlghN3K6Oc2XvNmoPsZc",
+    // Bing Webmaster Tools. The GSC import route is unavailable to us: Google
+    // declines the webmasters.readonly scope for Bing's client, and our GSC
+    // property is a domain property, which Bing's importer skips. So the site
+    // is verified directly instead. Bing asks that this tag stay in place
+    // permanently — removing it after verification un-verifies the site.
+    other: {
+      "msvalidate.01": "950413E8925B83069DCE683BD6C2FC18",
+    },
   },
 };
 
