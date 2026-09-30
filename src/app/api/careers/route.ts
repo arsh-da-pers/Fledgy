@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { logFeedback } from "@/lib/logFeedback";
 import { checkAndRecordUsage, isValidEmail, isThrowawayEmail, FREE_LIMIT } from "@/lib/usage";
 import { recordToolUse } from "@/lib/leads";
+import { sendToolThankYou } from "@/lib/autoReply";
 import { scorePersonality, TRAIT_LABELS, type Trait } from "@/lib/personalityItems";
 import { scoreAptitude } from "@/lib/aptitudeQuestions";
 import { hasProduct, saveReport } from "@/lib/entitlements";
@@ -108,6 +109,9 @@ export async function POST(req: NextRequest) {
     }
 
     await recordToolUse(email, "careers");
+    // Best-effort thank-you. Deduped per tool per address and skipped for
+    // anyone unsubscribed, so it never becomes a per-run mailing.
+    void sendToolThankYou(email, "careers");
 
     if (!process.env.ANTHROPIC_API_KEY) {
       return NextResponse.json(

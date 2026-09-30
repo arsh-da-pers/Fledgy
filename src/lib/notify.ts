@@ -22,6 +22,10 @@ export type Mail = {
   text: string;
   html?: string;
   replyTo?: string;
+  /** URL for the List-Unsubscribe header. Gmail and Outlook surface this as a
+   *  native unsubscribe control, and its absence on promotional mail is a
+   *  spam-filter signal. */
+  listUnsubscribe?: string;
 };
 
 // The one place that talks to Resend. Returns true only on a confirmed send,
@@ -48,6 +52,14 @@ export async function sendEmail(mail: Mail): Promise<boolean> {
         ...(mail.html ? { html: mail.html } : {}),
         // Replies go to a human, not into the void.
         ...(mail.replyTo ? { reply_to: [mail.replyTo] } : {}),
+        ...(mail.listUnsubscribe
+          ? {
+              headers: {
+                "List-Unsubscribe": `<${mail.listUnsubscribe}>`,
+                "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+              },
+            }
+          : {}),
       }),
     });
     if (!res.ok) {
