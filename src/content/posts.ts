@@ -3,6 +3,68 @@ import type { Post } from "@/lib/blog";
 // Add new posts to the top of this array. Each post needs a unique `slug`.
 export const posts: Post[] = [
   {
+    slug: "how-to-prepare-for-a-performance-review",
+    title: "How to Prepare for a Performance Review (and Actually Get the Outcome You Want)",
+    description:
+      "How to prepare for a performance review — gathering evidence, deciding what to ask for, and what to do if it doesn't go the way you hoped.",
+    date: "2026-09-28",
+    excerpt:
+      "Most people walk into a performance review hoping it goes well. The ones who get a raise or promotion out of it usually walked in with a case, not just hope.",
+    tags: ["performance review", "career growth", "working professionals"],
+    body: [
+      {
+        type: "p",
+        text: "For most people, a performance review feels like something that happens to them: a date goes in the calendar, a manager talks, and they find out afterward whether it went well. The reviews that actually change something — a raise, a promotion, more interesting work — usually look different. The person walking in prepared a case for what they wanted, instead of waiting to hear whether they got it.",
+      },
+      { type: "h2", text: "What a performance review is actually for" },
+      {
+        type: "p",
+        text: "Companies run reviews to make decisions: who gets a raise this cycle, who's on track for promotion, who takes on more scope next quarter. Your manager is often making that case to their own manager or to HR, sometimes with limited time and limited visibility into everything you did this year. A review isn't just a report card — it's an input into a decision that happens partly without you in the room. Preparing means making sure your manager has what they need to make that case well, rather than assuming they'll remember it for you.",
+      },
+      { type: "h2", text: "Gather your evidence before the meeting" },
+      {
+        type: "p",
+        text: "Most people underestimate how much they've forgotten by review time. A few weeks before, sit down and reconstruct the year properly:",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Specific wins with numbers where possible** — revenue, time saved, users affected, projects shipped — not just \"worked on X.\"",
+          "**Positive feedback you received**, from managers, peers, or clients, especially anything written down in Slack, email, or a client note.",
+          "**Problems you solved that weren't officially your job** — these often carry more weight than routine tasks done well.",
+          "**Skills or responsibilities you've taken on since your last review**, even informally.",
+          "**Any goals from your last review**, with honest notes on where you delivered and where you didn't.",
+        ],
+      },
+      { type: "h2", text: "Decide what you actually want out of it" },
+      {
+        type: "p",
+        text: "Walking in only hoping for \"a good review\" makes it hard for anyone to act on your behalf. Decide beforehand whether you're aiming for a raise, a title change, a shift in responsibilities, or simply clearer feedback on what's blocking the next step. If you want a raise or promotion specifically, say so directly and early — many managers can't push for something they don't know you're asking for, and by the time budgets or promotion cycles are set, it's often too late to add your name to the list.",
+      },
+      { type: "h2", text: "How to talk about your work without it feeling like bragging" },
+      {
+        type: "p",
+        text: "The instinct to downplay your own work usually works against you here. The fix isn't to inflate anything — it's to describe impact plainly, in terms of what changed because you did the work: \"this cut processing time by 30%\" reads as information, not boasting, in a way \"I worked really hard on this\" doesn't. Frame contributions around outcomes for the team or company, and let the evidence you gathered do the persuading rather than the adjectives.",
+      },
+      { type: "h2", text: "If the review doesn't go the way you hoped" },
+      {
+        type: "p",
+        text: "Sometimes the honest outcome of a well-prepared review is finding out you're not getting what you wanted this cycle, or that the company doesn't have room for the path you're aiming at. That's useful information, even if it's disappointing — ask directly what would need to be true for a different outcome next time, and get it in writing if you can. If the answer reveals a bigger mismatch, Fledgy's [free career quiz](/careers) can help you figure out whether the fix is a different role at this company or a different path altogether, and if a move is next, the [free CV scorer](/cv) will tell you how your CV reads to whoever reviews it next.",
+      },
+      { type: "h2", text: "A short pre-review checklist" },
+      {
+        type: "ul",
+        items: [
+          "List your wins from the past cycle with concrete numbers, not just descriptions.",
+          "Note feedback you've received and where you can find it in writing.",
+          "Decide specifically what outcome you're asking for.",
+          "Prepare two or three questions about what's next, not just what happened.",
+          "Practise saying your wins out loud once, so they don't come out flat in the room.",
+        ],
+      },
+    ],
+  },
+  {
     slug: "how-to-answer-why-this-university",
     title: "How to Answer \"Why This University?\" (Without Sounding Generic)",
     description:
