@@ -3,6 +3,77 @@ import type { Post } from "@/lib/blog";
 // Add new posts to the top of this array. Each post needs a unique `slug`.
 export const posts: Post[] = [
   {
+    slug: "how-to-tailor-your-cv-to-a-job-description",
+    title: "How to Tailor Your CV to Each Job Application (Without Starting From Scratch)",
+    description:
+      "How to tailor your CV to each job application quickly — what to keep the same, what to change, and a 15-minute routine that works for any role.",
+    date: "2026-09-22",
+    excerpt:
+      "Sending the same CV to every job is quietly costing you interviews. Here's how to tailor it in about 15 minutes, without rewriting the whole thing.",
+    tags: ["cv", "job applications", "job seekers", "ats"],
+    body: [
+      {
+        type: "p",
+        text: "Most job seekers write one CV and send it to every role, hoping the reader will connect the dots themselves. They usually don't — recruiters and applicant tracking systems reward a document that visibly matches the job in front of them. The good news is that tailoring doesn't mean rewriting your CV from scratch each time; it means changing a specific, small set of things.",
+      },
+      { type: "h2", text: "Why one CV for every job doesn't work" },
+      {
+        type: "p",
+        text: "A generic CV optimises for being acceptable everywhere, which means it's rarely the strongest option for anywhere in particular. Applicant tracking systems score your CV against the specific wording of the job posting, and a human reader spends the first few seconds looking for proof you're a fit for this role — not just a capable person in general. A CV that clearly hasn't been adjusted at all reads as a signal you didn't look closely at the posting.",
+      },
+      { type: "h2", text: "What to keep the same every time" },
+      {
+        type: "p",
+        text: "Tailoring works because most of your CV doesn't need to change. Your work history, dates, and core achievements stay fixed — you're not inventing new experience for each application, just deciding what to emphasise and how to describe it. Treat your full CV as a source document you pull from, not something you rebuild each time.",
+      },
+      { type: "h2", text: "What to change for each application" },
+      {
+        type: "p",
+        text: "A handful of targeted edits does most of the work:",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Your headline or profile summary** — name the specific role or field, not a generic title.",
+          "**The order of your bullets** — move the achievements most relevant to this job nearer the top of each role.",
+          "**Keywords and phrasing** — mirror the exact terms the posting uses for skills and tools, since that's often what both ATS software and a quick human scan are looking for.",
+          "**Your skills list** — trim it to what's relevant here, rather than every tool you've ever touched.",
+          "**Your summary line, if you have one** — connect your background directly to what this specific posting asks for.",
+        ],
+      },
+      { type: "h2", text: "A 15-minute tailoring routine" },
+      {
+        type: "p",
+        text: "You don't need an hour per application. A quick, repeatable pass covers most of the value:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Read the job posting once and underline the skills and responsibilities that repeat.",
+          "Update your headline or summary to reflect the role, using a couple of the posting's own words.",
+          "Reorder bullets within each role so the most relevant achievement leads.",
+          "Swap in two or three keywords from the posting wherever they honestly apply.",
+          "Scan the whole page once more for anything that now reads as irrelevant to this specific job, and cut it.",
+        ],
+      },
+      { type: "h2", text: "Common mistakes when tailoring" },
+      {
+        type: "ul",
+        items: [
+          "Keyword-stuffing a skills list with terms you can't actually back up in an interview.",
+          "Changing the job titles or dates of your actual history to sound closer to the posting — this reads as dishonest, not tailored.",
+          "Tailoring the summary but leaving the bullets underneath generic and unchanged.",
+          "Spending so long perfecting one CV that you apply to far fewer roles than you could have.",
+        ],
+      },
+      { type: "h2", text: "Start from a strong base" },
+      {
+        type: "p",
+        text: "Tailoring is one of the highest-leverage things you can do to an application, but it only works if the underlying CV is strong to begin with. Fledgy's [free CV scorer](/cv) rates your base CV against real hiring norms before you start customising it, and if you're not yet sure which roles are worth tailoring toward, the [career quiz](/careers) can help narrow that down first.",
+      },
+    ],
+  },
+  {
     slug: "how-to-answer-why-this-university",
     title: "How to Answer \"Why This University?\" (Without Sounding Generic)",
     description:
