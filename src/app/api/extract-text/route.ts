@@ -31,7 +31,7 @@ async function transcribeWithVision(
         } as const);
 
   const msg = await anthropic.messages.create({
-    model: "claude-sonnet-4-5",
+    model: "claude-sonnet-5",
     max_tokens: 4000,
     messages: [
       {
@@ -93,7 +93,7 @@ async function transcribePdfViaImages(buffer: Buffer): Promise<string> {
   });
 
   const msg = await anthropic.messages.create({
-    model: "claude-sonnet-4-5",
+    model: "claude-sonnet-5",
     max_tokens: 4000,
     messages: [{ role: "user", content }],
   });
@@ -110,7 +110,7 @@ async function reflowText(raw: string): Promise<string> {
   if (!process.env.ANTHROPIC_API_KEY) return raw;
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
   const msg = await anthropic.messages.create({
-    model: "claude-sonnet-4-5",
+    model: "claude-sonnet-5",
     max_tokens: 4000,
     messages: [
       {

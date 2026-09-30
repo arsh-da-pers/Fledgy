@@ -186,7 +186,7 @@ Return ONLY valid JSON, no other text, in this exact shape:
 The careers array must have 5 or 6 items, ORDERED BEST-FIT FIRST: careers[0] is the strongest match for this person, the last entry is the weakest of the good options. This ordering is load-bearing, so rank them properly rather than listing them as they occurred to you. Never mention free, paid, or unlocking — the server decides how much of this the reader has paid to see.`;
 
     const msg = await anthropic.messages.create({
-      model: "claude-sonnet-4-5",
+      model: "claude-sonnet-5",
       max_tokens: 1500,
       messages: [{ role: "user", content: prompt }],
     });

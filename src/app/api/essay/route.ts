@@ -113,7 +113,7 @@ Return ONLY valid JSON, no other text, in this exact shape:
 Give 7 or 8 tips, each short and specific enough to act on.`;
 
     const msg = await anthropic.messages.create({
-      model: "claude-sonnet-4-5",
+      model: "claude-sonnet-5",
       max_tokens: 1400,
       messages: [{ role: "user", content: prompt }],
     });

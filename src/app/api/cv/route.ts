@@ -116,7 +116,7 @@ Return ONLY valid JSON, no other text, in this exact shape:
 Give 5 or 6 tips. Include at least one country-specific cultural norm point, at least one on making bullets more action-led and quantified if the CV needs it, and one on length/focus — placed at whatever rank their actual impact warrants.`;
 
     const msg = await anthropic.messages.create({
-      model: "claude-sonnet-4-5",
+      model: "claude-sonnet-5",
       max_tokens: 1100,
       messages: [{ role: "user", content: prompt }],
     });
