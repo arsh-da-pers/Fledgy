@@ -3,10 +3,10 @@
 
 export const INSTAGRAM_URL = "https://instagram.com/fledgy.guide";
 
-// Empty until Fledgy actually has a page. An email that links somewhere that
-// doesn't exist is worse than one that doesn't mention LinkedIn at all, so
-// every consumer must treat "" as "don't render it".
-export const LINKEDIN_URL: string = "";
+// Verified 2026-09-30: resolves to Fledgy's page (website fledgy.guide).
+// Consumers still treat "" as "don't render it", so this can be emptied
+// without breaking anything.
+export const LINKEDIN_URL: string = "https://www.linkedin.com/company/fledgy";
 
 export type ToolKey = "essay" | "cv" | "careers";
 
