@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { logFeedback } from "@/lib/logFeedback";
 import { checkAndRecordUsage, isValidEmail, isThrowawayEmail, FREE_LIMIT } from "@/lib/usage";
 import { recordToolUse } from "@/lib/leads";
+import { sendToolThankYou } from "@/lib/autoReply";
 import { scorePersonality, TRAIT_LABELS, type Trait } from "@/lib/personalityItems";
 import { scoreAptitude } from "@/lib/aptitudeQuestions";
 import { hasProduct, saveReport } from "@/lib/entitlements";
@@ -108,6 +109,9 @@ export async function POST(req: NextRequest) {
     }
 
     await recordToolUse(email, "careers");
+    // Best-effort thank-you. Deduped per tool per address and skipped for
+    // anyone unsubscribed, so it never becomes a per-run mailing.
+    void sendToolThankYou(email, "careers");
 
     if (!process.env.ANTHROPIC_API_KEY) {
       return NextResponse.json(
@@ -182,7 +186,7 @@ Return ONLY valid JSON, no other text, in this exact shape:
 The careers array must have 5 or 6 items, ORDERED BEST-FIT FIRST: careers[0] is the strongest match for this person, the last entry is the weakest of the good options. This ordering is load-bearing, so rank them properly rather than listing them as they occurred to you. Never mention free, paid, or unlocking — the server decides how much of this the reader has paid to see.`;
 
     const msg = await anthropic.messages.create({
-      model: "claude-sonnet-4-5",
+      model: "claude-sonnet-5",
       max_tokens: 1500,
       messages: [{ role: "user", content: prompt }],
     });

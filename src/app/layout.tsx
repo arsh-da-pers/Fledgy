@@ -30,8 +30,44 @@ export const metadata: Metadata = {
   description:
     "Honest feedback on your essay, CV, and career direction — for students, applicants and professionals applying anywhere in the world, not just the US or UK. Country-specific advice, free to start.",
   alternates: { canonical: "/" },
+  // Without these, every share of fledgy.guide — a directory listing, a tweet,
+  // a LinkedIn post, a WhatsApp forward — renders as a bare URL with no title,
+  // blurb or picture. The card art is generated, not hand-drawn: regenerate it
+  // with `python3 make_og.py` in ~/Claude/fledgy-ig-auto/design after a copy
+  // change, so it never drifts from the homepage headline.
+  openGraph: {
+    type: "website",
+    siteName: "Fledgy",
+    url: "https://fledgy.guide",
+    title: "Fledgy · Honest Feedback on Your Essay, CV & Career",
+    description:
+      "Score your CV, your application essay and your career direction in 60 seconds. Free to start, no card. Built for people applying and job-hunting anywhere in the world, not just the US and UK.",
+    images: [
+      {
+        url: "/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Fledgy — honest feedback on your CV, your essay, your next move.",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Fledgy · Honest Feedback on Your Essay, CV & Career",
+    description:
+      "Score your CV, your application essay and your career direction in 60 seconds. Free to start, no card.",
+    images: ["/og.jpg"],
+  },
   verification: {
     google: "EMa9Nxzi4MesmPEZV3OjqD1mlghN3K6Oc2XvNmoPsZc",
+    // Bing Webmaster Tools. The GSC import route is unavailable to us: Google
+    // declines the webmasters.readonly scope for Bing's client, and our GSC
+    // property is a domain property, which Bing's importer skips. So the site
+    // is verified directly instead. Bing asks that this tag stay in place
+    // permanently — removing it after verification un-verifies the site.
+    other: {
+      "msvalidate.01": "950413E8925B83069DCE683BD6C2FC18",
+    },
   },
 };
 

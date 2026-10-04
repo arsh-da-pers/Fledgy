@@ -5,6 +5,7 @@ import { hasProduct } from "@/lib/entitlements";
 import { PAYWALLS_ENABLED } from "@/lib/products";
 import { checkAndRecordUsage, isValidEmail, isThrowawayEmail, FREE_LIMIT } from "@/lib/usage";
 import { recordToolUse } from "@/lib/leads";
+import { sendToolThankYou } from "@/lib/autoReply";
 
 export const runtime = "nodejs";
 
@@ -65,6 +66,9 @@ export async function POST(req: NextRequest) {
     }
 
     await recordToolUse(email, "essay");
+    // Best-effort thank-you. Deduped per tool per address and skipped for
+    // anyone unsubscribed, so it never becomes a per-run mailing.
+    void sendToolThankYou(email, "essay");
 
     if (!process.env.ANTHROPIC_API_KEY) {
       return NextResponse.json(
@@ -109,7 +113,7 @@ Return ONLY valid JSON, no other text, in this exact shape:
 Give 7 or 8 tips, each short and specific enough to act on.`;
 
     const msg = await anthropic.messages.create({
-      model: "claude-sonnet-4-5",
+      model: "claude-sonnet-5",
       max_tokens: 1400,
       messages: [{ role: "user", content: prompt }],
     });

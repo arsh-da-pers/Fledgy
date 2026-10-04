@@ -5,6 +5,7 @@ import { hasProduct } from "@/lib/entitlements";
 import { PAYWALLS_ENABLED } from "@/lib/products";
 import { checkAndRecordUsage, isValidEmail, isThrowawayEmail, FREE_LIMIT } from "@/lib/usage";
 import { recordToolUse } from "@/lib/leads";
+import { sendToolThankYou } from "@/lib/autoReply";
 
 export const runtime = "nodejs";
 
@@ -71,6 +72,9 @@ export async function POST(req: NextRequest) {
     }
 
     await recordToolUse(email, "cv");
+    // Best-effort thank-you. Deduped per tool per address and skipped for
+    // anyone unsubscribed, so it never becomes a per-run mailing.
+    void sendToolThankYou(email, "cv");
 
     if (!process.env.ANTHROPIC_API_KEY) {
       return NextResponse.json(
@@ -112,7 +116,7 @@ Return ONLY valid JSON, no other text, in this exact shape:
 Give 5 or 6 tips. Include at least one country-specific cultural norm point, at least one on making bullets more action-led and quantified if the CV needs it, and one on length/focus — placed at whatever rank their actual impact warrants.`;
 
     const msg = await anthropic.messages.create({
-      model: "claude-sonnet-4-5",
+      model: "claude-sonnet-5",
       max_tokens: 1100,
       messages: [{ role: "user", content: prompt }],
     });
