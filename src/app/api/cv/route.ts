@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { logFeedback } from "@/lib/logFeedback";
 import { hasProduct } from "@/lib/entitlements";
 import { PAYWALLS_ENABLED } from "@/lib/products";
-import { checkAndRecordUsage, isValidEmail, isThrowawayEmail, FREE_LIMIT } from "@/lib/usage";
+import { checkAndRecordUsage, refundUsage, isValidEmail, isThrowawayEmail, FREE_LIMIT } from "@/lib/usage";
 import { recordToolUse } from "@/lib/leads";
 import { sendToolThankYou } from "@/lib/autoReply";
 
@@ -16,6 +16,8 @@ function extractJson(text: string) {
 }
 
 export async function POST(req: NextRequest) {
+  // Set once a free use is recorded, so a failure below can hand it back.
+  let meteredEmail: string | null = null;
   try {
     const { country, field, cv, email } = await req.json();
 
@@ -70,6 +72,8 @@ export async function POST(req: NextRequest) {
         { status: 402 }
       );
     }
+
+    if (!(PAYWALLS_ENABLED && entitled)) meteredEmail = email;
 
     await recordToolUse(email, "cv");
     // Best-effort thank-you. Deduped per tool per address and skipped for
@@ -154,6 +158,7 @@ Give 5 or 6 tips. Include at least one country-specific cultural norm point, at 
     });
   } catch (err) {
     console.error(err);
+    if (meteredEmail) await refundUsage(meteredEmail, "cv");
     return NextResponse.json(
       { error: "Something went wrong scoring this CV. Please try again." },
       { status: 500 }

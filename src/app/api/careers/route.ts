@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { logFeedback } from "@/lib/logFeedback";
-import { checkAndRecordUsage, isValidEmail, isThrowawayEmail, FREE_LIMIT } from "@/lib/usage";
+import { checkAndRecordUsage, refundUsage, isValidEmail, isThrowawayEmail, FREE_LIMIT } from "@/lib/usage";
 import { recordToolUse } from "@/lib/leads";
 import { sendToolThankYou } from "@/lib/autoReply";
 import { scorePersonality, TRAIT_LABELS, type Trait } from "@/lib/personalityItems";
@@ -18,6 +18,8 @@ function extractJson(text: string) {
 }
 
 export async function POST(req: NextRequest) {
+  // Set once a free use is recorded, so a failure below can hand it back.
+  let meteredEmail: string | null = null;
   try {
     const {
       email,
@@ -107,6 +109,8 @@ export async function POST(req: NextRequest) {
         { status: 402 }
       );
     }
+
+    if (!(PAYWALLS_ENABLED && entitled)) meteredEmail = email;
 
     await recordToolUse(email, "careers");
     // Best-effort thank-you. Deduped per tool per address and skipped for
@@ -233,6 +237,7 @@ The careers array must have 5 or 6 items, ORDERED BEST-FIT FIRST: careers[0] is 
     });
   } catch (err) {
     console.error(err);
+    if (meteredEmail) await refundUsage(meteredEmail, "careers");
     return NextResponse.json(
       { error: "Something went wrong generating your results. Please try again." },
       { status: 500 }
