@@ -79,7 +79,7 @@ export const CURRENCY = "usd";
 // hurried edit — then Stripe charges one number while the page promises another.
 const ESSAY_CENTS = 500;
 const CAREERS_CENTS = 1800;
-const CV_CENTS = 900;
+const CV_CENTS = 500;
 const BUNDLE_CENTS = 2000;
 // A 1:1 mentor session. It isn't a Stripe product — payment is arranged when
 // the session is confirmed — but the price belongs here with the others so the
