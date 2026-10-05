@@ -118,6 +118,7 @@ Give 5 or 6 tips. Include at least one country-specific cultural norm point, at 
     const msg = await anthropic.messages.create({
       model: "claude-sonnet-5",
       max_tokens: 1100,
+      thinking: { type: "disabled" },
       messages: [{ role: "user", content: prompt }],
     });
 

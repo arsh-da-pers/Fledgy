@@ -188,6 +188,7 @@ The careers array must have 5 or 6 items, ORDERED BEST-FIT FIRST: careers[0] is 
     const msg = await anthropic.messages.create({
       model: "claude-sonnet-5",
       max_tokens: 1500,
+      thinking: { type: "disabled" },
       messages: [{ role: "user", content: prompt }],
     });
 

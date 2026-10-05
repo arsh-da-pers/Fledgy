@@ -115,6 +115,7 @@ Give 7 or 8 tips, each short and specific enough to act on.`;
     const msg = await anthropic.messages.create({
       model: "claude-sonnet-5",
       max_tokens: 1400,
+      thinking: { type: "disabled" },
       messages: [{ role: "user", content: prompt }],
     });
 

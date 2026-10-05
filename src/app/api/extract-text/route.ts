@@ -33,6 +33,7 @@ async function transcribeWithVision(
   const msg = await anthropic.messages.create({
     model: "claude-sonnet-5",
     max_tokens: 4000,
+    thinking: { type: "disabled" },
     messages: [
       {
         role: "user",
@@ -95,6 +96,7 @@ async function transcribePdfViaImages(buffer: Buffer): Promise<string> {
   const msg = await anthropic.messages.create({
     model: "claude-sonnet-5",
     max_tokens: 4000,
+    thinking: { type: "disabled" },
     messages: [{ role: "user", content }],
   });
   const textBlock = msg.content.find((b) => b.type === "text");
@@ -112,6 +114,7 @@ async function reflowText(raw: string): Promise<string> {
   const msg = await anthropic.messages.create({
     model: "claude-sonnet-5",
     max_tokens: 4000,
+    thinking: { type: "disabled" },
     messages: [
       {
         role: "user",
