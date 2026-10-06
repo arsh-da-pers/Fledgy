@@ -3,6 +3,81 @@ import type { Post } from "@/lib/blog";
 // Add new posts to the top of this array. Each post needs a unique `slug`.
 export const posts: Post[] = [
   {
+    slug: "how-to-build-a-professional-development-plan",
+    title: "How to Build a Professional Development Plan (That You'll Actually Follow)",
+    description:
+      "How to build a professional development plan that actually moves your career forward — setting a real target, finding the skill gap, and turning it into dated action steps.",
+    date: "2026-10-04",
+    excerpt:
+      "Most development plans are a wishlist written once a year and never opened again. Here's how to build one with enough structure that it actually changes what you do on Monday.",
+    tags: ["career growth", "working professionals", "professional development"],
+    body: [
+      {
+        type: "p",
+        text: "Ask most people for their professional development plan and they'll describe something that exists in theory: a form filled in once a year for HR, or a vague resolution to \"learn more about leadership\" that never turns into an actual Tuesday afternoon. A development plan only earns its name if it changes what you do in the next ninety days, not just what you intend. Here's how to build one with enough structure to survive contact with a busy week.",
+      },
+      { type: "h2", text: "What a development plan is actually for" },
+      {
+        type: "p",
+        text: "A good plan does three things an aspiration can't: it names a specific target instead of a general direction, it identifies the exact gap between where you are and that target, and it turns the gap into actions with dates attached. Skip any one of the three and you get what most plans are — a document, not a tool.",
+      },
+      { type: "h2", text: "Step 1: Name a target you can actually picture" },
+      {
+        type: "p",
+        text: "\"Grow in my career\" isn't a target, it's a mood. A usable target is specific enough that you'd recognise it if you saw it: a role, a level, a scope of work, or a kind of problem you want to be trusted with. Give yourself a one-to-two-year horizon — far enough to require real change, close enough to still feel real. If you're genuinely unsure what that target should be, that uncertainty is worth resolving before you plan anything; Fledgy's [career quiz](/careers) can help map your strengths and interests onto specific directions worth aiming at.",
+      },
+      { type: "h2", text: "Step 2: Find the actual gap, not the comfortable one" },
+      {
+        type: "p",
+        text: "Once you have a target, look honestly at what separates you from someone already there. The gap is rarely just a technical skill — it's often visibility (does leadership know what you're capable of), scope (have you actually run something of that size before), or a specific weak spot you've been quietly avoiding. Ask a manager or someone already in that target role what they'd point to; an outside view catches gaps you've stopped noticing in yourself.",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Skill gaps** — a technical ability, a tool, or a body of knowledge the target role expects.",
+          "**Experience gaps** — you haven't yet done the specific thing at the scale it's done at that level.",
+          "**Visibility gaps** — the work is good, but the people who decide on promotions don't know about it.",
+          "**Relationship gaps** — you lack a sponsor, a cross-team relationship, or exposure to the people who'd advocate for you.",
+        ],
+      },
+      { type: "h2", text: "Step 3: Turn the gap into dated actions, not intentions" },
+      {
+        type: "p",
+        text: "This is where most plans quietly die. \"Improve my public speaking\" never happens; \"present at the team's monthly review on March 14th\" does, because it has a date and a specific, small next step. For each gap, write the smallest concrete action that moves it forward and attach a deadline within the next four to eight weeks — not the whole goal, just the next step toward it.",
+      },
+      {
+        type: "ul",
+        items: [
+          "A course or certification with an enrolment date, not just a bookmark — if you're choosing one, it's worth checking it's actually valued in your field before committing time to it.",
+          "A specific stretch project you'll volunteer for, named, with the person you'll ask and by when.",
+          "A recurring action, like presenting your work once a month, rather than a one-off.",
+          "A relationship to build deliberately — a coffee chat, a cross-team project, a specific person to ask for feedback.",
+        ],
+      },
+      { type: "h2", text: "Step 4: Revisit it on a schedule, not when you remember" },
+      {
+        type: "p",
+        text: "A plan that's reviewed once a year, at the same time it was written, never gets corrected along the way. Put a recurring 20-minute check-in on your calendar every quarter: what actually happened, what didn't, and why. Half the value of a development plan is this review — it's where you notice a gap was wrong, a target has shifted, or an action simply wasn't realistic, and adjust before another year passes on autopilot.",
+      },
+      { type: "h2", text: "Mistakes that quietly sink a plan" },
+      {
+        type: "ul",
+        items: [
+          "**Writing goals with no deadline.** Anything without a date attached competes with everything else on your to-do list and loses.",
+          "**Listing five priorities at once.** A plan with five fronts rarely moves on any of them; pick one or two gaps to actually close this quarter.",
+          "**Confusing busy with progress.** Finishing a course is easy to point to; whether it changed what you're trusted with at work is the real test.",
+          "**Writing it for someone else.** A plan built to look good in a review, rather than to genuinely close a gap you believe in, won't survive the weeks when no one's checking.",
+          "**Never writing down what changed.** Without a record, a real year of growth can quietly feel like nothing happened — which makes it harder to make the case for what's next.",
+        ],
+      },
+      { type: "h2", text: "Make the progress easy to point to" },
+      {
+        type: "p",
+        text: "A development plan is only half the work — the other half is being able to show what it produced when it matters, whether that's a promotion conversation, a performance review, or a new role elsewhere. Keep a running note of what each closed gap actually changed, in outcomes rather than activities, so it's ready when you need it. And when the next step is a new role rather than a new level in your current one, make sure your [CV](/cv) actually reflects the scope you've grown into, not just the title on the door.",
+      },
+    ],
+  },
+  {
     slug: "how-to-answer-why-this-university",
     title: "How to Answer \"Why This University?\" (Without Sounding Generic)",
     description:
