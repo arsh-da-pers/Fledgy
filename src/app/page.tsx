@@ -1,8 +1,15 @@
 import Link from "next/link";
 import HeroArt from "@/components/HeroArt";
 import Mark from "@/components/Mark";
+import { MENTORS, toPublic } from "@/lib/mentors";
+import { MENTOR_PRICE } from "@/lib/products";
 
 export default function Home() {
+  // This page is a server component, so importing "@/lib/mentors" is safe —
+  // but toPublic() still strips names and emails, so nothing reaches the
+  // browser bundle that the soft launch means to withhold.
+  const mentors = MENTORS.map(toPublic);
+
   return (
     <main className="relative flex flex-1 flex-col items-center overflow-hidden bg-page">
       <div className="w-full">
@@ -15,56 +22,62 @@ export default function Home() {
       />
 
       <div className="relative w-full max-w-3xl px-5 pb-20 pt-8 sm:px-6 sm:pb-28">
-        {/* Brand line stays the headline's first line; the value line sits
-            underneath it. Both live in the h1 so the words that describe what
-            Fledgy does are what search engines read, while "Grow your wings."
-            keeps visual primacy as the brand line. */}
-        <h1 className="rise-in text-ink">
-          <span className="block text-[2.5rem] font-semibold leading-[1.05] tracking-tight sm:text-5xl">
-            Grow your <span className="sunrise-text">wings.</span>
-          </span>
-          <span className="mt-3 block text-xl font-semibold leading-snug tracking-tight text-ink-muted sm:text-2xl">
-            Figure out what&apos;s next — and get ready for it.
-          </span>
-        </h1>
-
-        <p className="rise-in-2 mt-5 max-w-xl text-base leading-relaxed text-ink-muted sm:text-lg">
-          Discover career paths that fit you, strengthen your CV, and get
-          smarter feedback on your university applications.
+        {/* Clarity, 30 days to 2026-09-30: 800 sessions entered on this page
+            and 795 exited from it, at 21s active time and 36.76% scroll depth,
+            with 89% arriving inside the Instagram/Facebook in-app browser.
+            So the h1 now leads with what Fledgy DOES rather than the brand
+            promise ("Grow your wings." is demoted to an eyebrow, keeping the
+            brand visible without spending the first screen on it), and all
+            three tools get a CTA above the fold — previously only careers and
+            CV did, and none of them appeared until well past the average
+            scroll depth. The CV tool leads because it is the one tool that
+            serves students and working professionals equally; Fledgy is not a
+            student-only product and the old copy ("applicants") implied it
+            was. The old "Start wherever you are" paragraph and its rule sat
+            between the hero and the cards, pushing the cards out of reach on
+            mobile; both are gone so the tools sit directly under the fold. */}
+        <p className="rise-in text-xs font-bold tracking-[0.2em] text-brand-orange">
+          FLEDGY · GROW YOUR WINGS.
         </p>
 
-        <div className="rise-in-2 mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <Link
-            href="/careers"
-            className="flex items-center justify-center rounded-xl bg-brand-teal px-6 py-3.5 text-base font-semibold text-white transition hover:bg-brand-teal-dark sm:text-sm"
-          >
-            Explore my career →
-          </Link>
+        <h1 className="rise-in mt-3 block text-[2rem] font-semibold leading-[1.1] tracking-tight text-ink sm:text-5xl">
+          Honest feedback on your CV, your application, and{" "}
+          <span className="sunrise-text">your next move</span>.
+        </h1>
+
+        <p className="rise-in-2 mt-4 max-w-xl text-base leading-relaxed text-ink-muted sm:text-lg">
+          University applications, career switches, job hunts — specific
+          feedback in 60 seconds. Not flattery, and not US/UK-only advice.
+        </p>
+
+        <div className="rise-in-2 mt-7 flex flex-col gap-3">
           <Link
             href="/cv"
-            className="flex items-center justify-center rounded-xl border border-brand-teal px-6 py-3.5 text-base font-semibold text-brand-teal transition hover:bg-brand-teal-tint sm:text-sm"
+            className="flex items-center justify-center rounded-xl bg-brand-teal px-6 py-4 text-base font-semibold text-white transition hover:bg-brand-teal-dark"
           >
-            Check my CV →
+            Score my CV →
           </Link>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Link
+              href="/careers"
+              className="flex flex-1 items-center justify-center rounded-xl bg-brand-orange px-6 py-3.5 text-base font-semibold text-white transition hover:bg-brand-orange-dark sm:text-sm"
+            >
+              Find my direction →
+            </Link>
+            <Link
+              href="/essay"
+              className="flex flex-1 items-center justify-center rounded-xl border border-brand-teal px-6 py-3.5 text-base font-semibold text-brand-teal transition hover:bg-brand-teal-tint sm:text-sm"
+            >
+              Score my essay →
+            </Link>
+          </div>
         </div>
 
         <p className="mt-4 text-sm text-ink-faint">
-          Free to start. No card.
+          Free to start. No card. Paste your text or upload a PDF.
         </p>
 
-        <div className="mt-12 flex items-center gap-4">
-          <Mark size={40} opacity={0.9} />
-          <hr className="rule-sunrise flex-1" />
-          <Mark size={40} opacity={0.9} className="scale-x-[-1]" />
-        </div>
-
-        <p className="mt-10 max-w-xl text-ink-muted">
-          Start wherever you are. Not sure what you want yet? Begin with your
-          direction. Already applying? Go straight to your CV or your
-          application essay.
-        </p>
-
-        <div className="mt-8 grid gap-4 sm:grid-cols-3">
+        <div className="mt-10 grid gap-4 sm:grid-cols-3">
           <Link
             href="/careers"
             className="card-lift rise-in group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white p-6 shadow-sm hover:border-brand-teal"
@@ -137,6 +150,62 @@ export default function Home() {
             <span className="mt-4 inline-block text-sm font-medium text-brand-orange group-hover:underline">
               Try it free →
             </span>
+          </Link>
+        </div>
+
+        {/* Mentors is the dearest thing on the site and the only one with a
+            human on the other end, so it gets its own band rather than a
+            fourth card in the grid of AI tools. Names stay hidden during the
+            soft launch — the cards lead with face and role, which is exactly
+            what the launch is testing. */}
+        <div className="mt-14 rounded-2xl border border-line bg-white p-6 shadow-sm sm:p-8">
+          <span className="inline-block rounded-full bg-cream px-2.5 py-1 text-xs font-bold tracking-widest text-brand-teal">
+            1:1 MENTORING · {MENTOR_PRICE}
+          </span>
+          <h2 className="mt-3 text-xl font-semibold text-ink sm:text-2xl">
+            Or talk to someone who&apos;s actually done it
+          </h2>
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-muted">
+            A score takes 60 seconds. Some questions need a person — a recruiter
+            who has read thousands of CVs, a pilot who came up through flight
+            school, a psychologist who has mentored 600+ people.
+          </p>
+
+          <div className="mt-6 flex items-center -space-x-3">
+            {mentors.map((m) =>
+              m.photo ? (
+                <img
+                  key={m.id}
+                  src={m.photo}
+                  alt=""
+                  className="h-12 w-12 rounded-full border-2 border-white object-cover"
+                />
+              ) : (
+                <div
+                  key={m.id}
+                  className="h-12 w-12 rounded-full border-2 border-white"
+                  style={{ backgroundColor: m.accent }}
+                />
+              )
+            )}
+          </div>
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            {mentors.map((m) => (
+              <span
+                key={m.id}
+                className="rounded-full bg-cream px-2.5 py-1 text-xs font-medium text-ink-muted"
+              >
+                {m.title}
+              </span>
+            ))}
+          </div>
+
+          <Link
+            href="/mentors"
+            className="mt-6 inline-flex items-center justify-center rounded-xl border border-brand-teal px-5 py-3 text-sm font-semibold text-brand-teal transition hover:bg-brand-teal-tint"
+          >
+            Meet the mentors →
           </Link>
         </div>
 

@@ -11,7 +11,7 @@ const navLinks = [
   { href: "/careers", label: "Career Quiz" },
   { href: "/essay", label: "Score my essay" },
   { href: "/cv", label: "Score my CV" },
-  { href: "/mentors", label: "Mentors" },
+  { href: "/mentors", label: "Book a mentor" },
   { href: "/blog", label: "Blog" },
 ];
 

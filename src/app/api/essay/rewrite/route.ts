@@ -99,8 +99,9 @@ Output ONLY the rewritten essay as clean plain text — no commentary, no headin
 
     const msg = await anthropic.messages
       .create({
-        model: "claude-sonnet-4-5",
+        model: "claude-sonnet-5",
         max_tokens: 2000,
+        thinking: { type: "disabled" },
         messages: [{ role: "user", content: prompt }],
       })
       .catch(async (err) => {
