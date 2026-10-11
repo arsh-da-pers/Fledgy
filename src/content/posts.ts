@@ -3,6 +3,81 @@ import type { Post } from "@/lib/blog";
 // Add new posts to the top of this array. Each post needs a unique `slug`.
 export const posts: Post[] = [
   {
+    slug: "how-to-find-a-mentor",
+    title: "How to Find a Mentor (and What to Ask For)",
+    description:
+      "How to find a mentor who actually helps your career — where to look, how to ask without it feeling awkward, and what to bring to each conversation.",
+    date: "2026-09-23",
+    excerpt:
+      "Everyone says \"find a mentor.\" Almost no one says how, or what to actually ask for once you have one. Here's a practical way to do both.",
+    tags: ["mentorship", "career growth", "networking", "job seekers"],
+    body: [
+      {
+        type: "p",
+        text: "Almost every career conversation eventually lands on the same advice: \"find a mentor.\" It's true, and it's also nearly useless on its own — nobody tells you how to actually find one, what to say when you do, or what the relationship is supposed to look like once it starts. Here's a practical way to do all three.",
+      },
+      { type: "h2", text: "Why \"find a mentor\" is such vague advice" },
+      {
+        type: "p",
+        text: "The advice fails because it treats mentorship like a single relationship you either have or don't, when in practice it's usually several looser ones stacked together — someone who gives career advice, someone who reviews your work, someone a few years ahead who answers quick questions when you're stuck. Waiting for one perfect senior figure to formally \"become your mentor\" is why most people never start.",
+      },
+      { type: "h2", text: "Look for a specific kind of help, not a specific title" },
+      {
+        type: "p",
+        text: "Before you look for a person, get specific about what you actually need: feedback on your work, an introduction into an industry, a sounding board for a decision, or someone who's done the exact job you want next. A senior executive isn't automatically a better mentor than someone two years ahead of you — the person one step ahead often remembers the details of getting there far more clearly than someone a decade out.",
+      },
+      { type: "h2", text: "Where mentors actually come from" },
+      {
+        type: "p",
+        text: "Most useful mentor relationships start informally, from people already in your orbit:",
+      },
+      {
+        type: "ul",
+        items: [
+          "A former manager or senior colleague you worked well with, even at a previous job.",
+          "Someone a few years ahead of you at the same company, doing the role you want next.",
+          "Alumni from your university working in your target field — most are more open to a message than you'd expect.",
+          "Professional associations or industry groups, many of which run structured mentorship matching.",
+          "A previous professor, coach, or instructor who saw how you work rather than just your CV.",
+        ],
+      },
+      { type: "h2", text: "How to ask without it feeling awkward" },
+      {
+        type: "p",
+        text: "Skip the phrase \"will you be my mentor?\" — it puts a large, undefined commitment on someone who might not know you well yet. Ask for one specific, small thing instead: a 20-minute call about how they got into their role, feedback on a document, or advice on a decision you're facing. A good first ask is easy to say yes to. If the conversation goes well, asking to check in again is a much smaller step than asking for mentorship cold.",
+      },
+      { type: "h2", text: "What to bring to each conversation" },
+      {
+        type: "p",
+        text: "Once someone is willing to keep talking to you, make their time worth it:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Arrive with two or three specific questions, not \"any advice you have.\"",
+          "Do the background research yourself first — don't ask them to explain something a quick search would answer.",
+          "Follow up on what they suggested last time, so they can see their advice landed somewhere.",
+          "Say thank you specifically — name what actually helped, not just \"thanks for your time.\"",
+        ],
+      },
+      { type: "h2", text: "Common mistakes that end mentorships early" },
+      {
+        type: "ul",
+        items: [
+          "Only reaching out when you need something, then going quiet in between.",
+          "Treating every conversation as a request rather than a relationship — ask what they're working on too.",
+          "Being vague about your goals, which makes it hard for them to give useful advice.",
+          "Disappearing after good advice instead of reporting back on what happened when you used it.",
+        ],
+      },
+      { type: "h2", text: "Know what you're aiming for before you ask" },
+      {
+        type: "p",
+        text: "Mentors give better advice when you can tell them clearly what you're aiming for — a vague \"I want to grow\" gets vague answers back. If you're not sure what direction to point that conversation toward, Fledgy's [career quiz](/careers) can help map your strengths onto specific paths worth asking about. And if a mentor offers to review something concrete, make sure your [CV](/cv) is already in good shape before you hand it over — Fledgy's free CV scorer can catch the obvious issues first, so their feedback goes toward what actually matters.",
+      },
+    ],
+  },
+  {
     slug: "how-to-answer-why-this-university",
     title: "How to Answer \"Why This University?\" (Without Sounding Generic)",
     description:

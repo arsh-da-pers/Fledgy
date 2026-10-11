@@ -113,6 +113,7 @@ Output ONLY the rewritten CV as clean plain text, ready to copy or download — 
       .create({
         model: "claude-sonnet-5",
         max_tokens: 1600,
+        thinking: { type: "disabled" },
         messages: [{ role: "user", content: prompt }],
       })
       .catch(async (err) => {
