@@ -3,6 +3,82 @@ import type { Post } from "@/lib/blog";
 // Add new posts to the top of this array. Each post needs a unique `slug`.
 export const posts: Post[] = [
   {
+    slug: "scholarship-essay-tips",
+    title: "Scholarship Essay Tips: How to Write One That Actually Gets Read",
+    description:
+      "Practical scholarship essay tips — how to answer the real prompt, show impact instead of effort, and avoid the generic lines that get essays skimmed and rejected.",
+    date: "2026-10-11",
+    excerpt:
+      "Scholarship committees read hundreds of near-identical essays about \"overcoming challenges.\" Here's how to write one that actually stands out — and gets funded.",
+    tags: ["scholarships", "essays", "students", "applications"],
+    body: [
+      {
+        type: "p",
+        text: "A scholarship essay has a strange job: convince a stranger, in 500 words or fewer, that you deserve money more than hundreds of other applicants with similarly strong grades. Most essays fail not because the applicant is unqualified, but because the essay reads like the hundred others the reader skimmed that morning. Here's how to write one that doesn't.",
+      },
+      { type: "h2", text: "What scholarship committees are actually screening for" },
+      {
+        type: "p",
+        text: "Committees aren't looking for the applicant with the most impressive life story. They're looking for evidence that the money will be well spent — that you'll use the opportunity, that your goals are specific and credible, and that you're the kind of person who follows through. A dramatic story with no clear connection to your goals scores worse than a modest one tied tightly to a plan.",
+      },
+      { type: "h2", text: "Answer the actual prompt, not a generic version of it" },
+      {
+        type: "p",
+        text: "Most applicants have a stock essay about resilience or ambition, and they bend each prompt slightly to fit it. Readers notice immediately. If the prompt asks how you'll use the degree to serve your community, an essay that's really about your childhood with one bolted-on closing sentence about community won't score well, however well written. Reread the actual question after your first draft and check that at least half the essay is answering it directly.",
+      },
+      { type: "h2", text: "Show impact, not effort" },
+      {
+        type: "p",
+        text: "\"I worked incredibly hard\" is a claim everyone makes. What separates a strong essay is a specific result: what changed because of what you did, for whom, and how you know. This applies just as much to hardship essays as achievement ones — don't just describe the difficulty, show what you did about it and what it taught you that's relevant to your goals now.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Replace \"I have always been passionate about helping others\" with a specific moment that shows it.",
+          "Replace a list of activities with the one or two that mattered most, explained in depth.",
+          "Name a number where you honestly can — people tutored, funds raised, hours volunteered, grade improved — but only if it's true and relevant.",
+          "End on where you're going, not just where you've been. Committees are funding your next step, not your past.",
+        ],
+      },
+      { type: "h2", text: "A structure that works under a tight word limit" },
+      {
+        type: "p",
+        text: "Scholarship prompts are often shorter than personal statements — 250 to 500 words is common — so there's no room for a slow build-up. A structure that holds up under that limit:",
+      },
+      {
+        type: "ul",
+        items: [
+          "**One sentence of context** — who you are and the situation the essay is about, stated plainly.",
+          "**The specific experience** — one concrete story or example, not three vague ones.",
+          "**The reflection** — what it taught you or how it shaped your goals. This is the part generic essays skip.",
+          "**The connection to the scholarship** — why this opportunity, specifically, moves you toward that goal.",
+        ],
+      },
+      { type: "h2", text: "Common mistakes that sink strong applicants" },
+      {
+        type: "ul",
+        items: [
+          "Reusing one essay for every scholarship without adjusting it to the actual prompt or the organisation's stated values.",
+          "Trying to cover your whole life story in 400 words instead of going deep on one example.",
+          "Writing about hardship as the whole point, without connecting it to where you're headed next.",
+          "Vague goals (\"I want to make a difference\") that could be written by any applicant.",
+          "Ignoring the word limit, or padding a short essay with filler to hit it.",
+          "Forgetting to proofread — a strong essay with typos reads as careless, not just imperfect.",
+        ],
+      },
+      { type: "h2", text: "If you're applying to several scholarships" },
+      {
+        type: "p",
+        text: "You can reuse a strong core story across applications, but never submit the same essay unedited. Adjust the opening and the closing paragraph to answer each organisation's specific prompt and stated mission — that's usually a ten-minute edit, and it's the difference between an essay that feels aimed at them and one that feels aimed at everyone.",
+      },
+      { type: "h2", text: "Check it before you submit" },
+      {
+        type: "p",
+        text: "It's hard to tell from the inside whether your essay reads as specific or generic — you already know the backstory, so it feels complete to you even when a stranger would find it thin. Fledgy's [free essay scorer](/essay) gives your scholarship essay an honest score out of 100, with specific feedback on where it reads generic versus where it actually stands out, so you know what to fix before the deadline instead of after the decision letter.",
+      },
+    ],
+  },
+  {
     slug: "how-to-find-a-mentor",
     title: "How to Find a Mentor (and What to Ask For)",
     description:
