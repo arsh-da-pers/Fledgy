@@ -26,8 +26,9 @@ export default function MentorsPage() {
         </h1>
         <p className="mt-2 max-w-2xl text-ink-muted">
           Real, honest advice from people who&apos;ve actually done it — a
-          recruiter, a pilot, a career psychologist. A focused 30-minute chat
-          about your career, uni plans, CV, or whatever&apos;s on your mind.
+          recruiter, a pilot, a marketer, a career psychologist. A focused
+          30-minute chat about your career, uni plans, CV, or whatever&apos;s on
+          your mind.
         </p>
 
         {/* How it works */}

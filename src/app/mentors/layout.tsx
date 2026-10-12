@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   // the easiest place in the site for a stale price to hide — Google shows it
   // long after anyone has thought to reread this file.
   description:
-    "Book a 1:1 session with a recruiter, a commercial pilot, or a career psychologist. Honest, personal advice on your CV, interviews, university plans and career — " +
+    "Book a 1:1 session with a recruiter, a commercial pilot, a marketing manager, or a career psychologist. Honest, personal advice on your CV, interviews, university plans and career — " +
     `${MENTOR_PRICE} for 30 minutes.`,
   alternates: { canonical: "/mentors" },
 };
