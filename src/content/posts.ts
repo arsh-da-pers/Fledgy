@@ -3,6 +3,85 @@ import type { Post } from "@/lib/blog";
 // Add new posts to the top of this array. Each post needs a unique `slug`.
 export const posts: Post[] = [
   {
+    slug: "how-to-get-strong-recommendation-letters",
+    title: "How to Get Strong Letters of Recommendation for University",
+    description:
+      "How to get strong recommendation letters for university applications: who to ask, how to ask, and what to give them so the letter is specific, not generic.",
+    date: "2026-10-18",
+    excerpt:
+      "A vague recommendation letter can quietly cost you a place. Here's how to choose the right recommenders, ask well, and give them what they need to write something specific.",
+    tags: ["recommendation letters", "university applications", "students", "applications"],
+    body: [
+      {
+        type: "p",
+        text: "Admissions committees read two kinds of recommendation letters: the generic kind, which could describe almost any decent student, and the specific kind, which makes an application memorable. The difference almost never comes down to how senior or impressive the recommender is. It comes down to who you ask, how you ask, and what you give them to work with. Here's how to get the second kind.",
+      },
+      { type: "h2", text: "Why a vague letter costs you more than you'd think" },
+      {
+        type: "p",
+        text: "Your grades and test scores already prove you can do the work. A recommendation letter exists to vouch for things a transcript can't show — how you think through a hard problem, how you handle setbacks, how you work with other people. Admissions readers see hundreds of letters every season that say some version of \"she is a hardworking and reliable student,\" and they've learned to read straight past them. What stands out is a letter that describes one real moment: a project you pushed through when it stalled, a question you asked that changed a discussion, a specific way you grew over a term. That kind of detail is the whole job of the letter, and it only happens if the writer actually has something concrete to say.",
+      },
+      { type: "h2", text: "Pick recommenders who can say something specific, not just someone impressive" },
+      {
+        type: "p",
+        text: "The instinct is to ask whoever has the most senior title willing to say yes — a department head who taught you in a 200-person lecture, a family friend with an important job. Resist it. A recommender who watched you work closely, even in a smaller or less prestigious role, will almost always write a stronger letter than someone who can only confirm your name and a grade.",
+      },
+      {
+        type: "ul",
+        items: [
+          "A teacher or professor who supervised a project, dissertation, lab, or significant piece of coursework — not just a class you sat in.",
+          "A manager, coach, or supervisor who saw you solve a real problem or take initiative, even outside the classroom.",
+          "Someone who taught or worked with you in a setting small enough that they actually know how you think, not just your result.",
+          "Faced with a choice between someone senior who barely knows you and someone closer to you with a smaller title, pick the second person almost every time.",
+        ],
+      },
+      { type: "h2", text: "How to ask, so you get both a yes and a strong letter" },
+      {
+        type: "p",
+        text: "How you ask shapes the letter you get back almost as much as who you ask. A few habits make the difference:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Ask in person or over a call, not a one-line email — it signals you take it seriously and gives them a chance to ask questions.",
+          "Ask at least four to six weeks before the deadline. Recommenders write better letters when they aren't rushed, and a late ask puts your outcome at the mercy of a stranger's spare evening.",
+          "Name the specifics up front: the programme, the deadline, how the letter gets submitted (a portal link, an emailed form, a sealed copy), and roughly how long it should be.",
+          "Give them a genuine out — \"I completely understand if you don't have time\" — so a reluctant yes doesn't turn into a rushed, thin letter.",
+        ],
+      },
+      { type: "h2", text: "Hand them a \"brag sheet\" instead of hoping they remember" },
+      {
+        type: "p",
+        text: "Even a recommender who likes you well can't be expected to remember the details of a project from eighteen months ago. Once they say yes, send a short document that does the remembering for them — most strong letters are written from material like this, not from memory alone.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Your current CV, and a draft of your personal statement or SOP, so they can see the story you're telling and avoid contradicting it.",
+          "Two or three specific moments you'd like them to consider — enough detail to jog their memory, not so much that it scripts their words.",
+          "The programme name, your intended field of study, and a line or two on why it fits you, so the letter supports the application rather than reading as generic.",
+          "The deadline, the exact submission method, and any form they need to fill in alongside the letter.",
+        ],
+      },
+      { type: "h2", text: "Mistakes that quietly weaken a letter" },
+      {
+        type: "ul",
+        items: [
+          "Asking too late, which pushes a recommender toward a short, generic letter written in a hurry.",
+          "Choosing prestige over closeness — a famous name attached to three vague sentences convinces no one.",
+          "Giving no context and assuming they remember details you never actually told them.",
+          "Declining to waive your right to view the letter when the form offers the option — in many systems, a waived letter reads as more candid and carries more weight.",
+          "Going quiet after they agree, then forgetting to thank them or tell them how it turned out.",
+        ],
+      },
+      { type: "h2", text: "Make sure your own writing tells the same story" },
+      {
+        type: "p",
+        text: "A recommendation letter works best when it reinforces the same case your personal statement or SOP is making, not a different one entirely. Before you ask anyone to write on your behalf, make sure your own statement is in strong shape — Fledgy's [free essay scorer](/essay) gives it an honest score out of 100 with specific feedback on what reads generic versus what could only be about you, so the whole application pulls in the same direction.",
+      },
+    ],
+  },
+  {
     slug: "how-to-find-a-mentor",
     title: "How to Find a Mentor (and What to Ask For)",
     description:
