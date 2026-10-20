@@ -370,20 +370,57 @@ export default function CvPage() {
                   <p className="mt-2 text-xs font-semibold text-brand-teal">
                     {iterationsLeft} of {CV_ITERATIONS} rewrites left
                   </p>
-                  <button
-                    type="button"
-                    onClick={handleGenerate}
-                    disabled={generating || iterationsLeft < 1}
-                    className="mt-4 flex w-full items-center justify-center rounded-xl bg-brand-teal px-4 py-3.5 text-base font-semibold text-white transition hover:bg-brand-teal-dark disabled:opacity-50 sm:text-sm"
-                  >
-                    {generating
-                      ? "Writing your CV…"
-                      : generatedCv
-                      ? "Rewrite it again"
-                      : "Write my CV"}
-                  </button>
+                  {/* At zero rewrites this used to render a dead, greyed-out
+                      button and nothing else: no explanation, and no way to
+                      buy more — the Paywall below only renders for people who
+                      have NOT paid. So the one person actively trying to give
+                      us money was the one person with nowhere to click. A
+                      repeat purchase already tops the counter back up in
+                      grantPurchase, so the mechanism existed; only this did
+                      not. */}
+                  {iterationsLeft > 0 ? (
+                    <button
+                      type="button"
+                      onClick={handleGenerate}
+                      disabled={generating}
+                      className="mt-4 flex w-full items-center justify-center rounded-xl bg-brand-teal px-4 py-3.5 text-base font-semibold text-white transition hover:bg-brand-teal-dark disabled:opacity-50 sm:text-sm"
+                    >
+                      {generating
+                        ? "Writing your CV…"
+                        : generatedCv
+                        ? "Rewrite it again"
+                        : "Write my CV"}
+                    </button>
+                  ) : (
+                    <div className="mt-4">
+                      <p className="rounded-lg border border-cream-deep bg-cream px-4 py-3 text-sm leading-relaxed text-ink">
+                        You&apos;ve used all {CV_ITERATIONS} of your rewrites
+                        {generatedCv
+                          ? " — your latest version is still below and yours to download."
+                          : "."}{" "}
+                        Something gone wrong?{" "}
+                        <a
+                          href="mailto:hello@fledgy.guide?subject=My%20CV%20rewrites"
+                          className="font-semibold text-brand-teal underline"
+                        >
+                          Tell us
+                        </a>{" "}
+                        and a person will sort it out.
+                      </p>
+                      <div className="mt-3">
+                        <Paywall
+                          product="cv"
+                          email={email}
+                          heading={`Need more rewrites?`}
+                          subheading={`Another purchase tops you back up to ${CV_ITERATIONS} rewrites, formatted for ${
+                            country || "your target country"
+                          }.`}
+                        />
+                      </div>
+                    </div>
+                  )}
 
-                  {exhausted && (
+                  {exhausted && iterationsLeft > 0 && (
                     <p className="mt-3 rounded-lg border border-cream-deep bg-cream px-4 py-3 text-sm leading-relaxed text-ink">
                       You&apos;ve used all {CV_ITERATIONS} rewrites. Your latest version is
                       still below and yours to download.
