@@ -23,6 +23,18 @@ type Lead = {
 
 const REFRESH_MS = 20000;
 
+// The only products that carry rewrites. Kept explicit rather than derived
+// so a new product cannot silently appear in an admin tool unreviewed.
+const REWRITE_PRODUCTS = ["cv", "essay"] as const;
+type RewriteProduct = (typeof REWRITE_PRODUCTS)[number];
+
+type RewriteState = {
+  product: RewriteProduct;
+  owned: boolean;
+  left: number;
+  total: number;
+};
+
 function isTest(email: string) {
   return email.startsWith("kv-test") || email.startsWith("reftest-");
 }
@@ -47,6 +59,14 @@ export default function LeadsDashboard() {
   const [loading, setLoading] = useState(false);
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
   const [showTest, setShowTest] = useState(false);
+
+  // Rewrite restore. Lives here rather than in a script because Arshkiran
+  // does not use a terminal, and "we cannot give you what you paid for" is
+  // not an acceptable answer to a buyer whose rewrite was eaten by a failure.
+  const [rwEmail, setRwEmail] = useState("");
+  const [rwRows, setRwRows] = useState<RewriteState[] | null>(null);
+  const [rwBusy, setRwBusy] = useState<string | null>(null);
+  const [rwNote, setRwNote] = useState<string | null>(null);
 
   useEffect(() => {
     const fromUrl = new URLSearchParams(window.location.search).get("key");
@@ -102,6 +122,77 @@ export default function LeadsDashboard() {
     setLeads(null);
     setInquiries([]);
   }
+
+  // Reads the live entitlement for each rewriting product. /api/entitlement
+  // is public and takes an email, so no admin key is needed just to look.
+  const checkRewrites = useCallback(async (emailToCheck: string) => {
+    const target = emailToCheck.trim().toLowerCase();
+    if (!target.includes("@")) {
+      setRwNote("Enter a valid email.");
+      setRwRows(null);
+      return;
+    }
+    setRwNote(null);
+    setRwBusy("check");
+    try {
+      const rows = await Promise.all(
+        REWRITE_PRODUCTS.map(async (product) => {
+          const res = await fetch("/api/entitlement", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: target, product }),
+          });
+          const d = await res.json();
+          return {
+            product,
+            owned: Boolean(d.entitled),
+            left: Number(d.iterationsLeft ?? 0),
+            total: Number(d.iterationsTotal ?? 0),
+          } as RewriteState;
+        })
+      );
+      setRwRows(rows);
+      if (!rows.some((r) => r.owned)) setRwNote("This email hasn't bought anything.");
+    } catch {
+      setRwNote("Couldn't read that account.");
+      setRwRows(null);
+    } finally {
+      setRwBusy(null);
+    }
+  }, []);
+
+  // The admin key goes in a bearer header, not the query string the older
+  // /api/leads call uses — a secret in a URL ends up in server logs and
+  // browser history.
+  const restoreRewrites = useCallback(
+    async (product: RewriteProduct) => {
+      const target = rwEmail.trim().toLowerCase();
+      setRwBusy(product);
+      setRwNote(null);
+      try {
+        const res = await fetch("/api/admin/iterations", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${key}`,
+          },
+          body: JSON.stringify({ email: target, product, used: 0 }),
+        });
+        const d = await res.json();
+        if (!res.ok) {
+          setRwNote(d.error || "Restore failed.");
+          return;
+        }
+        setRwNote(`Restored ${target} — ${product} back to ${d.remaining} rewrites.`);
+        await checkRewrites(target);
+      } catch {
+        setRwNote("Restore failed.");
+      } finally {
+        setRwBusy(null);
+      }
+    },
+    [rwEmail, key, checkRewrites]
+  );
 
   // Gate: ask for the key if we don't have one.
   if (!key) {
@@ -327,6 +418,71 @@ export default function LeadsDashboard() {
               </div>
             )}
 
+            <div className="mt-6 rounded-xl border border-line bg-white p-5">
+              <h2 className="text-base font-semibold text-ink">Rewrites</h2>
+              <p className="mt-1 text-sm leading-relaxed text-ink-muted">
+                Check what a buyer has left, and give it back if a failed
+                generation ate it. Clicking an email in the table below fills
+                this in.
+              </p>
+
+              <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+                <input
+                  type="email"
+                  value={rwEmail}
+                  onChange={(e) => setRwEmail(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") checkRewrites(rwEmail);
+                  }}
+                  placeholder="buyer@example.com"
+                  className="flex-1 rounded-lg border border-line px-3 py-2 text-sm text-ink placeholder-ink-faint focus:border-brand-teal focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => checkRewrites(rwEmail)}
+                  disabled={rwBusy === "check"}
+                  className="rounded-lg bg-brand-teal px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-teal-dark disabled:opacity-50"
+                >
+                  {rwBusy === "check" ? "Checking…" : "Check"}
+                </button>
+              </div>
+
+              {rwRows && (
+                <div className="mt-3 space-y-2">
+                  {rwRows
+                    .filter((r) => r.owned)
+                    .map((r) => (
+                      <div
+                        key={r.product}
+                        className="flex items-center justify-between gap-3 rounded-lg border border-cream-deep bg-cream px-3 py-2"
+                      >
+                        <span className="text-sm text-ink">
+                          <strong className="uppercase">{r.product}</strong>{" "}
+                          — {r.left} of {r.total} rewrites left
+                          {r.left === 0 && (
+                            <span className="ml-2 rounded-full bg-brand-orange-tint px-2 py-0.5 text-xs font-semibold text-brand-orange-dark">
+                              stuck
+                            </span>
+                          )}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => restoreRewrites(r.product)}
+                          disabled={rwBusy === r.product || r.left === r.total}
+                          className="shrink-0 rounded-lg border border-brand-teal px-3 py-1.5 text-xs font-semibold text-brand-teal transition hover:bg-brand-teal-tint disabled:opacity-40"
+                        >
+                          {rwBusy === r.product ? "Restoring…" : "Restore"}
+                        </button>
+                      </div>
+                    ))}
+                </div>
+              )}
+
+              {rwNote && (
+                <p className="mt-3 text-sm text-ink-muted">{rwNote}</p>
+              )}
+            </div>
+
             <label className="mt-4 flex items-center gap-2 text-xs text-ink-faint">
               <input
                 type="checkbox"
@@ -360,7 +516,19 @@ export default function LeadsDashboard() {
                       <td className="whitespace-nowrap px-4 py-3 text-ink-muted">
                         {formatDate(l.firstSeen)}
                       </td>
-                      <td className="px-4 py-3 text-ink">{l.email}</td>
+                      <td className="px-4 py-3 text-ink">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setRwEmail(l.email);
+                            checkRewrites(l.email);
+                          }}
+                          className="text-left hover:text-brand-teal hover:underline"
+                          title="Check this buyer's rewrites"
+                        >
+                          {l.email}
+                        </button>
+                      </td>
                       <td className="px-4 py-3">
                         <span
                           className={`rounded-full px-2 py-0.5 text-xs font-medium ${
