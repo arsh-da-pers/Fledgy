@@ -3,8 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { logFeedback } from "@/lib/logFeedback";
 import { hasProduct } from "@/lib/entitlements";
 import { PAYWALLS_ENABLED } from "@/lib/products";
-import { checkAndRecordUsage, isValidEmail, isThrowawayEmail, FREE_LIMIT } from "@/lib/usage";
+import { checkAndRecordUsage, refundUsage, isValidEmail, isThrowawayEmail, FREE_LIMIT } from "@/lib/usage";
 import { recordToolUse } from "@/lib/leads";
+import { sendToolThankYou } from "@/lib/autoReply";
 
 export const runtime = "nodejs";
 
@@ -15,6 +16,8 @@ function extractJson(text: string) {
 }
 
 export async function POST(req: NextRequest) {
+  // Set once a free use is recorded, so a failure below can hand it back.
+  let meteredEmail: string | null = null;
   try {
     const { university, course, essay, email } = await req.json();
 
@@ -64,7 +67,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    if (!(PAYWALLS_ENABLED && entitled)) meteredEmail = email;
+
     await recordToolUse(email, "essay");
+    // Best-effort thank-you. Deduped per tool per address and skipped for
+    // anyone unsubscribed, so it never becomes a per-run mailing.
+    void sendToolThankYou(email, "essay");
 
     if (!process.env.ANTHROPIC_API_KEY) {
       return NextResponse.json(
@@ -109,8 +117,9 @@ Return ONLY valid JSON, no other text, in this exact shape:
 Give 7 or 8 tips, each short and specific enough to act on.`;
 
     const msg = await anthropic.messages.create({
-      model: "claude-sonnet-4-5",
+      model: "claude-sonnet-5",
       max_tokens: 1400,
+      thinking: { type: "disabled" },
       messages: [{ role: "user", content: prompt }],
     });
 
@@ -149,6 +158,7 @@ Give 7 or 8 tips, each short and specific enough to act on.`;
     });
   } catch (err) {
     console.error(err);
+    if (meteredEmail) await refundUsage(meteredEmail, "essay");
     return NextResponse.json(
       { error: "Something went wrong scoring this essay. Please try again." },
       { status: 500 }

@@ -3,6 +3,7 @@ import { logFeedback } from "@/lib/logFeedback";
 import { isValidEmail } from "@/lib/usage";
 import { recordLead, recordInquiry } from "@/lib/leads";
 import { sendNotification } from "@/lib/notify";
+import { sendAutoReply } from "@/lib/autoReply";
 import { mentorById, mentorLabel } from "@/lib/mentors";
 
 export const runtime = "nodejs";
@@ -91,6 +92,17 @@ export async function POST(req: NextRequest) {
         ].join("\n")
       );
 
+      // Confirmation to the person who asked. mentor.title, never
+      // mentorLabel() — the label carries the mentor's real name, which the
+      // soft launch withholds from everyone but Arshkiran.
+      await sendAutoReply({
+        role: "inquiry",
+        to: email,
+        name: cleanName,
+        mentorTitle: mentor.title,
+        message: text,
+      });
+
       return NextResponse.json({ ok: true });
     }
 
@@ -109,6 +121,29 @@ export async function POST(req: NextRequest) {
       name: cleanName,
       expertise: expertise ? String(expertise).trim() : undefined,
     });
+
+    await sendAutoReply(
+      role === "mentor"
+        ? {
+            role: "mentor",
+            to: email,
+            name: cleanName,
+            expertise: expertise ? String(expertise).trim() : undefined,
+          }
+        : { role: "seeker", to: email, name: cleanName }
+    );
+
+    // Fledgy is told about mentor applications too — a waitlist signup is
+    // just a lead, but someone offering to mentor needs a human reply.
+    if (role === "mentor") {
+      await sendNotification(
+        "New mentor application",
+        [
+          `From: ${cleanName || "(no name given)"} <${email}>`,
+          `Field: ${expertise ? String(expertise).trim() : "(not given)"}`,
+        ].join("\n")
+      );
+    }
 
     return NextResponse.json({ ok: true });
   } catch {
