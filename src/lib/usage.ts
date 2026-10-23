@@ -147,6 +147,18 @@ export async function checkAndRecordUsage(
   }
 }
 
+// Hands back a free use recorded by checkAndRecordUsage when the run then
+// failed. Without it, an outage spends everyone's only free run on an error
+// screen, and they come back to a paywall having never seen a result.
+export async function refundUsage(email: string, tool: MeteredTool) {
+  try {
+    const key = usageKey(email, tool);
+    if ((await kv.decr(key)) < 0) await kv.set(key, 0);
+  } catch (err) {
+    console.error("[fledgy:usage] could not refund a failed run:", err);
+  }
+}
+
 // --- Referrals -------------------------------------------------------------
 //
 // Two steps, deliberately separated:

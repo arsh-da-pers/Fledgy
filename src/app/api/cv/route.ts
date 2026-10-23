@@ -3,8 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { logFeedback } from "@/lib/logFeedback";
 import { hasProduct } from "@/lib/entitlements";
 import { PAYWALLS_ENABLED } from "@/lib/products";
-import { checkAndRecordUsage, isValidEmail, isThrowawayEmail, FREE_LIMIT } from "@/lib/usage";
+import { checkAndRecordUsage, refundUsage, isValidEmail, isThrowawayEmail, FREE_LIMIT } from "@/lib/usage";
 import { recordToolUse } from "@/lib/leads";
+import { sendToolThankYou } from "@/lib/autoReply";
 
 export const runtime = "nodejs";
 
@@ -15,6 +16,8 @@ function extractJson(text: string) {
 }
 
 export async function POST(req: NextRequest) {
+  // Set once a free use is recorded, so a failure below can hand it back.
+  let meteredEmail: string | null = null;
   try {
     const { country, field, cv, email } = await req.json();
 
@@ -70,7 +73,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    if (!(PAYWALLS_ENABLED && entitled)) meteredEmail = email;
+
     await recordToolUse(email, "cv");
+    // Best-effort thank-you. Deduped per tool per address and skipped for
+    // anyone unsubscribed, so it never becomes a per-run mailing.
+    void sendToolThankYou(email, "cv");
 
     if (!process.env.ANTHROPIC_API_KEY) {
       return NextResponse.json(
@@ -112,8 +120,9 @@ Return ONLY valid JSON, no other text, in this exact shape:
 Give 5 or 6 tips. Include at least one country-specific cultural norm point, at least one on making bullets more action-led and quantified if the CV needs it, and one on length/focus — placed at whatever rank their actual impact warrants.`;
 
     const msg = await anthropic.messages.create({
-      model: "claude-sonnet-4-5",
+      model: "claude-sonnet-5",
       max_tokens: 1100,
+      thinking: { type: "disabled" },
       messages: [{ role: "user", content: prompt }],
     });
 
@@ -149,6 +158,7 @@ Give 5 or 6 tips. Include at least one country-specific cultural norm point, at 
     });
   } catch (err) {
     console.error(err);
+    if (meteredEmail) await refundUsage(meteredEmail, "cv");
     return NextResponse.json(
       { error: "Something went wrong scoring this CV. Please try again." },
       { status: 500 }
