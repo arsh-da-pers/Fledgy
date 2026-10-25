@@ -3,6 +3,71 @@ import type { Post } from "@/lib/blog";
 // Add new posts to the top of this array. Each post needs a unique `slug`.
 export const posts: Post[] = [
   {
+    slug: "how-to-write-a-cover-letter-for-jobs-abroad",
+    title: "How to Write a Cover Letter for Jobs Abroad",
+    description:
+      "How to write a cover letter for an international job application — handling visa questions, matching local norms, and the mistakes that signal you're not ready to relocate.",
+    date: "2026-10-25",
+    excerpt:
+      "A cover letter that works for a local job can quietly undermine an international one. Here's how to write one that makes relocating look like an asset, not a risk.",
+    tags: ["cover letter", "job applications", "working abroad", "job seekers"],
+    body: [
+      {
+        type: "p",
+        text: "Applying for a job in another country adds a layer most cover letter advice doesn't cover: an employer who has to ask themselves not just \"can this person do the job?\" but \"is hiring someone who needs to relocate, and maybe needs sponsorship, worth the extra friction?\" A generic cover letter leaves that question hanging, which is exactly what gets international applications filtered out before anyone reads the CV behind them. Here's how to write one that answers it for them.",
+      },
+      { type: "h2", text: "Lead with why this country, not just this job" },
+      {
+        type: "p",
+        text: "\"I am excited to apply for this role\" could be written by anyone, anywhere. An employer hiring internationally is quietly screening for commitment — they don't want to invest in relocating or sponsoring someone who's really using the role as a stepping stone elsewhere. Open with a specific, honest reason this market and this move make sense for you: a skill the local industry is known for, a professional community you want to be part of, family or partner ties, or simply a deliberate, well-researched career move. Vague enthusiasm reads as a backup plan; a specific reason reads as a decision.",
+      },
+      { type: "h2", text: "Address the visa and relocation question before they have to" },
+      {
+        type: "p",
+        text: "Don't bury your work authorization status and hope it doesn't come up — it's one of the first things a hiring manager needs to know, and silence reads as something to hide. If you already have the right to work in the country, say so plainly in one line. If you'll need sponsorship, state it clearly and briefly, rather than hoping the CV implies it: \"I am based in [country] and would require visa sponsorship to relocate\" is a complete, confident sentence. Employers who sponsor routinely aren't scared off by the word — they're scared off by applicants who seem unaware of what relocating actually involves.",
+      },
+      { type: "h2", text: "Match the tone and format to where you're applying" },
+      {
+        type: "p",
+        text: "Cover letter norms vary more across borders than most applicants expect, and getting them wrong is a quiet tell that you haven't done your homework on the market you're trying to enter.",
+      },
+      {
+        type: "ul",
+        items: [
+          "**US and Canada** — keep it to one page, confident and achievement-led, first person throughout. Enthusiasm is expected, not seen as overselling.",
+          "**UK** — similarly concise, but slightly more measured in tone; let the evidence carry the confidence rather than the adjectives.",
+          "**Germany, Netherlands, and much of continental Europe** — more formal and structured, often addressed with a proper salutation and closing; some employers still expect a methodical, qualifications-first style rather than a narrative pitch.",
+          "**Gulf and parts of Asia** — formal and respectful in tone, with clear, direct statements of qualifications and availability; ornate language can read as padding rather than polish.",
+        ],
+      },
+      {
+        type: "p",
+        text: "When in doubt, look at how the company itself writes — its careers page and job ad usually signal the tone it expects back.",
+      },
+      { type: "h2", text: "Show you understand the local market, not just the company" },
+      {
+        type: "p",
+        text: "A cover letter that only talks about the company can still read as generic if it shows no awareness of the market around it. A line that shows you understand the local industry — a regulation, a trend, a way the sector works differently there than where you are now — does more to prove you've genuinely researched the move than any amount of stated enthusiasm. It also quietly answers the employer's real worry: that you'll arrive, discover the market isn't what you expected, and leave within the year.",
+      },
+      { type: "h2", text: "Mistakes that make you look like a risky hire" },
+      {
+        type: "ul",
+        items: [
+          "Leaving your location and visa status unclear, forcing the reader to guess or dig through your CV for it.",
+          "Writing as if you could be applying from anywhere, with no sign you've researched the country or industry you're moving to.",
+          "Over-explaining personal reasons for relocating instead of keeping it brief and professional.",
+          "Using a format or tone that clashes with local norms — too casual where formality is expected, or needlessly stiff where directness is valued.",
+          "Failing to mention notice period, availability to relocate, or timeline, which international employers weigh more heavily than domestic ones.",
+        ],
+      },
+      { type: "h2", text: "Get it checked before you send it" },
+      {
+        type: "p",
+        text: "An international application has less room for error than a local one — there's often no shared network to vouch for you, so the letter and CV have to do all the convincing. Fledgy's [free CV scorer](/cv) rates your CV against real hiring norms for your target country and can generate a recruiter-ready rewrite, so the document sitting behind your cover letter makes the same strong, consistent case. And if you're still weighing which markets or roles actually fit your experience, the [career quiz](/careers) can help narrow that down before you commit to the move.",
+      },
+    ],
+  },
+  {
     slug: "how-to-find-a-mentor",
     title: "How to Find a Mentor (and What to Ask For)",
     description:
