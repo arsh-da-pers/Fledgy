@@ -78,6 +78,153 @@ export const posts: Post[] = [
     ],
   },
   {
+    slug: "how-to-find-a-mentor",
+    title: "How to Find a Mentor (and What to Ask For)",
+    description:
+      "How to find a mentor who actually helps your career — where to look, how to ask without it feeling awkward, and what to bring to each conversation.",
+    date: "2026-09-23",
+    excerpt:
+      "Everyone says \"find a mentor.\" Almost no one says how, or what to actually ask for once you have one. Here's a practical way to do both.",
+    tags: ["mentorship", "career growth", "networking", "job seekers"],
+    body: [
+      {
+        type: "p",
+        text: "Almost every career conversation eventually lands on the same advice: \"find a mentor.\" It's true, and it's also nearly useless on its own — nobody tells you how to actually find one, what to say when you do, or what the relationship is supposed to look like once it starts. Here's a practical way to do all three.",
+      },
+      { type: "h2", text: "Why \"find a mentor\" is such vague advice" },
+      {
+        type: "p",
+        text: "The advice fails because it treats mentorship like a single relationship you either have or don't, when in practice it's usually several looser ones stacked together — someone who gives career advice, someone who reviews your work, someone a few years ahead who answers quick questions when you're stuck. Waiting for one perfect senior figure to formally \"become your mentor\" is why most people never start.",
+      },
+      { type: "h2", text: "Look for a specific kind of help, not a specific title" },
+      {
+        type: "p",
+        text: "Before you look for a person, get specific about what you actually need: feedback on your work, an introduction into an industry, a sounding board for a decision, or someone who's done the exact job you want next. A senior executive isn't automatically a better mentor than someone two years ahead of you — the person one step ahead often remembers the details of getting there far more clearly than someone a decade out.",
+      },
+      { type: "h2", text: "Where mentors actually come from" },
+      {
+        type: "p",
+        text: "Most useful mentor relationships start informally, from people already in your orbit:",
+      },
+      {
+        type: "ul",
+        items: [
+          "A former manager or senior colleague you worked well with, even at a previous job.",
+          "Someone a few years ahead of you at the same company, doing the role you want next.",
+          "Alumni from your university working in your target field — most are more open to a message than you'd expect.",
+          "Professional associations or industry groups, many of which run structured mentorship matching.",
+          "A previous professor, coach, or instructor who saw how you work rather than just your CV.",
+        ],
+      },
+      { type: "h2", text: "How to ask without it feeling awkward" },
+      {
+        type: "p",
+        text: "Skip the phrase \"will you be my mentor?\" — it puts a large, undefined commitment on someone who might not know you well yet. Ask for one specific, small thing instead: a 20-minute call about how they got into their role, feedback on a document, or advice on a decision you're facing. A good first ask is easy to say yes to. If the conversation goes well, asking to check in again is a much smaller step than asking for mentorship cold.",
+      },
+      { type: "h2", text: "What to bring to each conversation" },
+      {
+        type: "p",
+        text: "Once someone is willing to keep talking to you, make their time worth it:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Arrive with two or three specific questions, not \"any advice you have.\"",
+          "Do the background research yourself first — don't ask them to explain something a quick search would answer.",
+          "Follow up on what they suggested last time, so they can see their advice landed somewhere.",
+          "Say thank you specifically — name what actually helped, not just \"thanks for your time.\"",
+        ],
+      },
+      { type: "h2", text: "Common mistakes that end mentorships early" },
+      {
+        type: "ul",
+        items: [
+          "Only reaching out when you need something, then going quiet in between.",
+          "Treating every conversation as a request rather than a relationship — ask what they're working on too.",
+          "Being vague about your goals, which makes it hard for them to give useful advice.",
+          "Disappearing after good advice instead of reporting back on what happened when you used it.",
+        ],
+      },
+      { type: "h2", text: "Know what you're aiming for before you ask" },
+      {
+        type: "p",
+        text: "Mentors give better advice when you can tell them clearly what you're aiming for — a vague \"I want to grow\" gets vague answers back. If you're not sure what direction to point that conversation toward, Fledgy's [career quiz](/careers) can help map your strengths onto specific paths worth asking about. And if a mentor offers to review something concrete, make sure your [CV](/cv) is already in good shape before you hand it over — Fledgy's free CV scorer can catch the obvious issues first, so their feedback goes toward what actually matters.",
+      },
+    ],
+  },
+  {
+    slug: "how-to-write-a-linkedin-summary-that-gets-noticed",
+    title: "How to Write a LinkedIn Summary That Actually Gets Noticed",
+    description:
+      "How to write a LinkedIn summary (About section) that gets noticed by recruiters and peers — structure, keywords, examples, and mistakes to avoid.",
+    date: "2026-09-20",
+    excerpt:
+      "Most LinkedIn About sections are a wall of job titles nobody reads. Here's how to write one that makes a recruiter, client, or future manager stop scrolling.",
+    tags: ["linkedin", "personal branding", "working professionals", "career growth"],
+    body: [
+      {
+        type: "p",
+        text: "Your LinkedIn summary — the \"About\" section under your name — is one of the most-read pieces of professional writing you'll ever produce, and most people treat it like an afterthought. It's usually either left blank, copied from a CV, or stuffed with buzzwords like \"passionate\" and \"results-driven\" that say nothing about what you actually do. That's a real cost: recruiters searching LinkedIn read the About section right after your headline, and it's often what decides whether they click through or scroll past. Here's how to write one that holds attention.",
+      },
+      { type: "h2", text: "What a good summary is actually for" },
+      {
+        type: "p",
+        text: "A LinkedIn summary has a different job than a CV. A CV is read by one person, for one specific role, at one specific moment. Your LinkedIn summary is read by strangers — recruiters searching for candidates, potential clients, conference organisers, future collaborators — who know nothing about you yet and are deciding, in a few seconds, whether you're relevant to them. It needs to work as a stand-alone pitch, not a summary of a document they haven't seen.",
+      },
+      { type: "h2", text: "Start with who you help, not your job title" },
+      {
+        type: "p",
+        text: "The single biggest upgrade most summaries need is the opening line. \"Marketing Manager with 8 years of experience\" tells a reader your title and tenure — the two things they can already see on your profile. A stronger opening states who you help and how: \"I help B2B software companies turn underperforming email lists into a reliable revenue channel.\" That sentence does real work: it names an audience, a problem, and an outcome, all in one breath.",
+      },
+      { type: "h2", text: "A structure that holds up" },
+      {
+        type: "p",
+        text: "You don't need to reinvent the format — a simple four-part structure covers almost every case well:",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Hook (1–2 lines)** — who you help and the outcome you're known for, in plain language, no jargon.",
+          "**Proof (2–4 lines)** — the specific experience, numbers, or projects that back up the hook. This is where most people get too vague; a number beats an adjective every time.",
+          "**How you work (1–2 lines)** — your approach, specialism, or the kind of problems you're drawn to. This is what makes you memorable rather than interchangeable with anyone in your field.",
+          "**Call to action (1 line)** — what you're open to right now: opportunities, conversations, collaborators, speaking, or simply \"open to connecting with anyone working on X.\" Vague profiles get vague interest; specific asks get specific replies.",
+        ],
+      },
+      { type: "h2", text: "Write it in first person, and write it like you talk" },
+      {
+        type: "p",
+        text: "CVs are written in a clipped, third-person-implied style — no \"I\", just verbs and outcomes. A LinkedIn summary is the opposite: it's the one place on your profile where first person and a human voice are expected, and stiff corporate language actually works against you here. \"I\" statements, contractions, and short sentences read as confident and current. A summary that reads like a press release reads like nobody wrote it.",
+      },
+      { type: "h2", text: "Use the keywords recruiters actually search" },
+      {
+        type: "p",
+        text: "LinkedIn's search and recruiter tools weight the About section, so it's worth including the specific role titles, tools, and skills you want to be found for — the same way you'd tailor a [CV](/cv) to a job description. If you want to be found for \"product manager, fintech,\" those words should appear somewhere in your summary in a natural sentence, not as a bare list at the bottom. Think about the three or four searches you'd want to show up in, and make sure each one is answered somewhere in the text.",
+      },
+      { type: "h2", text: "Common mistakes that make people scroll past" },
+      {
+        type: "ul",
+        items: [
+          "Leaving it blank, or leaving LinkedIn's placeholder-style default text in place — both signal you're not actively engaged with your profile.",
+          "Opening with your job title and years of experience instead of what you actually do for people.",
+          "Writing a chronological career history — that's what your Experience section is for.",
+          "Filling it with unproven adjectives (\"passionate,\" \"driven,\" \"strategic thinker\") instead of specific outcomes.",
+          "Writing one dense, unbroken paragraph. Short lines and line breaks are far easier to skim on a phone, where most profiles get read.",
+          "Never updating it after a promotion, a pivot, or a new focus — a stale summary undersells where you actually are now.",
+        ],
+      },
+      { type: "h2", text: "A quick before-and-after" },
+      {
+        type: "quote",
+        text: "Before: \"Experienced operations professional with a passion for driving results and building high-performing teams.\" After: \"I run operations for fast-growing logistics companies — most recently cutting a 40-store retailer's stock-outs by 18% by rebuilding their supply-chain reporting. I'm at my best untangling a process nobody's had time to fix. Open to operations leadership roles in retail or logistics.\"",
+      },
+      { type: "h2", text: "Keep it current as you grow" },
+      {
+        type: "p",
+        text: "The summary that got you your current role probably isn't the one that reflects where you are now. Revisit it after a promotion, a new skill, or a shift in what you want to be known for — a stale profile is one of the quieter reasons strong professionals stop getting inbound interest. If you're not sure what direction to lean into next, Fledgy's [career quiz](/careers) can help map your strengths onto specific paths worth highlighting. And if you're actively applying rather than just building visibility, run the same document discipline over your actual CV — Fledgy's [free CV scorer](/cv) rates it against real hiring norms and can generate a recruiter-ready rewrite.",
+      },
+    ],
+  },
+  {
     slug: "how-to-answer-why-this-university",
     title: "How to Answer \"Why This University?\" (Without Sounding Generic)",
     description:
