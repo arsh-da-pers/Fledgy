@@ -3,6 +3,91 @@ import type { Post } from "@/lib/blog";
 // Add new posts to the top of this array. Each post needs a unique `slug`.
 export const posts: Post[] = [
   {
+    slug: "cover-letter-for-a-job-abroad",
+    title: "How to Write a Cover Letter for a Job Abroad",
+    description:
+      "How to write a cover letter for a job abroad — matching local tone, handling visa sponsorship and relocation, and translating your experience for a reader who doesn't know your home market.",
+    date: "2026-11-01",
+    excerpt:
+      "A cover letter for a job in another country has to answer questions a domestic one never does — can you work there, will you actually move, and do you get how things work there. Here's how to handle all three without it reading like a visa form.",
+    tags: ["cover letter", "job seekers abroad", "international jobs", "relocation"],
+    body: [
+      {
+        type: "p",
+        text: "If you're applying for a job in a country you haven't worked in before, your cover letter has more to prove than a normal one does. It isn't only arguing that you're good at the job — it's quietly answering three questions the employer won't ask outright: can you legally work there, will you actually move, and do you understand how work happens in their market. Get those answers wrong, or skip them entirely, and a strong CV can still land in the \"too complicated\" pile. Here's how to handle all three without the letter reading like an immigration form.",
+      },
+      { type: "h2", text: "Why this cover letter is a different document" },
+      {
+        type: "p",
+        text: "A domestic cover letter mostly argues one thing: that you're a strong fit for the role. One aimed at an employer abroad has to argue fit, feasibility, and intent at the same time. Feasibility is whether you can actually start — visa status, timing, whether sponsorship is involved. Intent is whether you're genuinely committed to relocating, not just curious about the market. An employer who can't quickly answer \"can this person start, and do they actually mean it\" will usually move on to a candidate where that's obvious, even if your experience is stronger on paper.",
+      },
+      { type: "h2", text: "Match the formality the country expects" },
+      {
+        type: "p",
+        text: "Cover letter tone is not universal, and writing in your home country's register can read as either stiff or oddly casual somewhere else. A few rough patterns worth knowing before you draft:",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Germany, Japan, South Korea:** formal and structured — full titles, a conservative close, achievements stated plainly rather than sold hard.",
+          "**US, Canada, Australia:** direct and confident, first-name friendly, comfortable with a short, punchy opening line and visible enthusiasm.",
+          "**UK:** polite but efficient — understated language, achievements that speak for themselves rather than being talked up.",
+          "**Gulf states (UAE, Saudi Arabia, Qatar):** formal and relationship-oriented, with more weight given to who referred you and a respectful, unhurried tone.",
+          "**Nordic countries:** plain and flat, almost anti-sales — modesty reads as competence, and an overly promotional tone can work against you.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Treat these as a starting point, not a rulebook — the fastest way to check is reading two or three real job postings from companies in that country and noticing how they talk about themselves. If they're formal, match it; if they're casual, you can relax too.",
+      },
+      { type: "h2", text: "Address visa sponsorship and relocation directly" },
+      {
+        type: "p",
+        text: "This is the section most applicants either skip or over-explain, and both versions cost interviews. An employer reading your letter is quietly trying to work out how much friction you add to the hiring process — leaving them to guess almost always makes that friction look bigger than it is.",
+      },
+      {
+        type: "ul",
+        items: [
+          "**If you already have the right to work there** (citizenship, a visa, permanent residency), say so in one plain sentence near the top. It removes the biggest objection before it forms.",
+          "**If you'd need sponsorship,** state it factually, not apologetically — \"I would require visa sponsorship to take up this role\" is a fact, not a flaw, and burying it looks evasive once they find out later.",
+          "**Give a realistic timeline** for relocating if hired, even approximately. \"Available to relocate within six weeks of an offer\" tells them you've thought it through.",
+          "**If you have any relevant immigration experience** — you've held a work visa in that country before, or a similar one elsewhere — mention it briefly. It signals the process won't be unfamiliar to you.",
+          "**Don't write a paragraph about your whole immigration history.** One or two sentences is enough; save the details for when they ask.",
+        ],
+      },
+      { type: "h2", text: "Translate your experience for a reader who doesn't know your market" },
+      {
+        type: "p",
+        text: "A company name, a job title, or a currency figure that means something at home can mean nothing to a reader abroad — and a cover letter that assumes they'll fill in the gap loses them in a sentence. Describe your previous employer by what it is, not just its name: \"one of the three largest retail chains in [country], with 200+ stores\" lands with anyone, where the brand name alone might not. Convert currencies and give rough context for numbers that only make sense locally — a revenue figure, a team size, a market share — so the achievement reads the same everywhere it's sent.",
+      },
+      {
+        type: "p",
+        text: "The same logic applies to your [CV](/cv): job titles and grading systems vary enough between countries that a literal translation can undersell you. If you haven't already adapted it for the market you're applying to, do that alongside the letter rather than after — the two documents should use the same translated vocabulary.",
+      },
+      { type: "h2", text: "What to leave out" },
+      {
+        type: "ul",
+        items: [
+          "A long \"why I want to live abroad\" passage about adventure or lifestyle, unless it's directly relevant to the role — employers are hiring a worker, not sponsoring a move.",
+          "Personal details that are standard on CVs in some countries but unusual or even inadvisable abroad — age, marital status, a photo, nationality beyond what's needed for work eligibility.",
+          "Acronyms or grading terms specific to your home education or employment system without a brief explanation.",
+          "Apologetic language about needing sponsorship or being unfamiliar with local norms — state the facts and move on; over-explaining reads as self-doubt.",
+          "A generic letter you're sending to multiple countries unchanged. The tone, the visa line, and the translated examples all need to match the specific market you're writing to.",
+        ],
+      },
+      { type: "h2", text: "A structure that holds up in any market" },
+      {
+        type: "p",
+        text: "Once you've handled tone and feasibility, the shape underneath is the same everywhere: open with one concrete reason this role and this move genuinely interest you, state your work-eligibility situation in a line, give two or three translated achievements that map to what the posting asks for, and close with a short, confident sign-off. Nothing here needs to be long — a letter that handles all of this in under a page reads as more capable than one that spreads it across three dense paragraphs.",
+      },
+      { type: "h2", text: "Check it before you send it" },
+      {
+        type: "p",
+        text: "It's hard to judge your own letter the way an employer in another country will — you can't easily tell which details translate and which quietly don't. Before you send it, make sure the document doing the heavier lifting is in good shape too: Fledgy's [free CV checker](/cv) scores your CV against real hiring norms for your target country and can generate a recruiter-ready rewrite, so the letter and the CV tell one consistent, locally fluent story. And if you're still weighing which country or role actually fits your goals, the [career quiz](/careers) is a quick way to narrow that down before you write either document.",
+      },
+    ],
+  },
+  {
     slug: "how-to-find-a-mentor",
     title: "How to Find a Mentor (and What to Ask For)",
     description:
