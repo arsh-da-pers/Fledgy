@@ -3,6 +3,87 @@ import type { Post } from "@/lib/blog";
 // Add new posts to the top of this array. Each post needs a unique `slug`.
 export const posts: Post[] = [
   {
+    slug: "how-to-ask-for-a-professional-reference",
+    title: "How to Ask for a Professional Reference (and Actually Get a Strong One)",
+    description:
+      "How to ask for a professional reference the right way — who to pick, what to send them, timing mistakes to avoid, and how to make sure they say something specific.",
+    date: "2026-11-08",
+    excerpt:
+      "A lukewarm or vague reference can quietly sink an offer after a great interview. Here's how to choose the right person, ask well, and set them up to say something specific.",
+    tags: ["references", "job applications", "working professionals", "career growth"],
+    body: [
+      {
+        type: "p",
+        text: "Most people spend hours on their CV and cover letter, then treat the reference check as an afterthought — a box to tick once the real work is done. That's a mistake. A reference check usually comes right before an offer, which means a flat or vague answer at that stage can undo weeks of strong interviews. Here's how to pick the right person, ask well, and make sure they actually say something useful when the call comes.",
+      },
+      { type: "h2", text: "Why a vague reference can cost you an offer" },
+      {
+        type: "p",
+        text: "Hiring managers don't call references to confirm you worked somewhere — they already know that from your CV. They're checking for something a résumé and an interview can't fully show: whether you're reliable under pressure, how you actually work with others, and whether anything you said in the interview holds up. A reference who answers in generic, hesitant terms — \"yeah, they were fine, did their job\" — plants a small doubt that's hard to undo, even after a great interview. The goal isn't just getting someone to say yes to being a reference. It's getting someone who will say something specific and genuinely positive when asked.",
+      },
+      { type: "h2", text: "Who to ask — and who to skip" },
+      {
+        type: "p",
+        text: "The best reference isn't always the most senior person you can name. It's the person who can speak to your actual work in detail.",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Your direct manager, if the relationship was good.** They saw your day-to-day work and can speak to it with specifics — this is almost always the strongest option.",
+          "**A manager from a previous role**, if your current one doesn't know you're looking yet. Completely normal, and most hiring managers expect it.",
+          "**A cross-functional partner or client** who can speak to a specific project, especially useful if you worked closely with them on something measurable.",
+          "**A senior peer or project lead**, if you haven't had a formal manager in your current setup.",
+          "Skip someone senior but distant — a VP who barely knew your name will give a thinner reference than a team lead who worked with you daily, however impressive the title looks on paper.",
+          "Skip anyone you haven't spoken to in years, or anyone you're not confident will actually be positive. A hesitant reference is worse than one fewer reference.",
+        ],
+      },
+      { type: "h2", text: "How to actually ask" },
+      {
+        type: "p",
+        text: "Keep the ask short, specific, and easy to say yes — or no — to. Name the role, say why you thought of them, and give them a graceful way out if the timing or fit is wrong for them.",
+      },
+      {
+        type: "quote",
+        text: "\"Hi [Name] — I'm interviewing for a [role] at [company], and I'd love to list you as a reference if you're comfortable with that. We worked closely on [specific project], and I think you could speak well to [one or two specific things]. Totally understand if now isn't a good time — just let me know either way.\"",
+      },
+      { type: "h2", text: "Set them up to say something specific" },
+      {
+        type: "p",
+        text: "A reference who agrees but has no context will fall back on vague praise. Give them a short briefing so they don't have to reconstruct your working relationship from memory on the spot:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Your current, updated CV, so they can see how you're framing your experience now.",
+          "A one- or two-line summary of the role you're applying for and why it's a good next step.",
+          "Two or three specific moments or achievements you'd like them to be able to speak to, if asked — not a script, just helpful prompts.",
+          "Whether to expect a phone call, an email questionnaire, or an online form, and roughly when.",
+        ],
+      },
+      { type: "h2", text: "Timing: ask before you need it" },
+      {
+        type: "p",
+        text: "Don't wait until an employer asks for references to find out whether your chosen person is willing or available — by then you're often on a tight deadline. Ask as soon as you start interviewing seriously, not after you get an offer contingent on checks. It also helps to keep a running list of two or three people who could vouch for you, updated each time you change roles, so you're never starting from zero when you need one.",
+      },
+      { type: "h2", text: "Common mistakes that weaken a reference" },
+      {
+        type: "ul",
+        items: [
+          "Assuming they remember details they don't — without a briefing, even a strong supporter gives a thin answer.",
+          "Not telling them which role or company you're applying for, so their answers don't line up with what you've told the employer.",
+          "Choosing status over substance — a senior name who barely knew your work over someone closer to it.",
+          "Listing someone without asking first, which can produce an awkward or lukewarm response when they're caught off guard.",
+          "Going quiet afterwards — not thanking them, and not telling them how it went. A quick update matters if you'll ever want to ask them again.",
+        ],
+      },
+      { type: "h2", text: "Make the rest of your application match" },
+      {
+        type: "p",
+        text: "A strong reference confirms what the rest of your application already suggests — it doesn't do the convincing on its own. If your [CV](/cv) is the thing getting you to the reference stage, make sure it's making the strongest possible case before it gets there: Fledgy's free CV scorer rates it against real hiring norms and can generate a recruiter-ready rewrite. And if you're not yet sure which roles to be lining references up for in the first place, the [career quiz](/careers) can help narrow that down.",
+      },
+    ],
+  },
+  {
     slug: "how-to-find-a-mentor",
     title: "How to Find a Mentor (and What to Ask For)",
     description:
