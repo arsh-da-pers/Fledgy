@@ -195,6 +195,37 @@ export async function refundIteration(email: string, product: ProductId): Promis
 }
 
 /** Rewrites left, for display. */
+/**
+ * Puts a buyer's rewrites back — support, not a feature.
+ *
+ * Exists because a rewrite could be spent on a failure the buyer had nothing
+ * to do with (a model error, a malformed response, a misconfigured key), and
+ * there was no way to make that right short of editing KV by hand. Sets the
+ * counter outright rather than refunding one at a time, so restoring someone
+ * is a single call with a predictable result.
+ *
+ * Returns null when the email doesn't own the product — nothing to restore.
+ */
+export async function setIterationsUsed(
+  email: string,
+  product: ProductId,
+  used = 0
+): Promise<{ used: number; remaining: number } | null> {
+  const owned = await getEntitlements(email);
+  const entry = owned[product];
+  if (!entry) return null;
+
+  const limit = PRODUCTS[product].iterations;
+  const clamped = Math.min(Math.max(0, Math.floor(used)), limit);
+
+  await kv.set(entKey(email), {
+    ...owned,
+    [product]: { ...entry, iterationsUsed: clamped },
+  });
+
+  return { used: clamped, remaining: limit - clamped };
+}
+
 export async function iterationsRemaining(
   email: string,
   product: ProductId

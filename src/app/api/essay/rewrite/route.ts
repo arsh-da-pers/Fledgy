@@ -44,6 +44,21 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // PREFLIGHT BEFORE SPENDING. Anything that can fail for reasons the buyer
+    // is not responsible for belongs above consumeIteration — a rewrite spent
+    // on a 500 is one they paid for and never received.
+    if (!process.env.ANTHROPIC_API_KEY) {
+      return NextResponse.json(
+        {
+          error:
+            "This deployment doesn't have an ANTHROPIC_API_KEY set yet. Add one in the project's environment variables to enable rewrites.",
+        },
+        { status: 500 }
+      );
+    }
+
+    const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
     const iteration = await consumeIteration(email, "essay");
 
     if (!iteration.allowed) {
@@ -63,19 +78,6 @@ export async function POST(req: NextRequest) {
         { status: 402 }
       );
     }
-
-    if (!process.env.ANTHROPIC_API_KEY) {
-      await refundIteration(email, "essay");
-      return NextResponse.json(
-        {
-          error:
-            "This deployment doesn't have an ANTHROPIC_API_KEY set yet. Add one in the project's environment variables to enable rewrites.",
-        },
-        { status: 500 }
-      );
-    }
-
-    const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
     const prompt = `You are Fledgy, rewriting a university application essay. The single most important rule: this must still sound like THE APPLICANT, not like you. Keep their voice, their register, their specific memories and details. You are editing, not replacing.
 
@@ -97,25 +99,29 @@ ${essay}
 
 Output ONLY the rewritten essay as clean plain text — no commentary, no headings, no markdown, no notes about what you changed.`;
 
-    const msg = await anthropic.messages
-      .create({
+    // One refund boundary around the whole generation. The previous .catch()
+    // plus empty-output check covered the two failures we had thought of;
+    // anything else thrown in here reached the outer catch and quietly kept
+    // the buyer's rewrite.
+    let rewritten: string;
+    try {
+      const msg = await anthropic.messages.create({
         model: "claude-sonnet-5",
         max_tokens: 2000,
+        // Sonnet 5 thinks by default and thinking tokens come out of
+        // max_tokens, which returns a message with no text block and burns a
+        // rewrite for nothing. Leave this disabled.
         thinking: { type: "disabled" },
         messages: [{ role: "user", content: prompt }],
-      })
-      .catch(async (err) => {
-        // Don't let them lose a rewrite to our failure.
-        await refundIteration(email, "essay");
-        throw err;
       });
 
-    const textBlock = msg.content.find((b) => b.type === "text");
-    const rewritten = textBlock && "text" in textBlock ? textBlock.text.trim() : "";
+      const textBlock = msg.content.find((b) => b.type === "text");
+      rewritten = textBlock && "text" in textBlock ? textBlock.text.trim() : "";
 
-    if (!rewritten) {
+      if (!rewritten) throw new Error("No content generated");
+    } catch (err) {
       await refundIteration(email, "essay");
-      throw new Error("No content generated");
+      throw err;
     }
 
     logFeedback({ tool: "essay_rewrite", email, university: university || null });

@@ -320,20 +320,51 @@ export default function EssayPage() {
                   <p className="mt-2 text-xs font-semibold text-brand-teal">
                     {iterationsLeft} of {ESSAY_ITERATIONS} rewrites left
                   </p>
-                  <button
-                    type="button"
-                    onClick={handleRewrite}
-                    disabled={rewriting || iterationsLeft < 1}
-                    className="mt-4 flex w-full items-center justify-center rounded-xl bg-brand-teal px-4 py-3.5 text-base font-semibold text-white transition hover:bg-brand-teal-dark disabled:opacity-50 sm:text-sm"
-                  >
-                    {rewriting
-                      ? "Rewriting your essay…"
-                      : rewritten
-                      ? "Rewrite it again"
-                      : "Rewrite my essay"}
-                  </button>
+                  {/* Same dead end the CV tool had: at zero this rendered a
+                      greyed-out button and nothing else, while the Paywall
+                      below only renders for people who have NOT paid — so a
+                      buyer who used their rewrites was shown no price and no
+                      checkout. A repeat purchase already tops the counter back
+                      up in grantPurchase. */}
+                  {iterationsLeft > 0 ? (
+                    <button
+                      type="button"
+                      onClick={handleRewrite}
+                      disabled={rewriting}
+                      className="mt-4 flex w-full items-center justify-center rounded-xl bg-brand-teal px-4 py-3.5 text-base font-semibold text-white transition hover:bg-brand-teal-dark disabled:opacity-50 sm:text-sm"
+                    >
+                      {rewriting
+                        ? "Rewriting your essay…"
+                        : rewritten
+                        ? "Rewrite it again"
+                        : "Rewrite my essay"}
+                    </button>
+                  ) : (
+                    <div className="mt-4">
+                      <p className="rounded-lg border border-cream-deep bg-cream px-4 py-3 text-sm leading-relaxed text-ink">
+                        You&apos;ve used all {ESSAY_ITERATIONS} of your rewrites
+                        {rewritten ? " — your latest version is still below." : "."}{" "}
+                        Something gone wrong?{" "}
+                        <a
+                          href="mailto:hello@fledgy.guide?subject=My%20essay%20rewrites"
+                          className="font-semibold text-brand-teal underline"
+                        >
+                          Tell us
+                        </a>{" "}
+                        and a person will sort it out.
+                      </p>
+                      <div className="mt-3">
+                        <Paywall
+                          product="essay"
+                          email={email}
+                          heading="Need more rewrites?"
+                          subheading={`Another purchase tops you back up to ${ESSAY_ITERATIONS} rewrites in your own voice.`}
+                        />
+                      </div>
+                    </div>
+                  )}
 
-                  {exhausted && (
+                  {exhausted && iterationsLeft > 0 && (
                     <p className="mt-3 rounded-lg border border-cream-deep bg-cream px-4 py-3 text-sm leading-relaxed text-ink">
                       You&apos;ve used all {ESSAY_ITERATIONS} rewrites. Your latest
                       version is still below.
