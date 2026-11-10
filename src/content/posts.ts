@@ -79,6 +79,214 @@ export const posts: Post[] = [
     ],
   },
   {
+    slug: "how-to-build-a-professional-development-plan",
+    title: "How to Build a Professional Development Plan (That You'll Actually Follow)",
+    description:
+      "How to build a professional development plan that actually moves your career forward — setting a real target, finding the skill gap, and turning it into dated action steps.",
+    date: "2026-10-04",
+    excerpt:
+      "Most development plans are a wishlist written once a year and never opened again. Here's how to build one with enough structure that it actually changes what you do on Monday.",
+    tags: ["career growth", "working professionals", "professional development"],
+    body: [
+      {
+        type: "p",
+        text: "Ask most people for their professional development plan and they'll describe something that exists in theory: a form filled in once a year for HR, or a vague resolution to \"learn more about leadership\" that never turns into an actual Tuesday afternoon. A development plan only earns its name if it changes what you do in the next ninety days, not just what you intend. Here's how to build one with enough structure to survive contact with a busy week.",
+      },
+      { type: "h2", text: "What a development plan is actually for" },
+      {
+        type: "p",
+        text: "A good plan does three things an aspiration can't: it names a specific target instead of a general direction, it identifies the exact gap between where you are and that target, and it turns the gap into actions with dates attached. Skip any one of the three and you get what most plans are — a document, not a tool.",
+      },
+      { type: "h2", text: "Step 1: Name a target you can actually picture" },
+      {
+        type: "p",
+        text: "\"Grow in my career\" isn't a target, it's a mood. A usable target is specific enough that you'd recognise it if you saw it: a role, a level, a scope of work, or a kind of problem you want to be trusted with. Give yourself a one-to-two-year horizon — far enough to require real change, close enough to still feel real. If you're genuinely unsure what that target should be, that uncertainty is worth resolving before you plan anything; Fledgy's [career quiz](/careers) can help map your strengths and interests onto specific directions worth aiming at.",
+      },
+      { type: "h2", text: "Step 2: Find the actual gap, not the comfortable one" },
+      {
+        type: "p",
+        text: "Once you have a target, look honestly at what separates you from someone already there. The gap is rarely just a technical skill — it's often visibility (does leadership know what you're capable of), scope (have you actually run something of that size before), or a specific weak spot you've been quietly avoiding. Ask a manager or someone already in that target role what they'd point to; an outside view catches gaps you've stopped noticing in yourself.",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Skill gaps** — a technical ability, a tool, or a body of knowledge the target role expects.",
+          "**Experience gaps** — you haven't yet done the specific thing at the scale it's done at that level.",
+          "**Visibility gaps** — the work is good, but the people who decide on promotions don't know about it.",
+          "**Relationship gaps** — you lack a sponsor, a cross-team relationship, or exposure to the people who'd advocate for you.",
+        ],
+      },
+      { type: "h2", text: "Step 3: Turn the gap into dated actions, not intentions" },
+      {
+        type: "p",
+        text: "This is where most plans quietly die. \"Improve my public speaking\" never happens; \"present at the team's monthly review on March 14th\" does, because it has a date and a specific, small next step. For each gap, write the smallest concrete action that moves it forward and attach a deadline within the next four to eight weeks — not the whole goal, just the next step toward it.",
+      },
+      {
+        type: "ul",
+        items: [
+          "A course or certification with an enrolment date, not just a bookmark — if you're choosing one, it's worth checking it's actually valued in your field before committing time to it.",
+          "A specific stretch project you'll volunteer for, named, with the person you'll ask and by when.",
+          "A recurring action, like presenting your work once a month, rather than a one-off.",
+          "A relationship to build deliberately — a coffee chat, a cross-team project, a specific person to ask for feedback.",
+        ],
+      },
+      { type: "h2", text: "Step 4: Revisit it on a schedule, not when you remember" },
+      {
+        type: "p",
+        text: "A plan that's reviewed once a year, at the same time it was written, never gets corrected along the way. Put a recurring 20-minute check-in on your calendar every quarter: what actually happened, what didn't, and why. Half the value of a development plan is this review — it's where you notice a gap was wrong, a target has shifted, or an action simply wasn't realistic, and adjust before another year passes on autopilot.",
+      },
+      { type: "h2", text: "Mistakes that quietly sink a plan" },
+      {
+        type: "ul",
+        items: [
+          "**Writing goals with no deadline.** Anything without a date attached competes with everything else on your to-do list and loses.",
+          "**Listing five priorities at once.** A plan with five fronts rarely moves on any of them; pick one or two gaps to actually close this quarter.",
+          "**Confusing busy with progress.** Finishing a course is easy to point to; whether it changed what you're trusted with at work is the real test.",
+          "**Writing it for someone else.** A plan built to look good in a review, rather than to genuinely close a gap you believe in, won't survive the weeks when no one's checking.",
+          "**Never writing down what changed.** Without a record, a real year of growth can quietly feel like nothing happened — which makes it harder to make the case for what's next.",
+        ],
+      },
+      { type: "h2", text: "Make the progress easy to point to" },
+      {
+        type: "p",
+        text: "A development plan is only half the work — the other half is being able to show what it produced when it matters, whether that's a promotion conversation, a performance review, or a new role elsewhere. Keep a running note of what each closed gap actually changed, in outcomes rather than activities, so it's ready when you need it. And when the next step is a new role rather than a new level in your current one, make sure your [CV](/cv) actually reflects the scope you've grown into, not just the title on the door.",
+      },
+    ],
+  },
+  {
+    slug: "how-to-prepare-for-a-performance-review",
+    title: "How to Prepare for a Performance Review (and Actually Get the Outcome You Want)",
+    description:
+      "How to prepare for a performance review — gathering evidence, deciding what to ask for, and what to do if it doesn't go the way you hoped.",
+    date: "2026-09-28",
+    excerpt:
+      "Most people walk into a performance review hoping it goes well. The ones who get a raise or promotion out of it usually walked in with a case, not just hope.",
+    tags: ["performance review", "career growth", "working professionals"],
+    body: [
+      {
+        type: "p",
+        text: "For most people, a performance review feels like something that happens to them: a date goes in the calendar, a manager talks, and they find out afterward whether it went well. The reviews that actually change something — a raise, a promotion, more interesting work — usually look different. The person walking in prepared a case for what they wanted, instead of waiting to hear whether they got it.",
+      },
+      { type: "h2", text: "What a performance review is actually for" },
+      {
+        type: "p",
+        text: "Companies run reviews to make decisions: who gets a raise this cycle, who's on track for promotion, who takes on more scope next quarter. Your manager is often making that case to their own manager or to HR, sometimes with limited time and limited visibility into everything you did this year. A review isn't just a report card — it's an input into a decision that happens partly without you in the room. Preparing means making sure your manager has what they need to make that case well, rather than assuming they'll remember it for you.",
+      },
+      { type: "h2", text: "Gather your evidence before the meeting" },
+      {
+        type: "p",
+        text: "Most people underestimate how much they've forgotten by review time. A few weeks before, sit down and reconstruct the year properly:",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Specific wins with numbers where possible** — revenue, time saved, users affected, projects shipped — not just \"worked on X.\"",
+          "**Positive feedback you received**, from managers, peers, or clients, especially anything written down in Slack, email, or a client note.",
+          "**Problems you solved that weren't officially your job** — these often carry more weight than routine tasks done well.",
+          "**Skills or responsibilities you've taken on since your last review**, even informally.",
+          "**Any goals from your last review**, with honest notes on where you delivered and where you didn't.",
+        ],
+      },
+      { type: "h2", text: "Decide what you actually want out of it" },
+      {
+        type: "p",
+        text: "Walking in only hoping for \"a good review\" makes it hard for anyone to act on your behalf. Decide beforehand whether you're aiming for a raise, a title change, a shift in responsibilities, or simply clearer feedback on what's blocking the next step. If you want a raise or promotion specifically, say so directly and early — many managers can't push for something they don't know you're asking for, and by the time budgets or promotion cycles are set, it's often too late to add your name to the list.",
+      },
+      { type: "h2", text: "How to talk about your work without it feeling like bragging" },
+      {
+        type: "p",
+        text: "The instinct to downplay your own work usually works against you here. The fix isn't to inflate anything — it's to describe impact plainly, in terms of what changed because you did the work: \"this cut processing time by 30%\" reads as information, not boasting, in a way \"I worked really hard on this\" doesn't. Frame contributions around outcomes for the team or company, and let the evidence you gathered do the persuading rather than the adjectives.",
+      },
+      { type: "h2", text: "If the review doesn't go the way you hoped" },
+      {
+        type: "p",
+        text: "Sometimes the honest outcome of a well-prepared review is finding out you're not getting what you wanted this cycle, or that the company doesn't have room for the path you're aiming at. That's useful information, even if it's disappointing — ask directly what would need to be true for a different outcome next time, and get it in writing if you can. If the answer reveals a bigger mismatch, Fledgy's [free career quiz](/careers) can help you figure out whether the fix is a different role at this company or a different path altogether, and if a move is next, the [free CV scorer](/cv) will tell you how your CV reads to whoever reviews it next.",
+      },
+      { type: "h2", text: "A short pre-review checklist" },
+      {
+        type: "ul",
+        items: [
+          "List your wins from the past cycle with concrete numbers, not just descriptions.",
+          "Note feedback you've received and where you can find it in writing.",
+          "Decide specifically what outcome you're asking for.",
+          "Prepare two or three questions about what's next, not just what happened.",
+          "Practise saying your wins out loud once, so they don't come out flat in the room.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "how-to-tailor-your-cv-to-a-job-description",
+    title: "How to Tailor Your CV to Each Job Application (Without Starting From Scratch)",
+    description:
+      "How to tailor your CV to each job application quickly — what to keep the same, what to change, and a 15-minute routine that works for any role.",
+    date: "2026-09-22",
+    excerpt:
+      "Sending the same CV to every job is quietly costing you interviews. Here's how to tailor it in about 15 minutes, without rewriting the whole thing.",
+    tags: ["cv", "job applications", "job seekers", "ats"],
+    body: [
+      {
+        type: "p",
+        text: "Most job seekers write one CV and send it to every role, hoping the reader will connect the dots themselves. They usually don't — recruiters and applicant tracking systems reward a document that visibly matches the job in front of them. The good news is that tailoring doesn't mean rewriting your CV from scratch each time; it means changing a specific, small set of things.",
+      },
+      { type: "h2", text: "Why one CV for every job doesn't work" },
+      {
+        type: "p",
+        text: "A generic CV optimises for being acceptable everywhere, which means it's rarely the strongest option for anywhere in particular. Applicant tracking systems score your CV against the specific wording of the job posting, and a human reader spends the first few seconds looking for proof you're a fit for this role — not just a capable person in general. A CV that clearly hasn't been adjusted at all reads as a signal you didn't look closely at the posting.",
+      },
+      { type: "h2", text: "What to keep the same every time" },
+      {
+        type: "p",
+        text: "Tailoring works because most of your CV doesn't need to change. Your work history, dates, and core achievements stay fixed — you're not inventing new experience for each application, just deciding what to emphasise and how to describe it. Treat your full CV as a source document you pull from, not something you rebuild each time.",
+      },
+      { type: "h2", text: "What to change for each application" },
+      {
+        type: "p",
+        text: "A handful of targeted edits does most of the work:",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Your headline or profile summary** — name the specific role or field, not a generic title.",
+          "**The order of your bullets** — move the achievements most relevant to this job nearer the top of each role.",
+          "**Keywords and phrasing** — mirror the exact terms the posting uses for skills and tools, since that's often what both ATS software and a quick human scan are looking for.",
+          "**Your skills list** — trim it to what's relevant here, rather than every tool you've ever touched.",
+          "**Your summary line, if you have one** — connect your background directly to what this specific posting asks for.",
+        ],
+      },
+      { type: "h2", text: "A 15-minute tailoring routine" },
+      {
+        type: "p",
+        text: "You don't need an hour per application. A quick, repeatable pass covers most of the value:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Read the job posting once and underline the skills and responsibilities that repeat.",
+          "Update your headline or summary to reflect the role, using a couple of the posting's own words.",
+          "Reorder bullets within each role so the most relevant achievement leads.",
+          "Swap in two or three keywords from the posting wherever they honestly apply.",
+          "Scan the whole page once more for anything that now reads as irrelevant to this specific job, and cut it.",
+        ],
+      },
+      { type: "h2", text: "Common mistakes when tailoring" },
+      {
+        type: "ul",
+        items: [
+          "Keyword-stuffing a skills list with terms you can't actually back up in an interview.",
+          "Changing the job titles or dates of your actual history to sound closer to the posting — this reads as dishonest, not tailored.",
+          "Tailoring the summary but leaving the bullets underneath generic and unchanged.",
+          "Spending so long perfecting one CV that you apply to far fewer roles than you could have.",
+        ],
+      },
+      { type: "h2", text: "Start from a strong base" },
+      {
+        type: "p",
+        text: "Tailoring is one of the highest-leverage things you can do to an application, but it only works if the underlying CV is strong to begin with. Fledgy's [free CV scorer](/cv) rates your base CV against real hiring norms before you start customising it, and if you're not yet sure which roles are worth tailoring toward, the [career quiz](/careers) can help narrow that down first.",
+      },
+    ],
+  },
+  {
     slug: "how-to-find-a-mentor",
     title: "How to Find a Mentor (and What to Ask For)",
     description:
