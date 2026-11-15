@@ -3,6 +3,62 @@ import type { Post } from "@/lib/blog";
 // Add new posts to the top of this array. Each post needs a unique `slug`.
 export const posts: Post[] = [
   {
+    slug: "visa-and-timeline-mistakes-when-applying-for-jobs-abroad",
+    title: "Visa and Timeline Mistakes to Avoid When Applying for Jobs Abroad",
+    description:
+      "Common visa and application-timeline mistakes job seekers make when applying for work abroad — and how to build a realistic timeline before you start applying.",
+    date: "2026-11-15",
+    excerpt:
+      "Relocating for work is as much a logistics problem as a career one. Here's where international job seekers lose months without realising it — and how to build a timeline that survives a real visa process.",
+    tags: ["visa", "job applications", "working abroad", "job seekers"],
+    body: [
+      {
+        type: "p",
+        text: "Relocating for a job is as much a logistics problem as a career one, and the mistakes that cost people the role aren't usually about the interview. They're about the calendar. Visa processing, sponsorship realities, and application windows run on their own schedule, independent of how strong a candidate you are, and getting the timing wrong can quietly take an otherwise winnable job off the table. Here's where international job seekers lose time without realising it, and how to build a timeline that actually holds up.",
+      },
+      { type: "h2", text: "Mistake 1: Researching the visa only after you have an offer" },
+      {
+        type: "p",
+        text: "Most job seekers treat visa logistics as a problem for later — something to figure out once an employer is actually interested. By then, you've lost the ability to shape the process. Some companies won't sponsor at all, some sponsor only for certain roles or seniority levels, and some have an annual quota or application window that may have already closed for the year. Researching this before you apply, not after you're offered the role, lets you target employers who can realistically hire you and avoid pouring weeks into an application that was never going to clear.",
+      },
+      { type: "h2", text: "Mistake 2: Assuming \"we sponsor visas\" means it's fast" },
+      {
+        type: "p",
+        text: "A job posting that mentions visa sponsorship tells you the company is willing, not that the process is quick. Depending on the country and visa category, processing can run anywhere from a few weeks to the better part of a year, and some routes (like the US H-1B) are capped and decided by an annual lottery rather than how qualified you are. Ask directly, early in the interview process, how long the company's sponsorship process has typically taken for similar hires — a vague answer is itself useful information about how much internal experience they actually have with it.",
+      },
+      { type: "h2", text: "Mistake 3: Applying to roles your visa route doesn't actually fit" },
+      {
+        type: "p",
+        text: "Many work visas come with conditions that have nothing to do with your skills: a minimum salary threshold, a shortage-occupation list, a licensing requirement, or a restriction on the size or type of sponsoring company. Applying broadly without checking these first means some of your strongest-looking applications were never eligible, however good your CV and interview are. A short search on your target country's official immigration or labour ministry site — not a forum post — is worth doing before, not after, you send the application.",
+      },
+      { type: "h2", text: "Mistake 4: Letting your current status run out mid-search" },
+      {
+        type: "p",
+        text: "If you're already in the target country on a student or other time-limited visa, the job hunt itself is racing a clock you can't extend. A new work visa rarely clears instantly once you accept an offer — there's usually a gap between signing and being legally authorised to start. Know exactly when your current status expires, and work backward from it: if there's any risk your authorisation lapses before a new visa is approved, you need to start earlier, build in a buffer, or look at bridging options specific to your situation well before the deadline arrives, not in the final weeks.",
+      },
+      { type: "h2", text: "Build the timeline backward from your target start date" },
+      {
+        type: "p",
+        text: "Once you know roughly how long sponsorship and processing take for your target country and visa category, work backward from the date you actually want to start, rather than forward from today. A few checkpoints that belong on that timeline:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Confirm sponsorship norms and realistic processing times for your target country and visa category before you apply broadly, not after.",
+          "Ask about sponsorship and timeline directly in early interview rounds — it's a reasonable question, not an awkward one.",
+          "Build in a buffer of several months beyond the stated processing time; official estimates are frequently optimistic.",
+          "If you're already in-country on another visa, map its expiry date against the realistic approval date for the new one, with room to spare.",
+          "Have your CV, cover letter, and any required supporting documents ready to move quickly once the right role appears — sponsorship timelines are long enough without adding weeks of your own delay at the start.",
+        ],
+      },
+      { type: "h2", text: "Don't let the application materials be the slow part" },
+      {
+        type: "p",
+        text: "Visa logistics take long enough on their own; the parts of the process you actually control shouldn't add to it. Before you start applying, make sure your [CV](/cv) is ready to send the moment a strong opportunity appears — Fledgy's free CV scorer rates it against real hiring norms for your target country and can generate a recruiter-ready rewrite in minutes. And if you're still weighing which roles or markets are realistically worth the move, the [career quiz](/careers) can help you narrow that down before you spend months on a timeline aimed in the wrong direction.",
+      },
+    ],
+  },
+  {
     slug: "how-to-write-a-cover-letter-for-jobs-abroad",
     title: "How to Write a Cover Letter for Jobs Abroad",
     description:
