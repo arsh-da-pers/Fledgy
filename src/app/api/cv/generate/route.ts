@@ -50,6 +50,22 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // PREFLIGHT BEFORE SPENDING. Everything that can fail for reasons the
+    // buyer is not responsible for happens above consumeIteration, because a
+    // rewrite spent on a 500 is a rewrite they paid for and never received —
+    // and until now there was no way to give it back.
+    if (!process.env.ANTHROPIC_API_KEY) {
+      return NextResponse.json(
+        {
+          error:
+            "This deployment doesn't have an ANTHROPIC_API_KEY set yet. Add one in the project's environment variables to enable live generation.",
+        },
+        { status: 500 }
+      );
+    }
+
+    const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
     const iteration = await consumeIteration(email, "cv");
 
     if (!iteration.allowed) {
@@ -74,18 +90,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!process.env.ANTHROPIC_API_KEY) {
-      return NextResponse.json(
-        {
-          error:
-            "This deployment doesn't have an ANTHROPIC_API_KEY set yet. Add one in the project's environment variables to enable live generation.",
-        },
-        { status: 500 }
-      );
-    }
-
-    const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-
     const prompt = `You are Fledgy, a CV writer specialised in CROSS-CULTURAL hiring norms. Take the person's existing CV content below and REWRITE it into a clean, well-structured CV formatted the way recruiters in the target country actually expect — correct section order, length, level of detail, tone, and any country-specific conventions (e.g. whether to include a photo/age/nationality, date formats, how achievements are phrased). Keep all of the person's real facts, experience, and education — do not invent new jobs, degrees, or achievements. Improve the wording, structure, and formatting; do not fabricate content.
 
 Make every experience bullet ACTION- AND RESULTS-BASED:
@@ -109,26 +113,30 @@ ${cv}
 
 Output ONLY the rewritten CV as clean plain text, ready to copy or download — use clear section headings (e.g. PROFILE, EXPERIENCE, EDUCATION, SKILLS) in upper case, and simple line breaks between entries. Do not include any commentary, explanation, or markdown formatting — just the CV text itself.`;
 
-    const msg = await anthropic.messages
-      .create({
+    // One refund boundary around the whole generation, rather than a .catch()
+    // on the API call plus a separate check for empty output. Those two
+    // covered the failures we thought of; a parse error, a malformed
+    // response, or anything else thrown in here used to fall through to the
+    // outer catch and silently keep the rewrite.
+    let generatedCv: string;
+    try {
+      const msg = await anthropic.messages.create({
         model: "claude-sonnet-5",
         max_tokens: 1600,
+        // Sonnet 5 thinks by default, and thinking tokens come out of
+        // max_tokens — which returned a message with no text block at all and
+        // burned a rewrite for nothing. Leave this disabled.
         thinking: { type: "disabled" },
         messages: [{ role: "user", content: prompt }],
-      })
-      .catch(async (err) => {
-        // Generation failed after we'd already spent one of their three —
-        // give it straight back before surfacing the error.
-        await refundIteration(email, "cv");
-        throw err;
       });
 
-    const textBlock = msg.content.find((b) => b.type === "text");
-    const generatedCv = textBlock && "text" in textBlock ? textBlock.text.trim() : "";
+      const textBlock = msg.content.find((b) => b.type === "text");
+      generatedCv = textBlock && "text" in textBlock ? textBlock.text.trim() : "";
 
-    if (!generatedCv) {
+      if (!generatedCv) throw new Error("No content generated");
+    } catch (err) {
       await refundIteration(email, "cv");
-      throw new Error("No content generated");
+      throw err;
     }
 
     logFeedback({
