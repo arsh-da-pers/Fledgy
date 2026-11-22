@@ -3,6 +3,67 @@ import type { Post } from "@/lib/blog";
 // Add new posts to the top of this array. Each post needs a unique `slug`.
 export const posts: Post[] = [
   {
+    slug: "how-to-succeed-as-a-first-time-manager",
+    title: "How to Succeed as a First-Time Manager",
+    description:
+      "Practical advice for first-time managers: what actually changes about the job, how to handle your first 30 days, and the delegation and feedback mistakes that trip up new managers.",
+    date: "2026-11-22",
+    excerpt:
+      "Getting promoted into management isn't a bigger version of your old job — it's a different one. Here's what actually changes, and how to handle the first few months well.",
+    tags: ["management", "career growth", "working professionals", "leadership"],
+    body: [
+      {
+        type: "p",
+        text: "Most people get promoted into management because they were the best individual performer on the team — the sharpest engineer, the strongest closer, the analyst everyone went to with hard questions. Then the title changes, and so does the job, except almost nobody explains how much. The skills that earned the promotion — doing excellent work yourself — aren't the skills the new role actually tests. A lot of new managers spend their first six months either micromanaging out of anxiety or quietly retreating into their old habits because that's where they're comfortable. Here's what actually changes, and how to get through the first stretch well.",
+      },
+      { type: "h2", text: "The job isn't a bigger version of your old one" },
+      {
+        type: "p",
+        text: "This is the adjustment almost no one prepares you for. As an individual contributor, your value came from your own output — the code you shipped, the deals you closed, the reports you produced. As a manager, your output is your team's output, and most of what made you good at the old job barely applies to the new one. You're now responsible for things that don't show up on a task list: whether your team trusts you, whether they're growing, whether the right work gets prioritised, whether a quiet problem gets caught before it becomes a loud one. It's a genuinely different job, not the same one with more authority attached — and treating it like the same job is the single biggest reason new managers struggle.",
+      },
+      { type: "h2", text: "Your first 30 days: listen before you change anything" },
+      {
+        type: "p",
+        text: "The instinct once you're finally in charge is to fix things immediately — the process that's been annoying you for years, the teammate who seems to be underperforming, the meeting that wastes everyone's time. Resist it for the first month. You've inherited context you don't have yet: history, relationships, and reasons decisions were made that aren't obvious from the outside.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Run a real one-on-one with every person on your team, and ask what's working, what's frustrating, and what they'd change if they could.",
+          "Ask your own manager what success looks like for you in this role specifically, not generally.",
+          "Watch how work actually moves through your team before you redesign how it should.",
+          "Hold off on big changes until you understand why things are the way they are — even the ones that look obviously wrong at first glance.",
+        ],
+      },
+      { type: "h2", text: "Let go of being the best individual contributor in the room" },
+      {
+        type: "p",
+        text: "The hardest habit to break is stepping in to just do the work yourself, because you can usually do it faster than coaching someone else through it. It feels efficient in the moment and is almost always a mistake. Every time you take a task back instead of developing the person who should own it, you teach your team that you don't trust them with real responsibility — and you spend your time on work a manager shouldn't be doing instead of the work only a manager can do: removing obstacles, making decisions, developing people, and catching problems before they become emergencies. Delegating well doesn't mean disappearing; it means giving clear context and real ownership, then checking in rather than taking over.",
+      },
+      { type: "h2", text: "Give feedback like it's part of the job, not an occasional event" },
+      {
+        type: "p",
+        text: "New managers tend to avoid feedback until it's unavoidable, which means the first real conversation often happens only after a problem has gotten serious. Feedback works better small, specific, and frequent — both the corrective kind and the positive kind, which gets skipped even more often. \"That update to the client was really clear and caught the risk early\" takes ten seconds and makes someone more likely to do it again. \"That missed the deadline we agreed on — what got in the way?\" asked the same week, not the same quarter, fixes a pattern before it becomes a habit. Vague, rare feedback teaches people nothing either way.",
+      },
+      { type: "h2", text: "Mistakes that trip up almost every first-time manager" },
+      {
+        type: "ul",
+        items: [
+          "Trying to still be everyone's friend in the same way you were as a peer, instead of accepting that the relationship has genuinely changed.",
+          "Avoiding hard conversations until they're overdue, which makes them harder to have, not easier.",
+          "Measuring your own success by how busy you are instead of by what your team actually produces.",
+          "Assuming the skills that got you promoted are the skills you need now, instead of treating management as something to actively learn.",
+          "Going quiet with your own manager about how the transition is going, instead of asking for the support most companies genuinely want to give new managers.",
+        ],
+      },
+      { type: "h2", text: "Make sure this is the direction you actually want" },
+      {
+        type: "p",
+        text: "Some people take a management role because it was the only visible way to advance, then realise a year in that they miss doing the work itself more than they expected. That's worth sorting out early, rather than quietly resenting a role you fought to get. If you're not sure whether people management or a deeper individual-contributor track actually fits you better, Fledgy's [career quiz](/careers) can help map that against your real strengths. And once you've been managing for a few months, make sure your [CV](/cv) reflects that scope — leading a team is a different line than doing the work it used to describe.",
+      },
+    ],
+  },
+  {
     slug: "how-to-write-a-cover-letter-for-jobs-abroad",
     title: "How to Write a Cover Letter for Jobs Abroad",
     description:
